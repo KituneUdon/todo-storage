@@ -1,27 +1,14 @@
 import React, { FC, useState } from 'react';
 import { Button, TextField, Typography } from '@material-ui/core';
 import { css } from '@emotion/css';
-import firebase from 'firebase/app';
 import { useHistory } from 'react-router-dom';
-import 'firebase/auth';
-import 'firebase/firestore';
+
+import firebase from '../config/Firebase';
 
 const container = css`
   width=100%;
   text-align: center;
 `;
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: 'AIzaSyDaSy9QewHQkjzOIVYKaLPhu1OYJD8sqVY',
-  authDomain: 'todo-strage.firebaseapp.com',
-  projectId: 'todo-strage',
-  storageBucket: 'todo-strage.appspot.com',
-  messagingSenderId: '78223297020',
-  appId: '1:78223297020:web:d790b56cdd42121ab40a79',
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
 
 const Singup: FC = () => {
   const [email, setEmail] = useState('');
