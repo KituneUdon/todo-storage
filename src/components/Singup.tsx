@@ -31,8 +31,8 @@ const Singup: FC = () => {
       .then(() => {
         history.push('/todo');
       })
-      .catch((error) => {
-        setErrorMessage(error);
+      .catch((error: firebase.auth.AuthError) => {
+        setErrorMessage(error.message);
       });
   };
 
