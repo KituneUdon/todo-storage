@@ -13,10 +13,10 @@ const Login: FC = () => (
     <h2>ToDo Storageにログイン</h2>
     <form>
       <div>
-        <TextField type="email" placeholder="メールアドレス" />
+        <TextField type="email" placeholder="メールアドレス" margin="normal" />
       </div>
       <div>
-        <TextField type="password" placeholder="パスワード" />
+        <TextField type="password" placeholder="パスワード" margin="normal" />
       </div>
       <div>
         <Button variant="contained" color="primary" component={Link} to="/todo">

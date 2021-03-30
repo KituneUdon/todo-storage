@@ -1,35 +1,70 @@
-import React, { FC } from 'react';
-import { Button, TextField } from '@material-ui/core';
+import React, { FC, useState } from 'react';
+import { Button, TextField, Typography } from '@material-ui/core';
 import { css } from '@emotion/css';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
+import firebase from '../config/Firebase';
 
 const container = css`
   width=100%;
   text-align: center;
 `;
 
-const Singup: FC = () => (
-  <div className={container}>
-    <h2>ToDo Storageにアカウントを作成する</h2>
-    <form>
-      <div>
-        <TextField type="email" placeholder="メールアドレス" />
-      </div>
-      <div>
-        <TextField type="password" placeholder="パスワード" />
-      </div>
-      <div>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to="/login"
-        >
-          アカウントを作成
-        </Button>
-      </div>
-    </form>
-  </div>
-);
+const Singup: FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const history = useHistory();
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const createAccount = () => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        history.push('/todo');
+      })
+      .catch((error) => {
+        setErrorMessage(error);
+      });
+  };
+
+  return (
+    <div className={container}>
+      {errorMessage && <Typography>{errorMessage}</Typography>}
+      <Typography variant="h5">ToDo Storageにアカウントを作成する</Typography>
+      <form>
+        <div>
+          <TextField
+            type="email"
+            placeholder="メールアドレス"
+            margin="normal"
+            onChange={handleEmailChange}
+          />
+        </div>
+        <div>
+          <TextField
+            type="password"
+            placeholder="パスワード"
+            margin="normal"
+            onChange={handlePasswordChange}
+          />
+        </div>
+        <div>
+          <Button variant="contained" color="primary" onClick={createAccount}>
+            アカウントを作成
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default Singup;
