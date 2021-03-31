@@ -11,7 +11,7 @@ const container = css`
   margin: 0 10px;
 `;
 
-const fill = css`
+const title = css`
   flex-grow: 1;
 `;
 
@@ -29,7 +29,7 @@ const Todo: FC = () => {
     <>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={fill}>
+          <Typography variant="h6" className={title}>
             ToDo Storage
           </Typography>
           <Typography variant="body1">{displayName}</Typography>
