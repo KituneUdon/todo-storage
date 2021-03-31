@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import { css } from '@emotion/css';
 
@@ -11,15 +11,28 @@ const container = css`
   margin: 0 10px;
 `;
 
+const fill = css`
+  flex-grow: 1;
+`;
+
 const Todo: FC = () => {
-  const user = firebase.auth().currentUser;
+  const [displayName, setDisplayName] = useState('');
+
+  useEffect(() => {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      setDisplayName(user.displayName ?? '');
+    }
+  }, []);
 
   return (
     <>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">ToDo Storage</Typography>
-          <Typography variant="body1">{user?.uid}</Typography>
+          <Typography variant="h6" className={fill}>
+            ToDo Storage
+          </Typography>
+          <Typography variant="body1">{displayName}</Typography>
         </Toolbar>
       </AppBar>
       <main className={container}>
