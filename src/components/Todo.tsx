@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import { css } from '@emotion/css';
+import { useHistory } from 'react-router-dom';
 
 import { AuthContext } from '../Contexts/Auth';
 
@@ -29,8 +30,10 @@ const Todo: FC = () => {
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
+
+  const history = useHistory();
 
   useEffect(() => {
     setDisplayName(user.displayName);
@@ -57,6 +60,21 @@ const Todo: FC = () => {
       });
   }, [uid]);
 
+  const handleLogout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        history.push('/');
+        setUser({ uid: '', displayName: '' });
+      })
+      .catch(() => {
+        setErrorMessage(
+          'ログアウトに失敗しました。時間をおいてログアウトしてみてください。',
+        );
+      });
+  };
+
   return (
     <>
       <AppBar position="static">
@@ -65,6 +83,7 @@ const Todo: FC = () => {
             ToDo Storage
           </Typography>
           <Typography variant="body1">{displayName}</Typography>
+          <Button onClick={handleLogout}>ログアウト</Button>
         </Toolbar>
       </AppBar>
       <main className={container}>
