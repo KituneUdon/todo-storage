@@ -7,6 +7,11 @@ import ToDoList from './ToDoList';
 
 import firebase from '../config/Firebase';
 
+type Tasks = {
+  id: string;
+  task: string;
+};
+
 const container = css`
   margin: 0 10px;
 `;
@@ -15,14 +20,41 @@ const title = css`
   flex-grow: 1;
 `;
 
+const db = firebase.firestore();
+
 const Todo: FC = () => {
   const [displayName, setDisplayName] = useState('');
+  const [tasks, setTasks] = useState<Tasks[]>([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const user = firebase.auth().currentUser;
     if (user) {
       setDisplayName(user.displayName ?? '');
     }
+  }, []);
+
+  useEffect(() => {
+    const uid = firebase.auth().currentUser?.uid;
+
+    const tasksCollection = db.collection('tasks').doc(uid).collection('todo');
+
+    tasksCollection
+      .get()
+      .then((querySnapshot) => {
+        let getTasks: Tasks[] = [];
+        querySnapshot.forEach((doc) => {
+          const id = doc.id.toString();
+          const task = doc.get('task') as string;
+
+          getTasks = [...getTasks, { id, task }];
+        });
+        setTasks(getTasks);
+        getTasks = [];
+      })
+      .catch(() => {
+        setErrorMessage('エラー発生');
+      });
   }, []);
 
   return (
@@ -37,8 +69,15 @@ const Todo: FC = () => {
       </AppBar>
       <main className={container}>
         <Typography variant="h6">Tasks</Typography>
-        <AddToDo />
-        <ToDoList />
+        {errorMessage && (
+          <Typography variant="body1">{errorMessage}</Typography>
+        )}
+        <AddToDo
+          setErrorMessage={setErrorMessage}
+          setTasks={setTasks}
+          tasks={tasks}
+        />
+        <ToDoList tasks={tasks} />
       </main>
     </>
   );
