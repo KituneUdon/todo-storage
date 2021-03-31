@@ -6,7 +6,13 @@ import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 type Task = {
+  id: string;
   task: string;
+};
+
+type Props = {
+  task: Task;
+  taskFinish: (task: Task) => void;
 };
 
 const container = css`
@@ -15,18 +21,25 @@ const container = css`
   align-items: center;
 `;
 
-const ToDoElement: FC<Task> = ({ task }) => {
+const ToDoElement: FC<Props> = ({ task, taskFinish }) => {
   const [isButtonHover, setIsButtonHover] = useState(false);
 
   const handleMouseOver = () => setIsButtonHover(true);
   const handleMouseOut = () => setIsButtonHover(false);
+  const handleTaskDelete = () => {
+    taskFinish(task);
+  };
 
   return (
     <div className={container}>
-      <IconButton onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+      <IconButton
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+        onClick={handleTaskDelete}
+      >
         {isButtonHover ? <CheckCircleOutlineIcon /> : <PanoramaFishEyeIcon />}
       </IconButton>
-      <Typography>{task}</Typography>
+      <Typography>{task.task}</Typography>
     </div>
   );
 };

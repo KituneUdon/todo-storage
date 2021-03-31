@@ -77,7 +77,11 @@ const Todo: FC = () => {
           setTasks={setTasks}
           tasks={tasks}
         />
-        <ToDoList tasks={tasks} />
+        <ToDoList
+          tasks={tasks}
+          setTasks={setTasks}
+          setErrorMessage={setErrorMessage}
+        />
       </main>
     </>
   );
