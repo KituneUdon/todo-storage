@@ -13,6 +13,7 @@ const container = css`
 const Singup: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const history = useHistory();
 
@@ -24,12 +25,22 @@ const Singup: FC = () => {
     setPassword(event.target.value);
   };
 
+  const handleUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(event.target.value);
+  };
+
   const createAccount = () => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        history.push('/todo');
+      .then((userCredential) => {
+        const user = userCredential?.user;
+        user
+          ?.updateProfile({
+            displayName: userName,
+          })
+          .then(() => history.push('/todo'))
+          .catch(() => setErrorMessage('ユーザ名の登録に失敗しました'));
       })
       .catch((error: firebase.auth.AuthError) => {
         setErrorMessage(error.message);
@@ -41,6 +52,14 @@ const Singup: FC = () => {
       {errorMessage && <Typography>{errorMessage}</Typography>}
       <Typography variant="h5">ToDo Storageにアカウントを作成する</Typography>
       <form>
+        <div>
+          <TextField
+            type="text"
+            placeholder="ユーザ名"
+            margin="normal"
+            onChange={handleUserChange}
+          />
+        </div>
         <div>
           <TextField
             type="email"
