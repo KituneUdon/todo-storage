@@ -3,6 +3,7 @@ import React, { FC, createContext, useState, useEffect } from 'react';
 import firebase from '../config/Firebase';
 
 type User = {
+  uid: string;
   displayName: string;
 };
 
@@ -14,12 +15,15 @@ type ContextType = {
 const AuthContext = createContext({} as ContextType);
 
 const AuthProvider: FC = ({ children }) => {
-  const [user, setUser] = useState<User>({ displayName: '' });
+  const [user, setUser] = useState<User>({ uid: '', displayName: '' });
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((u) => {
       if (u) {
-        setUser({ displayName: u.displayName as string });
+        setUser({
+          uid: u.uid,
+          displayName: u.displayName ?? '名無し',
+        });
       }
     });
   }, []);

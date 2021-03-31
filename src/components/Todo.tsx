@@ -30,14 +30,13 @@ const Todo: FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const { user } = useContext(AuthContext);
+  const { uid } = user;
 
   useEffect(() => {
     setDisplayName(user.displayName);
   }, [user]);
 
   useEffect(() => {
-    const uid = firebase.auth().currentUser?.uid;
-
     const tasksCollection = db.collection('tasks').doc(uid).collection('todo');
 
     tasksCollection
@@ -56,7 +55,7 @@ const Todo: FC = () => {
       .catch(() => {
         setErrorMessage('エラー発生');
       });
-  }, []);
+  }, [uid]);
 
   return (
     <>
