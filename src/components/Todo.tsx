@@ -1,6 +1,8 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import { css } from '@emotion/css';
+
+import { AuthContext } from '../Contexts/Auth';
 
 import AddToDo from './AddToDo';
 import ToDoList from './ToDoList';
@@ -27,16 +29,14 @@ const Todo: FC = () => {
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    const user = firebase.auth().currentUser;
-    if (user) {
-      setDisplayName(user.displayName ?? '');
-    }
-  }, []);
+  const { user } = useContext(AuthContext);
+  const { uid } = user;
 
   useEffect(() => {
-    const uid = firebase.auth().currentUser?.uid;
+    setDisplayName(user.displayName);
+  }, [user]);
 
+  useEffect(() => {
     const tasksCollection = db.collection('tasks').doc(uid).collection('todo');
 
     tasksCollection
@@ -55,7 +55,7 @@ const Todo: FC = () => {
       .catch(() => {
         setErrorMessage('エラー発生');
       });
-  }, []);
+  }, [uid]);
 
   return (
     <>
