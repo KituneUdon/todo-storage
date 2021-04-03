@@ -4,6 +4,7 @@ import { IconButton, Typography } from '@material-ui/core';
 
 import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 type Task = {
   id: string;
@@ -13,6 +14,7 @@ type Task = {
 type Props = {
   task: Task;
   taskFinish: (task: Task) => void;
+  taskDelete: (task: Task) => void;
 };
 
 const container = css`
@@ -21,13 +23,20 @@ const container = css`
   align-items: center;
 `;
 
-const ToDoElement: FC<Props> = ({ task, taskFinish }) => {
+const taskText = css`
+  flex-grow: 1;
+`;
+
+const ToDoElement: FC<Props> = ({ task, taskFinish, taskDelete }) => {
   const [isButtonHover, setIsButtonHover] = useState(false);
 
   const handleMouseOver = () => setIsButtonHover(true);
   const handleMouseOut = () => setIsButtonHover(false);
-  const handleTaskDelete = () => {
+  const handleTaskFinish = () => {
     taskFinish(task);
+  };
+  const handleTaskDelete = () => {
+    taskDelete(task);
   };
 
   return (
@@ -35,11 +44,14 @@ const ToDoElement: FC<Props> = ({ task, taskFinish }) => {
       <IconButton
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
-        onClick={handleTaskDelete}
+        onClick={handleTaskFinish}
       >
         {isButtonHover ? <CheckCircleOutlineIcon /> : <PanoramaFishEyeIcon />}
       </IconButton>
-      <Typography>{task.task}</Typography>
+      <Typography className={taskText}>{task.task}</Typography>
+      <IconButton onClick={handleTaskDelete}>
+        <DeleteIcon />
+      </IconButton>
     </div>
   );
 };

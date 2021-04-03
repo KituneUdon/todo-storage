@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 
 import ToDoElement from './ToDoElement';
 
 import firebase from '../config/Firebase';
+import { AuthContext } from '../Contexts/Auth';
 
 type Task = {
   id: string;
@@ -18,12 +19,14 @@ type Props = {
 const db = firebase.firestore();
 
 const ToDoList: FC<Props> = ({ tasks, setTasks, setErrorMessage }) => {
+  const { user } = useContext(AuthContext);
+  const { uid } = user;
+
   const taskFinish = (task: Task) => {
     const oldTasks = [...tasks];
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
     setTasks(newTasks);
 
-    const uid = firebase.auth().currentUser?.uid;
     db.collection('tasks')
       .doc(uid)
       .collection('finishTodo')
@@ -49,10 +52,32 @@ const ToDoList: FC<Props> = ({ tasks, setTasks, setErrorMessage }) => {
       });
   };
 
+  const taskDelete = (task: Task) => {
+    const oldTasks = [...tasks];
+    const newTasks = oldTasks.filter((t) => t.id !== task.id);
+    setTasks(newTasks);
+
+    db.collection('tasks')
+      .doc(uid)
+      .collection('todo')
+      .doc(task.id)
+      .delete()
+      .catch(() => {
+        setErrorMessage(
+          'ToDoの削除に失敗しました。時間をおいて再度実行してください。',
+        );
+      });
+  };
+
   return (
     <>
       {tasks.map((task) => (
-        <ToDoElement task={task} taskFinish={taskFinish} key={task.id} />
+        <ToDoElement
+          task={task}
+          taskFinish={taskFinish}
+          taskDelete={taskDelete}
+          key={task.id}
+        />
       ))}
     </>
   );
