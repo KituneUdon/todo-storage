@@ -1,9 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useContext } from 'react';
 import { Button, TextField, Typography } from '@material-ui/core';
 import { css } from '@emotion/css';
 import { Link, useHistory } from 'react-router-dom';
 
 import firebase from '../config/Firebase';
+import { AuthContext } from '../Contexts/Auth';
 
 const container = css`
   width=100%;
@@ -14,6 +15,7 @@ const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const { setUser } = useContext(AuthContext);
   const history = useHistory();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +30,13 @@ const Login: FC = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((userCredential) => {
+        const userInfo = userCredential.user;
+        const user = {
+          uid: userInfo?.uid ?? '',
+          displayName: userInfo?.displayName ?? '',
+        };
+        setUser(user);
         history.push('/todo');
       })
       .catch(() => {
