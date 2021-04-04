@@ -24,6 +24,10 @@ const container = css`
   align-items: center;
 `;
 
+const input = css`
+  flex-grow: 1;
+`;
+
 const AddToDo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   const [task, setTask] = useState('');
 
@@ -58,6 +62,7 @@ const AddToDo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
           <AddIcon />
         </IconButton>
         <TextField
+          className={input}
           label="タスクを追加する"
           onChange={handleChange}
           value={task}
