@@ -83,7 +83,9 @@ const Todo: FC = () => {
             ToDo Storage
           </Typography>
           <Typography variant="body1">{displayName}</Typography>
-          <Button onClick={handleLogout}>ログアウト</Button>
+          <Button color="inherit" onClick={handleLogout}>
+            ログアウト
+          </Button>
         </Toolbar>
       </AppBar>
       <main className={container}>
