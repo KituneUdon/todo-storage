@@ -3,9 +3,7 @@ import { css } from '@emotion/css';
 import { TextField, IconButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-import firebase from '../config/Firebase';
-
-const db = firebase.firestore();
+import firebase, { db } from '../config/Firebase';
 
 type Task = {
   id: string;

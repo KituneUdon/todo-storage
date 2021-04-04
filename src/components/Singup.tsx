@@ -1,9 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useContext } from 'react';
 import { Button, TextField, Typography } from '@material-ui/core';
 import { css } from '@emotion/css';
 import { useHistory } from 'react-router-dom';
 
 import firebase from '../config/Firebase';
+import { AuthContext } from '../Contexts/Auth';
 
 const container = css`
   width=100%;
@@ -15,6 +16,7 @@ const Singup: FC = () => {
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const { setUser } = useContext(AuthContext);
   const history = useHistory();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,22 +31,26 @@ const Singup: FC = () => {
     setUserName(event.target.value);
   };
 
-  const createAccount = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential?.user;
-        user
-          ?.updateProfile({
-            displayName: userName,
-          })
-          .then(() => history.push('/todo'))
-          .catch(() => setErrorMessage('ユーザ名の登録に失敗しました'));
-      })
-      .catch((error: firebase.auth.AuthError) => {
-        setErrorMessage(error.message);
-      });
+  const createAccount = async () => {
+    try {
+      const userCredential = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      const user = userCredential?.user;
+      if (user !== null) {
+        await user.updateProfile({ displayName: userName });
+        setUser({ uid: user.uid, displayName: userName });
+        history.push('/todo');
+      } else {
+        setErrorMessage(
+          'ユーザの登録に失敗しました。時間をおいて再度登録してください。',
+        );
+      }
+    } catch {
+      setErrorMessage(
+        'ユーザの登録に失敗しました。時間をおいて再度登録してください。',
+      );
+    }
   };
 
   return (
