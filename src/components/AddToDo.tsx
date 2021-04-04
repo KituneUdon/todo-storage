@@ -55,6 +55,12 @@ const AddToDo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
       });
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleAddTask();
+    }
+  };
+
   return (
     <>
       <div className={container}>
@@ -66,6 +72,7 @@ const AddToDo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
           label="タスクを追加する"
           onChange={handleChange}
           value={task}
+          onKeyDown={handleKeyPress}
         />
       </div>
     </>
