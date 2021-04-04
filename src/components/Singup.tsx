@@ -29,22 +29,19 @@ const Singup: FC = () => {
     setUserName(event.target.value);
   };
 
-  const createAccount = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential?.user;
-        user
-          ?.updateProfile({
-            displayName: userName,
-          })
-          .then(() => history.push('/todo'))
-          .catch(() => setErrorMessage('ユーザ名の登録に失敗しました'));
-      })
-      .catch((error: firebase.auth.AuthError) => {
-        setErrorMessage(error.message);
-      });
+  const createAccount = async () => {
+    try {
+      const userCredential = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      const user = userCredential?.user;
+      await user?.updateProfile({ displayName: userName });
+      history.push('/todo');
+    } catch {
+      setErrorMessage(
+        'ユーザの登録に失敗しました。時間をおいて再度登録してください。',
+      );
+    }
   };
 
   return (
