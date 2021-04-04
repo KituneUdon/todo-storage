@@ -11,9 +11,9 @@ const PublicRouter: FC<Props> = ({ path, children }) => {
   const { user } = useContext(AuthContext);
 
   return user.uid ? (
-    <Route path={path}>{children}</Route>
-  ) : (
     <Redirect to="/todo" />
+  ) : (
+    <Route path={path}>{children}</Route>
   );
 };
 
