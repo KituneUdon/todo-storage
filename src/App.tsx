@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { AuthProvider } from './Contexts/Auth';
 
+import PrivateRouter from './Router/PrivateRouter';
+import PublicRouter from './Router/PublicRouter';
+
 import Top from './components/Top';
 import Login from './components/Login';
 import Todo from './components/Todo';
@@ -16,15 +19,15 @@ const App: FC = () => (
         <Route path="/" exact>
           <Top />
         </Route>
-        <Route path="/login">
+        <PublicRouter path="/login">
           <Login />
-        </Route>
-        <Route path="/Todo">
-          <Todo />
-        </Route>
-        <Route path="/singup">
+        </PublicRouter>
+        <PublicRouter path="/singup">
           <Singup />
-        </Route>
+        </PublicRouter>
+        <PrivateRouter path="/todo">
+          <Todo />
+        </PrivateRouter>
         <Route>
           <NotFound />
         </Route>
