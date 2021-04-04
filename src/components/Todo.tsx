@@ -26,7 +26,6 @@ const title = css`
 const db = firebase.firestore();
 
 const Todo: FC = () => {
-  const [displayName, setDisplayName] = useState('');
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -35,9 +34,9 @@ const Todo: FC = () => {
 
   const history = useHistory();
 
-  useEffect(() => {
-    setDisplayName(user.displayName);
-  }, [user]);
+  // useEffect(() => {
+  //   setDisplayName(user.displayName);
+  // }, [user]);
 
   useEffect(() => {
     const tasksCollection = db.collection('tasks').doc(uid).collection('todo');
@@ -56,7 +55,7 @@ const Todo: FC = () => {
         getTasks = [];
       })
       .catch(() => {
-        setErrorMessage('エラー発生');
+        setErrorMessage('タスクの取得に失敗しました。');
       });
   }, [uid]);
 
@@ -82,7 +81,7 @@ const Todo: FC = () => {
           <Typography variant="h6" className={title}>
             ToDo Storage
           </Typography>
-          <Typography variant="body1">{displayName}</Typography>
+          <Typography variant="body1">{user.displayName}</Typography>
           <Button color="inherit" onClick={handleLogout}>
             ログアウト
           </Button>
