@@ -10,7 +10,7 @@ import ToDoList from './ToDoList';
 
 import firebase from '../config/Firebase';
 
-import { Task } from '../types/task';
+import Task from '../types/task';
 
 const container = css`
   margin: 0 10px;

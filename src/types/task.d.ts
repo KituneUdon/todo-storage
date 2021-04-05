@@ -1,4 +1,6 @@
-export type Task = {
+type Task = {
   id: string;
   task: string;
 };
+
+export default Task;

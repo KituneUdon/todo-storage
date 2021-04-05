@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import firebase, { db } from '../config/Firebase';
 
-import { Task } from '../types/task';
+import Task from '../types/task';
 
 type Props = {
   setErrorMessage: (errorMessage: string) => void;
