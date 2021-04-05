@@ -1,15 +1,25 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Drawer,
+  IconButton,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+} from '@material-ui/core';
 import { css } from '@emotion/css';
 import { useHistory } from 'react-router-dom';
 
-import { AuthContext } from '../contexts/Auth';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
+import { AuthContext } from '../contexts/Auth';
 import AddToDo from './AddToDo';
 import ToDoList from './ToDoList';
-
 import firebase from '../config/Firebase';
-
 import Task from '../types/task';
 
 const container = css`
@@ -20,11 +30,23 @@ const title = css`
   flex-grow: 1;
 `;
 
+const drawer = css`
+  width: 240px;
+`;
+
 const db = firebase.firestore();
 
 const Todo: FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const defaultTaskDetail: Task = {
+    id: '',
+    task: '',
+  };
+
+  const [TaskDetail, setTaskDetail] = useState(defaultTaskDetail);
 
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
@@ -42,8 +64,10 @@ const Todo: FC = () => {
           const id = doc.id.toString();
           const task = doc.get('task') as string;
           const expirationDate = doc.get('expirationDate') as string;
+          const dueDate = doc.get('dueDate') as string;
+          const memo = doc.get('memo') as string;
 
-          getTasks = [...getTasks, { id, task, expirationDate }];
+          getTasks = [...getTasks, { id, task, expirationDate, dueDate, memo }];
         });
         setTasks(getTasks);
         getTasks = [];
@@ -52,6 +76,16 @@ const Todo: FC = () => {
         setErrorMessage('タスクの取得に失敗しました。');
       });
   }, [uid]);
+
+  const handleDrawerOpen = (task: Task) => {
+    setTaskDetail(task);
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setTaskDetail(defaultTaskDetail);
+    setOpen(false);
+  };
 
   const handleLogout = () => {
     firebase
@@ -95,8 +129,38 @@ const Todo: FC = () => {
           tasks={tasks}
           setTasks={setTasks}
           setErrorMessage={setErrorMessage}
+          openDrawer={handleDrawerOpen}
         />
       </main>
+      <Drawer
+        className={drawer}
+        variant="persistent"
+        anchor="right"
+        open={open}
+      >
+        <IconButton onClick={handleDrawerClose}>
+          <ChevronLeftIcon />
+        </IconButton>
+        <Divider />
+        <List>
+          <ListItem>
+            <ListItemText primary={TaskDetail.task} />
+          </ListItem>
+        </List>
+        <List>
+          <ListItem>
+            <ListItemText primary={TaskDetail.expirationDate} />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary={TaskDetail.dueDate} />
+          </ListItem>
+        </List>
+        <List>
+          <ListItem>
+            <ListItemText primary={TaskDetail.memo} />
+          </ListItem>
+        </List>
+      </Drawer>
     </>
   );
 };

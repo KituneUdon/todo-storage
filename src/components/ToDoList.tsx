@@ -11,9 +11,15 @@ type Props = {
   tasks: Task[];
   setTasks: (task: Task[]) => void;
   setErrorMessage: (errorMessage: string) => void;
+  openDrawer: (task: Task) => void;
 };
 
-const ToDoList: FC<Props> = ({ tasks, setTasks, setErrorMessage }) => {
+const ToDoList: FC<Props> = ({
+  tasks,
+  setTasks,
+  setErrorMessage,
+  openDrawer,
+}) => {
   const { user } = useContext(AuthContext);
   const { uid } = user;
 
@@ -72,6 +78,7 @@ const ToDoList: FC<Props> = ({ tasks, setTasks, setErrorMessage }) => {
           taskFinish={taskFinish}
           taskDelete={taskDelete}
           key={task.id}
+          openDrawer={openDrawer}
         />
       ))}
     </>

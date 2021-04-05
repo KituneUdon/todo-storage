@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { css } from '@emotion/css';
-import { IconButton, Typography } from '@material-ui/core';
+import { IconButton, Typography, Card } from '@material-ui/core';
 
 import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -12,10 +12,10 @@ type Props = {
   task: Task;
   taskFinish: (task: Task) => void;
   taskDelete: (task: Task) => void;
+  openDrawer: (task: Task) => void;
 };
 
 const container = css`
-  border: solid 1px #000000;
   display: flex;
   align-items: center;
 `;
@@ -24,7 +24,12 @@ const taskText = css`
   flex-grow: 1;
 `;
 
-const ToDoElement: FC<Props> = ({ task, taskFinish, taskDelete }) => {
+const ToDoElement: FC<Props> = ({
+  task,
+  taskFinish,
+  taskDelete,
+  openDrawer,
+}) => {
   const [isButtonHover, setIsButtonHover] = useState(false);
 
   const handleMouseOver = () => setIsButtonHover(true);
@@ -37,7 +42,7 @@ const ToDoElement: FC<Props> = ({ task, taskFinish, taskDelete }) => {
   };
 
   return (
-    <div className={container}>
+    <Card className={container} onClick={() => openDrawer(task)}>
       <IconButton
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
@@ -49,7 +54,7 @@ const ToDoElement: FC<Props> = ({ task, taskFinish, taskDelete }) => {
       <IconButton onClick={handleTaskDelete}>
         <DeleteIcon />
       </IconButton>
-    </div>
+    </Card>
   );
 };
 
