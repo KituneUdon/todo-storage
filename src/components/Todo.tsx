@@ -1,26 +1,14 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Drawer,
-  IconButton,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import { css } from '@emotion/css';
 import { useHistory } from 'react-router-dom';
-
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { AuthContext } from '../contexts/Auth';
 import AddToDo from './AddToDo';
 import ToDoList from './ToDoList';
 import firebase from '../config/Firebase';
 import Task from '../types/task';
+import ToDoDetail from './ToDoDetail';
 
 const container = css`
   margin: 0 10px;
@@ -28,10 +16,6 @@ const container = css`
 
 const title = css`
   flex-grow: 1;
-`;
-
-const drawer = css`
-  width: 240px;
 `;
 
 const db = firebase.firestore();
@@ -46,7 +30,7 @@ const Todo: FC = () => {
     task: '',
   };
 
-  const [TaskDetail, setTaskDetail] = useState(defaultTaskDetail);
+  const [taskDetail, setTaskDetail] = useState(defaultTaskDetail);
 
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
@@ -132,35 +116,11 @@ const Todo: FC = () => {
           openDrawer={handleDrawerOpen}
         />
       </main>
-      <Drawer
-        className={drawer}
-        variant="persistent"
-        anchor="right"
-        open={open}
-      >
-        <IconButton onClick={handleDrawerClose}>
-          <ChevronLeftIcon />
-        </IconButton>
-        <Divider />
-        <List>
-          <ListItem>
-            <ListItemText primary={TaskDetail.task} />
-          </ListItem>
-        </List>
-        <List>
-          <ListItem>
-            <ListItemText primary={TaskDetail.expirationDate} />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary={TaskDetail.dueDate} />
-          </ListItem>
-        </List>
-        <List>
-          <ListItem>
-            <ListItemText primary={TaskDetail.memo} />
-          </ListItem>
-        </List>
-      </Drawer>
+      <ToDoDetail
+        oepn={open}
+        taskDetail={taskDetail}
+        drawerClose={handleDrawerClose}
+      />
     </>
   );
 };
