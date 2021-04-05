@@ -1,5 +1,6 @@
 import React, { FC, useState, useContext } from 'react';
 import { Button, TextField, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { css } from '@emotion/css';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -47,7 +48,7 @@ const Login: FC = () => {
   return (
     <div className={container}>
       <h2>ToDo Storageにログイン</h2>
-      {errorMessage && <Typography variant="h5">{errorMessage}</Typography>}
+      {errorMessage && <Alert>{errorMessage}</Alert>}
       <form>
         <div>
           <TextField
