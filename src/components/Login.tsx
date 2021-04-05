@@ -4,7 +4,7 @@ import { css } from '@emotion/css';
 import { Link, useHistory } from 'react-router-dom';
 
 import firebase from '../config/Firebase';
-import { AuthContext } from '../Contexts/Auth';
+import { AuthContext } from '../contexts/Auth';
 
 const container = css`
   width=100%;

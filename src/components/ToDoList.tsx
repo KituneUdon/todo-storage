@@ -3,7 +3,7 @@ import React, { FC, useContext } from 'react';
 import ToDoElement from './ToDoElement';
 
 import firebase from '../config/Firebase';
-import { AuthContext } from '../Contexts/Auth';
+import { AuthContext } from '../contexts/Auth';
 
 type Task = {
   id: string;

@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { AuthProvider } from './Contexts/Auth';
+import { AuthProvider } from './contexts/Auth';
 
-import PrivateRouter from './Router/PrivateRouter';
-import PublicRouter from './Router/PublicRouter';
+import PrivateRouter from './router/PrivateRouter';
+import PublicRouter from './router/PublicRouter';
 
 import Top from './components/Top';
 import Login from './components/Login';

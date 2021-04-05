@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import { css } from '@emotion/css';
 import { useHistory } from 'react-router-dom';
 
-import { AuthContext } from '../Contexts/Auth';
+import { AuthContext } from '../contexts/Auth';
 
 import AddToDo from './AddToDo';
 import ToDoList from './ToDoList';
