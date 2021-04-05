@@ -1,14 +1,11 @@
 import React, { FC, useState } from 'react';
 import { css } from '@emotion/css';
-import { TextField, IconButton } from '@material-ui/core';
+import { TextField, IconButton, Card } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import firebase, { db } from '../config/Firebase';
 
-type Task = {
-  id: string;
-  task: string;
-};
+import Task from '../types/task';
 
 type Props = {
   setErrorMessage: (errorMessage: string) => void;
@@ -17,7 +14,6 @@ type Props = {
 };
 
 const container = css`
-  border: solid 1px #000000;
   display: flex;
   align-items: center;
 `;
@@ -44,7 +40,7 @@ const AddToDo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
       })
       .then((e) => {
         setTask('');
-        setTasks([...tasks, { id: e.id.toString(), task }]);
+        setTasks([...tasks, { id: e.id.toString(), task, expirationDate: '' }]);
       })
       .catch(() => {
         setErrorMessage(
@@ -60,20 +56,18 @@ const AddToDo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   };
 
   return (
-    <>
-      <div className={container}>
-        <IconButton onClick={handleAddTask}>
-          <AddIcon />
-        </IconButton>
-        <TextField
-          className={input}
-          label="タスクを追加する"
-          onChange={handleChange}
-          value={task}
-          onKeyDown={handleKeyPress}
-        />
-      </div>
-    </>
+    <Card className={container}>
+      <IconButton onClick={handleAddTask}>
+        <AddIcon />
+      </IconButton>
+      <TextField
+        className={input}
+        label="タスクを追加する"
+        onChange={handleChange}
+        value={task}
+        onKeyDown={handleKeyPress}
+      />
+    </Card>
   );
 };
 
