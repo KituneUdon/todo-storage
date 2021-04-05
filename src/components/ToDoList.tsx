@@ -5,7 +5,7 @@ import ToDoElement from './ToDoElement';
 import firebase from '../config/Firebase';
 import { AuthContext } from '../contexts/Auth';
 
-import { Task } from '../types/task';
+import Task from '../types/task';
 
 type Props = {
   tasks: Task[];
