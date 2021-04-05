@@ -10,10 +10,7 @@ import ToDoList from './ToDoList';
 
 import firebase from '../config/Firebase';
 
-type Tasks = {
-  id: string;
-  task: string;
-};
+import { Task } from '../types/task';
 
 const container = css`
   margin: 0 10px;
@@ -26,7 +23,7 @@ const title = css`
 const db = firebase.firestore();
 
 const Todo: FC = () => {
-  const [tasks, setTasks] = useState<Tasks[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   const { user, setUser } = useContext(AuthContext);
@@ -34,17 +31,13 @@ const Todo: FC = () => {
 
   const history = useHistory();
 
-  // useEffect(() => {
-  //   setDisplayName(user.displayName);
-  // }, [user]);
-
   useEffect(() => {
     const tasksCollection = db.collection('tasks').doc(uid).collection('todo');
 
     tasksCollection
       .get()
       .then((querySnapshot) => {
-        let getTasks: Tasks[] = [];
+        let getTasks: Task[] = [];
         querySnapshot.forEach((doc) => {
           const id = doc.id.toString();
           const task = doc.get('task') as string;

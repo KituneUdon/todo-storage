@@ -6,10 +6,7 @@ import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-type Task = {
-  id: string;
-  task: string;
-};
+import { Task } from '../types/task';
 
 type Props = {
   task: Task;
