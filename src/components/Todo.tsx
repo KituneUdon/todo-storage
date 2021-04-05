@@ -41,8 +41,9 @@ const Todo: FC = () => {
         querySnapshot.forEach((doc) => {
           const id = doc.id.toString();
           const task = doc.get('task') as string;
+          const expirationDate = doc.get('expirationDate') as string;
 
-          getTasks = [...getTasks, { id, task }];
+          getTasks = [...getTasks, { id, task, expirationDate }];
         });
         setTasks(getTasks);
         getTasks = [];

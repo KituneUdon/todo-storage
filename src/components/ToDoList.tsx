@@ -2,7 +2,7 @@ import React, { FC, useContext } from 'react';
 
 import ToDoElement from './ToDoElement';
 
-import firebase from '../config/Firebase';
+import { db } from '../config/Firebase';
 import { AuthContext } from '../contexts/Auth';
 
 import Task from '../types/task';
@@ -12,8 +12,6 @@ type Props = {
   setTasks: (task: Task[]) => void;
   setErrorMessage: (errorMessage: string) => void;
 };
-
-const db = firebase.firestore();
 
 const ToDoList: FC<Props> = ({ tasks, setTasks, setErrorMessage }) => {
   const { user } = useContext(AuthContext);
