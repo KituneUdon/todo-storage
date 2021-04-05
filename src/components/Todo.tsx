@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { css } from '@emotion/css';
 import { useHistory } from 'react-router-dom';
 
@@ -101,9 +102,7 @@ const Todo: FC = () => {
       </AppBar>
       <main className={container}>
         <Typography variant="h6">Tasks</Typography>
-        {errorMessage && (
-          <Typography variant="body1">{errorMessage}</Typography>
-        )}
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <AddToDo
           setErrorMessage={setErrorMessage}
           setTasks={setTasks}

@@ -1,5 +1,6 @@
 import React, { FC, useState, useContext } from 'react';
 import { Button, TextField, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { css } from '@emotion/css';
 import { useHistory } from 'react-router-dom';
 
@@ -7,7 +8,7 @@ import firebase from '../config/Firebase';
 import { AuthContext } from '../contexts/Auth';
 
 const container = css`
-  width=100%;
+  width: 100%;
   text-align: center;
 `;
 
@@ -55,7 +56,7 @@ const Singup: FC = () => {
 
   return (
     <div className={container}>
-      {errorMessage && <Typography>{errorMessage}</Typography>}
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <Typography variant="h5">ToDo Storageにアカウントを作成する</Typography>
       <form>
         <div>
