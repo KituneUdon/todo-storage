@@ -1,8 +1,18 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Drawer,
+  IconButton,
+} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { css } from '@emotion/css';
 import { useHistory } from 'react-router-dom';
+
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import MenuIcon from '@material-ui/icons/Menu';
 
 import { AuthContext } from '../contexts/Auth';
 import AddToDo from './AddToDo';
@@ -33,7 +43,8 @@ const db = firebase.firestore();
 const Todo: FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [open, setOpen] = useState(false);
+  const [taskDetailOpen, setTaskDetailOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const defaultTaskDetail: Task = {
     id: '',
@@ -72,12 +83,20 @@ const Todo: FC = () => {
 
   const handleDrawerOpen = (task: Task) => {
     setTaskDetail(task);
-    setOpen(true);
+    setTaskDetailOpen(true);
   };
 
   const handleDrawerClose = () => {
     setTaskDetail(defaultTaskDetail);
-    setOpen(false);
+    setTaskDetailOpen(false);
+  };
+
+  const handleMenuOpen = () => {
+    setMenuOpen(true);
+  };
+
+  const handleMenuClose = () => {
+    setMenuOpen(false);
   };
 
   const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -169,6 +188,9 @@ const Todo: FC = () => {
     <>
       <AppBar position="static" className={open ? contentShift : content}>
         <Toolbar>
+          <IconButton onClick={handleMenuOpen}>
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6" className={title}>
             ToDo Storage
           </Typography>
@@ -194,7 +216,7 @@ const Todo: FC = () => {
         />
       </main>
       <ToDoDetail
-        oepn={open}
+        oepn={taskDetailOpen}
         taskDetail={taskDetail}
         drawerClose={handleDrawerClose}
         taskChange={handleTaskChange}
@@ -202,6 +224,11 @@ const Todo: FC = () => {
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}
       />
+      <Drawer anchor="left" open={menuOpen}>
+        <IconButton onClick={handleMenuClose}>
+          <ChevronRightIcon />
+        </IconButton>
+      </Drawer>
     </>
   );
 };
