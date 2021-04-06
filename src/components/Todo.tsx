@@ -4,22 +4,13 @@ import {
   Toolbar,
   Typography,
   Button,
-  Drawer,
   IconButton,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { css } from '@emotion/css';
 import { useHistory } from 'react-router-dom';
 
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MenuIcon from '@material-ui/icons/Menu';
-import HomeIcon from '@material-ui/icons/Home';
-import WbSunnyIcon from '@material-ui/icons/WbSunny';
 
 import { AuthContext } from '../contexts/Auth';
 import AddTodo from './AddTodo';
@@ -27,6 +18,7 @@ import TodoList from './TodoList';
 import firebase from '../config/Firebase';
 import Task from '../types/task';
 import ToDoDetail from './TodoDetail';
+import Menu from './Menu';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -49,10 +41,6 @@ const contentLeftShift = css`
 const contentRightShift = css`
   width: calc(100% - ${menuWidth}px);
   margin-left: ${menuWidth}px;
-`;
-
-const menu = css`
-  width: ${menuWidth};
 `;
 
 const db = firebase.firestore();
@@ -252,31 +240,7 @@ const Todo: FC = () => {
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}
       />
-      <Drawer
-        anchor="left"
-        open={menuOpen}
-        variant="persistent"
-        className={menu}
-      >
-        <IconButton onClick={handleMenuClose}>
-          <ChevronRightIcon />
-        </IconButton>
-        <Divider />
-        <List>
-          <ListItem button>
-            <ListItemIcon>
-              <WbSunnyIcon />
-            </ListItemIcon>
-            <ListItemText primary="今日のタスク" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="すべてのタスク" />
-          </ListItem>
-        </List>
-      </Drawer>
+      <Menu menuOpen={menuOpen} handleMenuClose={handleMenuClose} />
     </>
   );
 };
