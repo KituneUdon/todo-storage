@@ -32,7 +32,6 @@ const Todo: FC = () => {
   };
 
   const [taskDetail, setTaskDetail] = useState(defaultTaskDetail);
-
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
 
@@ -70,6 +69,76 @@ const Todo: FC = () => {
   const handleDrawerClose = () => {
     setTaskDetail(defaultTaskDetail);
     setOpen(false);
+  };
+
+  const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTaskDetail({
+      id: taskDetail.id,
+      task: event.target.value,
+      expirationDate: taskDetail.expirationDate,
+      dueDate: taskDetail.dueDate,
+      memo: taskDetail.memo,
+    });
+    db.collection('tasks')
+      .doc(uid)
+      .collection('todo')
+      .doc(taskDetail.id)
+      .update({ task: event.target.value })
+      .catch(() => setErrorMessage('変更に失敗しました。'));
+  };
+
+  const handleTaskDetailExpirationDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setTaskDetail({
+      id: taskDetail.id,
+      task: taskDetail.task,
+      expirationDate: event.target.value,
+      dueDate: taskDetail.dueDate,
+      memo: taskDetail.memo,
+    });
+    db.collection('tasks')
+      .doc(uid)
+      .collection('todo')
+      .doc(taskDetail.id)
+      .update({ expirationDate: event.target.value })
+      .catch(() => setErrorMessage('変更に失敗しました。'));
+  };
+
+  const handleTaskDetailDueDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setTaskDetail({
+      id: taskDetail.id,
+      task: taskDetail.task,
+      expirationDate: taskDetail.expirationDate,
+      dueDate: event.target.value,
+      memo: taskDetail.memo,
+    });
+    db.collection('tasks')
+      .doc(uid)
+      .collection('todo')
+      .doc(taskDetail.id)
+      .update({ dueDate: event.target.value })
+      .catch(() => setErrorMessage('変更に失敗しました。'));
+  };
+
+  const handleTaskDetailMemoChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setTaskDetail({
+      id: taskDetail.id,
+      task: taskDetail.task,
+      expirationDate: taskDetail.expirationDate,
+      dueDate: taskDetail.dueDate,
+      memo: event.target.value,
+    });
+    db.collection('tasks')
+      .doc(uid)
+      .collection('todo')
+      .doc(taskDetail.id)
+      .update({ memo: event.target.value })
+      .catch(() => setErrorMessage('変更に失敗しました。'));
   };
 
   const handleLogout = () => {
@@ -119,6 +188,10 @@ const Todo: FC = () => {
         oepn={open}
         taskDetail={taskDetail}
         drawerClose={handleDrawerClose}
+        taskChange={handleTaskChange}
+        expirationDateChange={handleTaskDetailExpirationDateChange}
+        dueDateChange={handleTaskDetailDueDateChange}
+        memoChange={handleTaskDetailMemoChange}
       />
     </>
   );

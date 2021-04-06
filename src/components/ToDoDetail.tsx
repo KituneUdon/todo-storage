@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  TextField,
 } from '@material-ui/core';
 import { css } from '@emotion/css';
 
@@ -21,41 +22,57 @@ type Props = {
   oepn: boolean;
   drawerClose: () => void;
   taskDetail: Task;
+  taskChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  expirationDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  dueDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  memoChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const ToDoDetail: FC<Props> = ({ oepn, drawerClose, taskDetail }) => {
-  const expirationDate = `期限日：${taskDetail.expirationDate ?? ''}`;
-  const dueDate = `タスク実行予定日：${taskDetail.dueDate ?? ''}`;
-  const memo = `メモ：${taskDetail.memo ?? ''}`;
-
-  return (
-    <Drawer className={drawer} variant="persistent" anchor="right" open={oepn}>
-      <IconButton onClick={drawerClose}>
-        <ChevronLeftIcon />
-      </IconButton>
-      <Divider />
-      <List>
-        <ListItem>
-          <ListItemText primary={taskDetail.task} />
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem>
-          <ListItemText primary={expirationDate} />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary={dueDate} />
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem>
-          <ListItemText primary={memo} />
-        </ListItem>
-      </List>
-    </Drawer>
-  );
-};
+const ToDoDetail: FC<Props> = ({
+  oepn,
+  drawerClose,
+  taskDetail,
+  taskChange,
+  expirationDateChange,
+  dueDateChange,
+  memoChange,
+}) => (
+  <Drawer className={drawer} variant="persistent" anchor="right" open={oepn}>
+    <IconButton onClick={drawerClose}>
+      <ChevronLeftIcon />
+    </IconButton>
+    <Divider />
+    <List>
+      <ListItem>
+        <TextField value={taskDetail.task} onChange={taskChange} />
+      </ListItem>
+    </List>
+    <Divider />
+    <List>
+      <ListItem>
+        <ListItemText primary="期限日：" />
+        <TextField
+          value={taskDetail.expirationDate ?? ''}
+          onChange={expirationDateChange}
+        />
+      </ListItem>
+      <ListItem>
+        <ListItemText primary="実行予定日：" />
+        <TextField value={taskDetail.dueDate ?? ''} onChange={dueDateChange} />
+      </ListItem>
+    </List>
+    <Divider />
+    <List>
+      <ListItem>
+        <ListItemText primary="メモ：" />
+        <TextField
+          value={taskDetail.memo ?? ``}
+          multiline
+          onChange={memoChange}
+        />
+      </ListItem>
+    </List>
+  </Drawer>
+);
 
 export default ToDoDetail;
