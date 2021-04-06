@@ -11,12 +11,21 @@ import firebase from '../config/Firebase';
 import Task from '../types/task';
 import ToDoDetail from './ToDoDetail';
 
+const drawerWidth = 360;
+
 const container = css`
   margin: 0 10px;
 `;
 
 const title = css`
   flex-grow: 1;
+`;
+
+const content = css``;
+
+const contentShift = css`
+  width: calc(100% - ${drawerWidth}px);
+  margin-right: ${drawerWidth}px;
 `;
 
 const db = firebase.firestore();
@@ -158,7 +167,7 @@ const Todo: FC = () => {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" className={open ? contentShift : content}>
         <Toolbar>
           <Typography variant="h6" className={title}>
             ToDo Storage
