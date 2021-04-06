@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react';
 
-import ToDoElement from './ToDoElement';
+import TodoElement from './TodoElement';
 
 import { db } from '../config/Firebase';
 import { AuthContext } from '../contexts/Auth';
@@ -73,7 +73,7 @@ const ToDoList: FC<Props> = ({
   return (
     <>
       {tasks.map((task) => (
-        <ToDoElement
+        <TodoElement
           task={task}
           taskFinish={taskFinish}
           taskDelete={taskDelete}

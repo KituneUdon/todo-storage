@@ -28,7 +28,7 @@ type Props = {
   memoChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const ToDoDetail: FC<Props> = ({
+const TodoDetail: FC<Props> = ({
   oepn,
   drawerClose,
   taskDetail,
@@ -81,4 +81,4 @@ const ToDoDetail: FC<Props> = ({
   </Drawer>
 );
 
-export default ToDoDetail;
+export default TodoDetail;

@@ -24,7 +24,7 @@ const taskText = css`
   flex-grow: 1;
 `;
 
-const ToDoElement: FC<Props> = ({
+const TodoElement: FC<Props> = ({
   task,
   taskFinish,
   taskDelete,
@@ -60,4 +60,4 @@ const ToDoElement: FC<Props> = ({
   );
 };
 
-export default ToDoElement;
+export default TodoElement;
