@@ -6,6 +6,11 @@ import {
   Button,
   Drawer,
   IconButton,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { css } from '@emotion/css';
@@ -13,15 +18,18 @@ import { useHistory } from 'react-router-dom';
 
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
 
 import { AuthContext } from '../contexts/Auth';
-import AddToDo from './AddToDo';
-import ToDoList from './ToDoList';
+import AddTodo from './AddTodo';
+import TodoList from './TodoList';
 import firebase from '../config/Firebase';
 import Task from '../types/task';
-import ToDoDetail from './ToDoDetail';
+import ToDoDetail from './TodoDetail';
 
-const drawerWidth = 360;
+const taskDetailWidth = 360;
+const menuWidth = 200;
 
 const container = css`
   margin: 10px;
@@ -33,9 +41,18 @@ const title = css`
 
 const content = css``;
 
-const contentShift = css`
-  width: calc(100% - ${drawerWidth}px);
-  margin-right: ${drawerWidth}px;
+const contentLeftShift = css`
+  width: calc(100% - ${taskDetailWidth}px);
+  margin-right: ${taskDetailWidth}px;
+`;
+
+const contentRightShift = css`
+  width: calc(100% - ${menuWidth}px);
+  margin-left: ${menuWidth}px;
+`;
+
+const menu = css`
+  width: ${menuWidth};
 `;
 
 const db = firebase.firestore();
@@ -186,11 +203,18 @@ const Todo: FC = () => {
 
   return (
     <>
-      <AppBar position="static" className={open ? contentShift : content}>
+      <AppBar
+        position="static"
+        className={`${taskDetailOpen ? contentLeftShift : content} ${
+          menuOpen ? contentRightShift : content
+        }`}
+      >
         <Toolbar>
-          <IconButton onClick={handleMenuOpen}>
-            <MenuIcon />
-          </IconButton>
+          {!menuOpen && (
+            <IconButton onClick={handleMenuOpen} color="inherit">
+              <MenuIcon />
+            </IconButton>
+          )}
           <Typography variant="h6" className={title}>
             ToDo Storage
           </Typography>
@@ -200,15 +224,19 @@ const Todo: FC = () => {
           </Button>
         </Toolbar>
       </AppBar>
-      <main className={`${open ? contentShift : content} ${container}`}>
+      <main
+        className={`${
+          taskDetailOpen ? contentLeftShift : content
+        } ${container} ${menuOpen ? contentRightShift : content}`}
+      >
         <Typography variant="h6">Tasks</Typography>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-        <AddToDo
+        <AddTodo
           setErrorMessage={setErrorMessage}
           setTasks={setTasks}
           tasks={tasks}
         />
-        <ToDoList
+        <TodoList
           tasks={tasks}
           setTasks={setTasks}
           setErrorMessage={setErrorMessage}
@@ -224,10 +252,30 @@ const Todo: FC = () => {
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}
       />
-      <Drawer anchor="left" open={menuOpen}>
+      <Drawer
+        anchor="left"
+        open={menuOpen}
+        variant="persistent"
+        className={menu}
+      >
         <IconButton onClick={handleMenuClose}>
           <ChevronRightIcon />
         </IconButton>
+        <Divider />
+        <List>
+          <ListItem button>
+            <ListItemIcon>
+              <WbSunnyIcon />
+            </ListItemIcon>
+            <ListItemText primary="今日のタスク" />
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="すべてのタスク" />
+          </ListItem>
+        </List>
       </Drawer>
     </>
   );

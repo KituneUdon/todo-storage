@@ -22,7 +22,7 @@ const input = css`
   flex-grow: 1;
 `;
 
-const AddToDo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
+const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   const [task, setTask] = useState('');
 
   const uid = firebase.auth().currentUser?.uid;
@@ -71,4 +71,4 @@ const AddToDo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   );
 };
 
-export default AddToDo;
+export default AddTodo;
