@@ -178,7 +178,7 @@ const Todo: FC = () => {
           </Button>
         </Toolbar>
       </AppBar>
-      <main className={container}>
+      <main className={container + (open ? contentShift : content)}>
         <Typography variant="h6">Tasks</Typography>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <AddToDo
