@@ -15,7 +15,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Task from '../types/task';
 
 const drawer = css`
-  width: 240px;
+  width: 360px;
 `;
 
 type Props = {
@@ -37,7 +37,13 @@ const ToDoDetail: FC<Props> = ({
   dueDateChange,
   memoChange,
 }) => (
-  <Drawer className={drawer} variant="persistent" anchor="right" open={oepn}>
+  <Drawer
+    className={drawer}
+    variant="persistent"
+    anchor="right"
+    open={oepn}
+    classes={{ paper: drawer }}
+  >
     <IconButton onClick={drawerClose}>
       <ChevronLeftIcon />
     </IconButton>
