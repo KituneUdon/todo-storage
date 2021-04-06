@@ -14,7 +14,7 @@ import ToDoDetail from './ToDoDetail';
 const drawerWidth = 360;
 
 const container = css`
-  margin: 0 10px;
+  margin: 10px;
 `;
 
 const title = css`
@@ -178,7 +178,7 @@ const Todo: FC = () => {
           </Button>
         </Toolbar>
       </AppBar>
-      <main className={container + (open ? contentShift : content)}>
+      <main className={`${open ? contentShift : content} ${container}`}>
         <Typography variant="h6">Tasks</Typography>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <AddToDo
