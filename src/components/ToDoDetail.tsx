@@ -22,6 +22,7 @@ type Props = {
   oepn: boolean;
   drawerClose: () => void;
   taskDetail: Task;
+  taskChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   expirationDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   dueDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   memoChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -31,6 +32,7 @@ const ToDoDetail: FC<Props> = ({
   oepn,
   drawerClose,
   taskDetail,
+  taskChange,
   expirationDateChange,
   dueDateChange,
   memoChange,
@@ -42,7 +44,7 @@ const ToDoDetail: FC<Props> = ({
     <Divider />
     <List>
       <ListItem>
-        <ListItemText primary={taskDetail.task} />
+        <TextField value={taskDetail.task} onChange={taskChange} />
       </ListItem>
     </List>
     <Divider />

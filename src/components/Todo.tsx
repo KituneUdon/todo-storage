@@ -71,6 +71,22 @@ const Todo: FC = () => {
     setOpen(false);
   };
 
+  const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTaskDetail({
+      id: taskDetail.id,
+      task: event.target.value,
+      expirationDate: taskDetail.expirationDate,
+      dueDate: taskDetail.dueDate,
+      memo: taskDetail.memo,
+    });
+    db.collection('tasks')
+      .doc(uid)
+      .collection('todo')
+      .doc(taskDetail.id)
+      .update({ task: event.target.value })
+      .catch(() => setErrorMessage('変更に失敗しました。'));
+  };
+
   const handleTaskDetailExpirationDateChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -172,6 +188,7 @@ const Todo: FC = () => {
         oepn={open}
         taskDetail={taskDetail}
         drawerClose={handleDrawerClose}
+        taskChange={handleTaskChange}
         expirationDateChange={handleTaskDetailExpirationDateChange}
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}
