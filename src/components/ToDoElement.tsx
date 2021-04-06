@@ -42,7 +42,7 @@ const ToDoElement: FC<Props> = ({
   };
 
   return (
-    <Card className={container} onClick={() => openDrawer(task)}>
+    <Card className={container}>
       <IconButton
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
@@ -50,7 +50,9 @@ const ToDoElement: FC<Props> = ({
       >
         {isButtonHover ? <CheckCircleOutlineIcon /> : <PanoramaFishEyeIcon />}
       </IconButton>
-      <Typography className={taskText}>{task.task}</Typography>
+      <Typography className={taskText} onClick={() => openDrawer(task)}>
+        {task.task}
+      </Typography>
       <IconButton onClick={handleTaskDelete}>
         <DeleteIcon />
       </IconButton>
