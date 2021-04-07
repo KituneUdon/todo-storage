@@ -123,13 +123,11 @@ const Todo: FC = () => {
       .catch(() => setErrorMessage('変更に失敗しました。'));
   };
 
-  const handleTaskDetailExpirationDateChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleTaskDetailExpirationDateChange = (expirationDate: string) => {
     setTaskDetail({
       id: taskDetail.id,
       task: taskDetail.task,
-      expirationDate: event.target.value,
+      expirationDate,
       dueDate: taskDetail.dueDate,
       memo: taskDetail.memo,
     });
@@ -137,7 +135,7 @@ const Todo: FC = () => {
       .doc(uid)
       .collection('todo')
       .doc(taskDetail.id)
-      .update({ expirationDate: event.target.value })
+      .update({ expirationDate })
       .catch(() => setErrorMessage('変更に失敗しました。'));
   };
 

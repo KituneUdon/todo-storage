@@ -9,10 +9,19 @@ import {
   TextField,
 } from '@material-ui/core';
 import { css } from '@emotion/css';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import dayjs from 'dayjs';
+import ja from 'dayjs/locale/ja';
+import DayJsUtils from '@date-io/dayjs';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import Task from '../types/task';
+
+dayjs.locale(ja);
 
 const drawer = css`
   width: 360px;
@@ -23,7 +32,7 @@ type Props = {
   drawerClose: () => void;
   taskDetail: Task;
   taskChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  expirationDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  expirationDateChange: (expirationDate: string) => void;
   dueDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   memoChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -37,48 +46,60 @@ const TodoDetail: FC<Props> = ({
   dueDateChange,
   memoChange,
 }) => (
-  <Drawer
-    className={drawer}
-    variant="persistent"
-    anchor="right"
-    open={oepn}
-    classes={{ paper: drawer }}
-  >
-    <IconButton onClick={drawerClose}>
-      <ChevronLeftIcon />
-    </IconButton>
-    <Divider />
-    <List>
-      <ListItem>
-        <TextField value={taskDetail.task} onChange={taskChange} />
-      </ListItem>
-    </List>
-    <Divider />
-    <List>
-      <ListItem>
-        <ListItemText primary="期限日：" />
-        <TextField
-          value={taskDetail.expirationDate ?? ''}
-          onChange={expirationDateChange}
-        />
-      </ListItem>
-      <ListItem>
-        <ListItemText primary="実行予定日：" />
-        <TextField value={taskDetail.dueDate ?? ''} onChange={dueDateChange} />
-      </ListItem>
-    </List>
-    <Divider />
-    <List>
-      <ListItem>
-        <ListItemText primary="メモ：" />
-        <TextField
-          value={taskDetail.memo ?? ``}
-          multiline
-          onChange={memoChange}
-        />
-      </ListItem>
-    </List>
-  </Drawer>
+  <MuiPickersUtilsProvider locale={ja} utils={DayJsUtils}>
+    <Drawer
+      className={drawer}
+      variant="persistent"
+      anchor="right"
+      open={oepn}
+      classes={{ paper: drawer }}
+    >
+      <IconButton onClick={drawerClose}>
+        <ChevronLeftIcon />
+      </IconButton>
+      <Divider />
+      <List>
+        <ListItem>
+          <TextField value={taskDetail.task} onChange={taskChange} />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem>
+          <ListItemText primary="期限日：" />
+          <KeyboardDatePicker
+            clearable
+            value={dayjs(taskDetail.expirationDate)}
+            onChange={(date) => {
+              if (date) {
+                const strDate = date.toString();
+                expirationDateChange(strDate);
+              }
+            }}
+            format="YYYY/MM/DD"
+          />
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="実行予定日：" />
+          <TextField
+            value={taskDetail.dueDate ?? ''}
+            onChange={dueDateChange}
+          />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem>
+          <ListItemText primary="メモ：" />
+          <TextField
+            value={taskDetail.memo ?? ``}
+            multiline
+            onChange={memoChange}
+          />
+        </ListItem>
+      </List>
+    </Drawer>
+  </MuiPickersUtilsProvider>
 );
 
 export default TodoDetail;
