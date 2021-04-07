@@ -4,7 +4,7 @@ type Task = {
   id: string;
   task: string;
   expirationDate: dayjs.Dayjs;
-  dueDate: string;
+  dueDate: dayjs.Dayjs;
   memo: string;
 };
 

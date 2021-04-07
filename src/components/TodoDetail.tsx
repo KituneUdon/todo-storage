@@ -33,7 +33,7 @@ type Props = {
   taskDetail: Task;
   taskChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   expirationDateChange: (expirationDate: dayjs.Dayjs) => void;
-  dueDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  dueDateChange: (dueDate: dayjs.Dayjs) => void;
   memoChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -81,9 +81,16 @@ const TodoDetail: FC<Props> = ({
         </ListItem>
         <ListItem>
           <ListItemText primary="実行予定日：" />
-          <TextField
-            value={taskDetail.dueDate ?? ''}
-            onChange={dueDateChange}
+          <KeyboardDatePicker
+            clearable
+            value={taskDetail.dueDate}
+            onChange={(date) => {
+              if (date) {
+                const strDate = date.toString();
+                dueDateChange(dayjs(strDate));
+              }
+            }}
+            format="YYYY/MM/DD"
           />
         </ListItem>
       </List>

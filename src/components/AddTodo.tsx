@@ -38,6 +38,8 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
       .collection('todo')
       .add({
         task,
+        expirationDate: dayjs().format('YYYY-MM-DD'),
+        dueDate: dayjs().format('YYYY-MM-DD'),
       })
       .then((e) => {
         setTask('');
@@ -47,7 +49,7 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
             id: e.id.toString(),
             task,
             expirationDate: dayjs(),
-            dueDate: '',
+            dueDate: dayjs(),
             memo: '',
           },
         ]);

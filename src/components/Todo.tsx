@@ -56,7 +56,7 @@ const Todo: FC = () => {
     id: '',
     task: '',
     expirationDate: dayjs(),
-    dueDate: '',
+    dueDate: dayjs(),
     memo: '',
   };
 
@@ -77,7 +77,7 @@ const Todo: FC = () => {
           const id = doc.id.toString();
           const task = doc.get('task') as string;
           const expirationDate = dayjs(doc.get('expirationDate') as string);
-          const dueDate = doc.get('dueDate') as string;
+          const dueDate = dayjs(doc.get('dueDate') as string);
           const memo = doc.get('memo') as string;
 
           getTasks = [...getTasks, { id, task, expirationDate, dueDate, memo }];
@@ -164,28 +164,26 @@ const Todo: FC = () => {
     setTasks(newTasks);
   };
 
-  const handleTaskDetailDueDateChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleTaskDetailDueDateChange = (dueDate: dayjs.Dayjs) => {
     setTaskDetail({
       id: taskDetail.id,
       task: taskDetail.task,
       expirationDate: taskDetail.expirationDate,
-      dueDate: event.target.value,
+      dueDate,
       memo: taskDetail.memo,
     });
     db.collection('tasks')
       .doc(uid)
       .collection('todo')
       .doc(taskDetail.id)
-      .update({ dueDate: event.target.value })
+      .update({ dueDate: dueDate.format('YYYY-MM-DD') })
       .catch(() => setErrorMessage('変更に失敗しました。'));
 
     const oldTasks = tasks;
     const newTasks = oldTasks.map((t) => {
       const task = t;
       if (task.id === taskDetail.id) {
-        task.dueDate = event.target.value;
+        task.dueDate = dueDate;
       }
 
       return task;
