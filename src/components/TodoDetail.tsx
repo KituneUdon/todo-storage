@@ -32,7 +32,7 @@ type Props = {
   drawerClose: () => void;
   taskDetail: Task;
   taskChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  expirationDateChange: (expirationDate: string) => void;
+  expirationDateChange: (expirationDate: dayjs.Dayjs) => void;
   dueDateChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   memoChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -69,11 +69,11 @@ const TodoDetail: FC<Props> = ({
           <ListItemText primary="期限日：" />
           <KeyboardDatePicker
             clearable
-            value={dayjs(taskDetail.expirationDate)}
+            value={taskDetail.expirationDate}
             onChange={(date) => {
               if (date) {
                 const strDate = date.toString();
-                expirationDateChange(strDate);
+                expirationDateChange(dayjs(strDate));
               }
             }}
             format="YYYY/MM/DD"

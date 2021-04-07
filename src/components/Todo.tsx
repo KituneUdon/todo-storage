@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 
 import MenuIcon from '@material-ui/icons/Menu';
 
+import dayjs from 'dayjs';
 import { AuthContext } from '../contexts/Auth';
 import AddTodo from './AddTodo';
 import TodoList from './TodoList';
@@ -54,7 +55,7 @@ const Todo: FC = () => {
   const defaultTaskDetail: Task = {
     id: '',
     task: '',
-    expirationDate: '',
+    expirationDate: dayjs(),
     dueDate: '',
     memo: '',
   };
@@ -75,7 +76,7 @@ const Todo: FC = () => {
         querySnapshot.forEach((doc) => {
           const id = doc.id.toString();
           const task = doc.get('task') as string;
-          const expirationDate = doc.get('expirationDate') as string;
+          const expirationDate = dayjs(doc.get('expirationDate') as string);
           const dueDate = doc.get('dueDate') as string;
           const memo = doc.get('memo') as string;
 
@@ -121,9 +122,22 @@ const Todo: FC = () => {
       .doc(taskDetail.id)
       .update({ task: event.target.value })
       .catch(() => setErrorMessage('変更に失敗しました。'));
+
+    const oldTasks = tasks;
+    const newTasks = oldTasks.map((t) => {
+      const task = t;
+      if (task.id === taskDetail.id) {
+        task.task = event.target.value;
+      }
+
+      return task;
+    });
+    setTasks(newTasks);
   };
 
-  const handleTaskDetailExpirationDateChange = (expirationDate: string) => {
+  const handleTaskDetailExpirationDateChange = (
+    expirationDate: dayjs.Dayjs,
+  ) => {
     setTaskDetail({
       id: taskDetail.id,
       task: taskDetail.task,
@@ -135,8 +149,19 @@ const Todo: FC = () => {
       .doc(uid)
       .collection('todo')
       .doc(taskDetail.id)
-      .update({ expirationDate })
+      .update({ expirationDate: expirationDate.format('YYYY-MM-DD') })
       .catch(() => setErrorMessage('変更に失敗しました。'));
+
+    const oldTasks = tasks;
+    const newTasks = oldTasks.map((t) => {
+      const task = t;
+      if (task.id === taskDetail.id) {
+        task.expirationDate = expirationDate;
+      }
+
+      return task;
+    });
+    setTasks(newTasks);
   };
 
   const handleTaskDetailDueDateChange = (
@@ -155,6 +180,17 @@ const Todo: FC = () => {
       .doc(taskDetail.id)
       .update({ dueDate: event.target.value })
       .catch(() => setErrorMessage('変更に失敗しました。'));
+
+    const oldTasks = tasks;
+    const newTasks = oldTasks.map((t) => {
+      const task = t;
+      if (task.id === taskDetail.id) {
+        task.dueDate = event.target.value;
+      }
+
+      return task;
+    });
+    setTasks(newTasks);
   };
 
   const handleTaskDetailMemoChange = (
@@ -173,6 +209,17 @@ const Todo: FC = () => {
       .doc(taskDetail.id)
       .update({ memo: event.target.value })
       .catch(() => setErrorMessage('変更に失敗しました。'));
+
+    const oldTasks = tasks;
+    const newTasks = oldTasks.map((t) => {
+      const task = t;
+      if (task.id === taskDetail.id) {
+        task.memo = event.target.value;
+      }
+
+      return task;
+    });
+    setTasks(newTasks);
   };
 
   const handleLogout = () => {
