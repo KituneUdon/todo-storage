@@ -1,9 +1,11 @@
+import dayjs from 'dayjs';
+
 type Task = {
   id: string;
   task: string;
-  expirationDate?: string;
-  dueDate?: string;
-  memo?: string;
+  expirationDate: dayjs.Dayjs;
+  dueDate: dayjs.Dayjs;
+  memo: string;
 };
 
 export default Task;

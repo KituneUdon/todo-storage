@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { css } from '@emotion/css';
 import { TextField, IconButton, Card } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import dayjs from 'dayjs';
 
 import firebase, { db } from '../config/Firebase';
 
@@ -37,10 +38,21 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
       .collection('todo')
       .add({
         task,
+        expirationDate: dayjs().format('YYYY-MM-DD'),
+        dueDate: dayjs().format('YYYY-MM-DD'),
       })
       .then((e) => {
         setTask('');
-        setTasks([...tasks, { id: e.id.toString(), task, expirationDate: '' }]);
+        setTasks([
+          ...tasks,
+          {
+            id: e.id.toString(),
+            task,
+            expirationDate: dayjs(),
+            dueDate: dayjs(),
+            memo: '',
+          },
+        ]);
       })
       .catch(() => {
         setErrorMessage(
