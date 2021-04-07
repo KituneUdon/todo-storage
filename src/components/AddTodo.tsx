@@ -40,7 +40,16 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
       })
       .then((e) => {
         setTask('');
-        setTasks([...tasks, { id: e.id.toString(), task, expirationDate: '' }]);
+        setTasks([
+          ...tasks,
+          {
+            id: e.id.toString(),
+            task,
+            expirationDate: '',
+            dueDate: '',
+            memo: '',
+          },
+        ]);
       })
       .catch(() => {
         setErrorMessage(

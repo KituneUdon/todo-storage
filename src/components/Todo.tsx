@@ -54,6 +54,9 @@ const Todo: FC = () => {
   const defaultTaskDetail: Task = {
     id: '',
     task: '',
+    expirationDate: '',
+    dueDate: '',
+    memo: '',
   };
 
   const [taskDetail, setTaskDetail] = useState(defaultTaskDetail);
