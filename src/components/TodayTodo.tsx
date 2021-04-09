@@ -19,26 +19,24 @@ const TodayTodo: FC<Props> = ({
 }) => {
   const today = dayjs();
 
+  const todayTasks = tasks.filter(
+    (task) =>
+      task.expirationDate.isSame(today, 'year') &&
+      task.expirationDate.isSame(today, 'month') &&
+      task.expirationDate.isSame(today, 'day'),
+  );
+
   return (
     <>
-      {tasks.map((task) => {
-        if (
-          task.expirationDate.isSame(today, 'year') &&
-          task.expirationDate.isSame(today, 'month') &&
-          task.expirationDate.isSame(today, 'day')
-        ) {
-          return (
-            <TodoElement
-              task={task}
-              taskFinish={taskFinish}
-              taskDelete={taskDelete}
-              openDrawer={openDrawer}
-            />
-          );
-        }
-
-        return 0;
-      })}
+      {todayTasks.map((task) => (
+        <TodoElement
+          task={task}
+          taskFinish={taskFinish}
+          taskDelete={taskDelete}
+          key={task.id}
+          openDrawer={openDrawer}
+        />
+      ))}
     </>
   );
 };

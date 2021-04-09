@@ -7,7 +7,7 @@ type Props = {
   path: string;
 };
 
-const PublicRouter: FC<Props> = ({ path, children }) => {
+const PublicRoute: FC<Props> = ({ path, children }) => {
   const { user, authChecked } = useContext(AuthContext);
 
   if (!authChecked) return <p>ロード中</p>;
@@ -19,4 +19,4 @@ const PublicRouter: FC<Props> = ({ path, children }) => {
   );
 };
 
-export default PublicRouter;
+export default PublicRoute;

@@ -3,9 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { AuthProvider } from './contexts/Auth';
 
-// import PrivateRouter from './router/PrivateRouter';
-// import PublicRouter from './router/PublicRouter';
-
 import Top from './components/Top';
 import Login from './components/Login';
 import Todo from './components/Todo';
