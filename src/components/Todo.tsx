@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { css } from '@emotion/css';
-import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
+import { Switch, useHistory, Redirect } from 'react-router-dom';
 
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -21,6 +21,7 @@ import ToDoDetail from './TodoDetail';
 import Menu from './Menu';
 import AllTodo from './AllTodo';
 import TodayTodo from './TodayTodo';
+import PrivateRoute from '../router/PrivateRoute';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -319,25 +320,25 @@ const Todo: FC = () => {
           tasks={tasks}
         />
         <Switch>
-          <Route path="/todo/all">
+          <PrivateRoute path="/todo/all">
             <AllTodo
               tasks={tasks}
               taskFinish={taskFinish}
               taskDelete={taskDelete}
               openDrawer={handleDrawerOpen}
             />
-          </Route>
-          <Route path="/todo/today">
+          </PrivateRoute>
+          <PrivateRoute path="/todo/today">
             <TodayTodo
               tasks={tasks}
               taskFinish={taskFinish}
               taskDelete={taskDelete}
               openDrawer={handleDrawerOpen}
             />
-          </Route>
-          <Route path="/todo">
+          </PrivateRoute>
+          <PrivateRoute path="/todo">
             <Redirect to="/todo/all" />
-          </Route>
+          </PrivateRoute>
         </Switch>
       </main>
       <ToDoDetail

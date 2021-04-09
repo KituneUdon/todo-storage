@@ -8,7 +8,12 @@ type Props = {
 };
 
 const PrivateRouter: FC<Props> = ({ path, children }) => {
-  const { user } = useContext(AuthContext);
+  const { user, authChecked } = useContext(AuthContext);
+
+  if (!authChecked) return <p>ロード中</p>;
+
+  // eslint-disable-next-line
+  console.log(`uid:${user.uid}`);
 
   return user.uid ? (
     <Route path={path}>{children}</Route>

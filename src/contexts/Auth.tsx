@@ -10,12 +10,14 @@ type User = {
 type ContextType = {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User>>;
+  authChecked: boolean;
 };
 
 const AuthContext = createContext({} as ContextType);
 
 const AuthProvider: FC = ({ children }) => {
   const [user, setUser] = useState<User>({ uid: '', displayName: '' });
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((u) => {
@@ -25,11 +27,12 @@ const AuthProvider: FC = ({ children }) => {
           displayName: u.displayName ?? '名無し',
         });
       }
+      setAuthChecked(true);
     });
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, authChecked }}>
       {children}
     </AuthContext.Provider>
   );
