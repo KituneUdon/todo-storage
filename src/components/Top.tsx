@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import { css } from '@emotion/css';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ const container = css`
 const Top: FC = () => (
   <>
     <div className={container}>
-      <h1>すべてのToDoを１箇所に</h1>
+      <Typography variant="h2">すべてのToDoを１箇所に</Typography>
     </div>
     <div className={container}>
       <Button variant="contained" color="primary" component={Link} to="/login">

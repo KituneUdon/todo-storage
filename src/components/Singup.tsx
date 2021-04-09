@@ -65,6 +65,7 @@ const Singup: FC = () => {
             placeholder="ユーザ名"
             margin="normal"
             onChange={handleUserChange}
+            autoFocus
           />
         </div>
         <div>

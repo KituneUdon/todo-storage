@@ -1,5 +1,5 @@
 import React, { FC, useState, useContext } from 'react';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { css } from '@emotion/css';
 import { Link, useHistory } from 'react-router-dom';
@@ -45,10 +45,16 @@ const Login: FC = () => {
       });
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   return (
     <div className={container}>
-      <h2>ToDo Storageにログイン</h2>
-      {errorMessage && <Alert>{errorMessage}</Alert>}
+      <Typography variant="h5">ToDo Storageにログイン</Typography>
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <form>
         <div>
           <TextField
@@ -56,6 +62,8 @@ const Login: FC = () => {
             placeholder="メールアドレス"
             margin="normal"
             onChange={handleEmailChange}
+            onKeyDown={handleKeyPress}
+            autoFocus
           />
         </div>
         <div>
@@ -64,6 +72,7 @@ const Login: FC = () => {
             placeholder="パスワード"
             margin="normal"
             onChange={handlePasswordChange}
+            onKeyDown={handleKeyPress}
           />
         </div>
         <div>
@@ -71,9 +80,9 @@ const Login: FC = () => {
             ログイン
           </Button>
         </div>
-        <p>
+        <Typography variant="body1">
           または、<Link to="/singup">メールアドレスを作成</Link>
-        </p>
+        </Typography>
       </form>
     </div>
   );
