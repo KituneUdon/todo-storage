@@ -48,7 +48,7 @@ const Login: FC = () => {
   return (
     <div className={container}>
       <h2>ToDo Storageにログイン</h2>
-      {errorMessage && <Alert>{errorMessage}</Alert>}
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <form>
         <div>
           <TextField
