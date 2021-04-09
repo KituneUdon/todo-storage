@@ -16,7 +16,7 @@ import dayjs from 'dayjs';
 import ja from 'dayjs/locale/ja';
 import DayJsUtils from '@date-io/dayjs';
 
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import Task from '../types/task';
 
@@ -58,7 +58,7 @@ const TodoDetail: FC<Props> = ({
       classes={{ paper: drawer }}
     >
       <IconButton onClick={drawerClose}>
-        <ChevronLeftIcon />
+        <ChevronRightIcon />
       </IconButton>
       <Divider />
       <List>
