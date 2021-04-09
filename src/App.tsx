@@ -12,6 +12,7 @@ import Todo from './components/Todo';
 import NotFound from './components/NotFound';
 import Singup from './components/Singup';
 import PrivateRoute from './router/PrivateRoute';
+import PublicRoute from './router/PublicRoute';
 
 const App: FC = () => (
   <AuthProvider>
@@ -20,12 +21,12 @@ const App: FC = () => (
         <Route path="/" exact>
           <Top />
         </Route>
-        <Route path="/login">
+        <PublicRoute path="/login">
           <Login />
-        </Route>
-        <Route path="/singup">
+        </PublicRoute>
+        <PublicRoute path="/singup">
           <Singup />
-        </Route>
+        </PublicRoute>
         <PrivateRoute path="/todo">
           <Todo />
         </PrivateRoute>

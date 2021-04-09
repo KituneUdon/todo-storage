@@ -12,9 +12,6 @@ const PrivateRouter: FC<Props> = ({ path, children }) => {
 
   if (!authChecked) return <p>ロード中</p>;
 
-  // eslint-disable-next-line
-  console.log(`uid:${user.uid}`);
-
   return user.uid ? (
     <Route path={path}>{children}</Route>
   ) : (
