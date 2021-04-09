@@ -5,7 +5,6 @@ import {
   Divider,
   List,
   ListItem,
-  ListItemText,
   TextField,
 } from '@material-ui/core';
 import { css } from '@emotion/css';
@@ -25,6 +24,10 @@ dayjs.locale(ja);
 
 const drawer = css`
   width: 360px;
+`;
+
+const datepicker = css`
+  flex-grow: 1;
 `;
 
 type Props = {
@@ -60,16 +63,21 @@ const TodoDetail: FC<Props> = ({
       <Divider />
       <List>
         <ListItem>
-          <TextField value={taskDetail.task} fullWidth onChange={taskChange} />
+          <TextField
+            value={taskDetail.task}
+            label="タスク"
+            fullWidth
+            onChange={taskChange}
+          />
         </ListItem>
       </List>
       <Divider />
       <List>
         <ListItem>
-          <ListItemText primary="期限日：" />
           <KeyboardDatePicker
-            clearable
+            className={datepicker}
             value={taskDetail.expirationDate}
+            label="期限日"
             onChange={(date) => {
               if (date) {
                 const strDate = date.toString();
@@ -80,10 +88,10 @@ const TodoDetail: FC<Props> = ({
           />
         </ListItem>
         <ListItem>
-          <ListItemText primary="実行予定日：" />
           <KeyboardDatePicker
-            clearable
+            className={datepicker}
             value={taskDetail.dueDate}
+            label="実行予定日"
             onChange={(date) => {
               if (date) {
                 const strDate = date.toString();
