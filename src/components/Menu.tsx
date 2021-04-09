@@ -11,7 +11,7 @@ import {
 import { css } from '@emotion/css';
 import { useHistory } from 'react-router-dom';
 
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeIcon from '@material-ui/icons/Home';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
 
@@ -32,7 +32,7 @@ const Menu: FC<Props> = ({ menuOpen, handleMenuClose }) => {
   return (
     <Drawer anchor="left" open={menuOpen} variant="persistent" className={menu}>
       <IconButton onClick={handleMenuClose}>
-        <ChevronRightIcon />
+        <ChevronLeftIcon />
       </IconButton>
       <Divider />
       <List>
