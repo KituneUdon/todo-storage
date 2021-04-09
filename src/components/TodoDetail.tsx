@@ -60,7 +60,7 @@ const TodoDetail: FC<Props> = ({
       <Divider />
       <List>
         <ListItem>
-          <TextField value={taskDetail.task} onChange={taskChange} />
+          <TextField value={taskDetail.task} fullWidth onChange={taskChange} />
         </ListItem>
       </List>
       <Divider />
@@ -97,11 +97,12 @@ const TodoDetail: FC<Props> = ({
       <Divider />
       <List>
         <ListItem>
-          <ListItemText primary="メモ：" />
           <TextField
             value={taskDetail.memo ?? ``}
+            fullWidth
             multiline
             onChange={memoChange}
+            label="メモ"
           />
         </ListItem>
       </List>
