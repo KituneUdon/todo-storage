@@ -45,6 +45,12 @@ const Login: FC = () => {
       });
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   return (
     <div className={container}>
       <Typography variant="h5">ToDo Storageにログイン</Typography>
@@ -56,6 +62,7 @@ const Login: FC = () => {
             placeholder="メールアドレス"
             margin="normal"
             onChange={handleEmailChange}
+            onKeyDown={handleKeyPress}
           />
         </div>
         <div>
@@ -64,6 +71,7 @@ const Login: FC = () => {
             placeholder="パスワード"
             margin="normal"
             onChange={handlePasswordChange}
+            onKeyDown={handleKeyPress}
           />
         </div>
         <div>
