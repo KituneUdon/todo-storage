@@ -8,18 +8,20 @@ import {
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { css } from '@emotion/css';
-import { useHistory } from 'react-router-dom';
+import { Switch, useHistory, Redirect } from 'react-router-dom';
 
 import MenuIcon from '@material-ui/icons/Menu';
 
 import dayjs from 'dayjs';
 import { AuthContext } from '../contexts/Auth';
 import AddTodo from './AddTodo';
-import TodoList from './TodoList';
 import firebase from '../config/Firebase';
 import Task from '../types/task';
 import ToDoDetail from './TodoDetail';
 import Menu from './Menu';
+import AllTodo from './AllTodo';
+import TodayTodo from './TodayTodo';
+import PrivateRoute from '../router/PrivateRoute';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -235,6 +237,53 @@ const Todo: FC = () => {
       });
   };
 
+  const taskFinish = (task: Task) => {
+    const oldTasks = [...tasks];
+    const newTasks = oldTasks.filter((t) => t.id !== task.id);
+    setTasks(newTasks);
+
+    db.collection('tasks')
+      .doc(uid)
+      .collection('finishTodo')
+      .doc(task.id)
+      .set({
+        task: task.task,
+      })
+      .catch(() => {
+        setErrorMessage(
+          'ToDoの追加に失敗しました。時間をおいて再度実行してください。',
+        );
+      });
+
+    db.collection('tasks')
+      .doc(uid)
+      .collection('todo')
+      .doc(task.id)
+      .delete()
+      .catch(() => {
+        setErrorMessage(
+          'ToDoの完了に失敗しました。時間をおいて再度実行してください。',
+        );
+      });
+  };
+
+  const taskDelete = (task: Task) => {
+    const oldTasks = [...tasks];
+    const newTasks = oldTasks.filter((t) => t.id !== task.id);
+    setTasks(newTasks);
+
+    db.collection('tasks')
+      .doc(uid)
+      .collection('todo')
+      .doc(task.id)
+      .delete()
+      .catch(() => {
+        setErrorMessage(
+          'ToDoの削除に失敗しました。時間をおいて再度実行してください。',
+        );
+      });
+  };
+
   return (
     <>
       <AppBar
@@ -270,12 +319,27 @@ const Todo: FC = () => {
           setTasks={setTasks}
           tasks={tasks}
         />
-        <TodoList
-          tasks={tasks}
-          setTasks={setTasks}
-          setErrorMessage={setErrorMessage}
-          openDrawer={handleDrawerOpen}
-        />
+        <Switch>
+          <PrivateRoute path="/todo/all">
+            <AllTodo
+              tasks={tasks}
+              taskFinish={taskFinish}
+              taskDelete={taskDelete}
+              openDrawer={handleDrawerOpen}
+            />
+          </PrivateRoute>
+          <PrivateRoute path="/todo/today">
+            <TodayTodo
+              tasks={tasks}
+              taskFinish={taskFinish}
+              taskDelete={taskDelete}
+              openDrawer={handleDrawerOpen}
+            />
+          </PrivateRoute>
+          <PrivateRoute path="/todo">
+            <Redirect to="/todo/all" />
+          </PrivateRoute>
+        </Switch>
       </main>
       <ToDoDetail
         oepn={taskDetailOpen}

@@ -7,14 +7,16 @@ type Props = {
   path: string;
 };
 
-const PublicRouter: FC<Props> = ({ path, children }) => {
-  const { user } = useContext(AuthContext);
+const PublicRoute: FC<Props> = ({ path, children }) => {
+  const { user, authChecked } = useContext(AuthContext);
+
+  if (!authChecked) return <p>ロード中</p>;
 
   return user.uid ? (
-    <Redirect to="/todo" />
+    <Redirect to="/todo/all" />
   ) : (
     <Route path={path}>{children}</Route>
   );
 };
 
-export default PublicRouter;
+export default PublicRoute;
