@@ -63,6 +63,7 @@ const Login: FC = () => {
             margin="normal"
             onChange={handleEmailChange}
             onKeyDown={handleKeyPress}
+            autoFocus
           />
         </div>
         <div>
