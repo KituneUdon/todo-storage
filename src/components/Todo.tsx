@@ -23,6 +23,7 @@ import AllTodo from './AllTodo';
 import TodayTodo from './TodayTodo';
 import PrivateRoute from '../router/PrivateRoute';
 import useUpdateTasks from '../hooks/useUpdateTasks';
+import useFirestoreUpdateTask from '../hooks/useFirestoreUpdateTask';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -67,6 +68,13 @@ const Todo: FC = () => {
   const [taskDetail, setTaskDetail] = useState(defaultTaskDetail);
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
+
+  const {
+    firestoreUpdateTitle,
+    firestoreUpdateExpirationDate,
+    firestoreUpdateDueDate,
+    firestoreUpdateMemo,
+  } = useFirestoreUpdateTask(uid);
 
   const history = useHistory();
 
@@ -126,12 +134,9 @@ const Todo: FC = () => {
 
     setTaskDetail(task);
 
-    db.collection('tasks')
-      .doc(uid)
-      .collection('todo')
-      .doc(taskDetail.id)
-      .update({ title })
-      .catch(() => setErrorMessage('変更に失敗しました。'));
+    firestoreUpdateTitle(task.id, title).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
@@ -150,12 +155,9 @@ const Todo: FC = () => {
 
     setTaskDetail(task);
 
-    db.collection('tasks')
-      .doc(uid)
-      .collection('todo')
-      .doc(taskDetail.id)
-      .update({ expirationDate: expirationDate.format('YYYY-MM-DD') })
-      .catch(() => setErrorMessage('変更に失敗しました。'));
+    firestoreUpdateExpirationDate(task.id, expirationDate).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
@@ -172,12 +174,9 @@ const Todo: FC = () => {
 
     setTaskDetail(task);
 
-    db.collection('tasks')
-      .doc(uid)
-      .collection('todo')
-      .doc(taskDetail.id)
-      .update({ dueDate: dueDate.format('YYYY-MM-DD') })
-      .catch(() => setErrorMessage('変更に失敗しました。'));
+    firestoreUpdateDueDate(task.id, dueDate).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
@@ -194,12 +193,9 @@ const Todo: FC = () => {
 
     setTaskDetail(task);
 
-    db.collection('tasks')
-      .doc(uid)
-      .collection('todo')
-      .doc(taskDetail.id)
-      .update({ memo })
-      .catch(() => setErrorMessage('変更に失敗しました。'));
+    firestoreUpdateMemo(task.id, memo).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
