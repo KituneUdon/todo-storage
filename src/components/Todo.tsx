@@ -112,10 +112,10 @@ const Todo: FC = () => {
     setMenuOpen(false);
   };
 
-  const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTaskChange = (taskName: string) => {
     const task = {
       id: taskDetail.id,
-      task: event.target.value,
+      task: taskName,
       expirationDate: taskDetail.expirationDate,
       dueDate: taskDetail.dueDate,
       memo: taskDetail.memo,
@@ -178,15 +178,13 @@ const Todo: FC = () => {
     setTasks(newTasks);
   };
 
-  const handleTaskDetailMemoChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleTaskDetailMemoChange = (memo: string) => {
     const task = {
       id: taskDetail.id,
       task: taskDetail.task,
       expirationDate: taskDetail.expirationDate,
       dueDate: taskDetail.dueDate,
-      memo: event.target.value,
+      memo,
     };
 
     setTaskDetail(task);
@@ -194,7 +192,7 @@ const Todo: FC = () => {
       .doc(uid)
       .collection('todo')
       .doc(taskDetail.id)
-      .update({ memo: event.target.value })
+      .update({ memo })
       .catch(() => setErrorMessage('変更に失敗しました。'));
 
     const newTasks = updateTasks(task);
