@@ -22,7 +22,7 @@ import Menu from './Menu';
 import AllTodo from './AllTodo';
 import TodayTodo from './TodayTodo';
 import PrivateRoute from '../router/PrivateRoute';
-import useChangeTasks from '../hooks/useChangeTasks';
+import useUpdateTasks from '../hooks/useUpdateTasks';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -54,7 +54,7 @@ const Todo: FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { changeTask } = useChangeTasks(tasks);
+  const { updateTasks } = useUpdateTasks(tasks);
 
   const defaultTaskDetail: Task = {
     id: '',
@@ -130,7 +130,7 @@ const Todo: FC = () => {
       .update({ task: event.target.value })
       .catch(() => setErrorMessage('変更に失敗しました。'));
 
-    const newTasks = changeTask(task);
+    const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
 
@@ -153,7 +153,7 @@ const Todo: FC = () => {
       .update({ expirationDate: expirationDate.format('YYYY-MM-DD') })
       .catch(() => setErrorMessage('変更に失敗しました。'));
 
-    const newTasks = changeTask(task);
+    const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
 
@@ -174,7 +174,7 @@ const Todo: FC = () => {
       .update({ dueDate: dueDate.format('YYYY-MM-DD') })
       .catch(() => setErrorMessage('変更に失敗しました。'));
 
-    const newTasks = changeTask(task);
+    const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
 
@@ -197,7 +197,7 @@ const Todo: FC = () => {
       .update({ memo: event.target.value })
       .catch(() => setErrorMessage('変更に失敗しました。'));
 
-    const newTasks = changeTask(task);
+    const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
 
