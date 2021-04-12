@@ -22,6 +22,8 @@ import Menu from './Menu';
 import AllTodo from './AllTodo';
 import TodayTodo from './TodayTodo';
 import PrivateRoute from '../router/PrivateRoute';
+import useUpdateTasks from '../hooks/useUpdateTasks';
+import useFirestoreUpdateTask from '../hooks/useFirestoreUpdateTask';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -30,7 +32,7 @@ const container = css`
   margin: 10px;
 `;
 
-const title = css`
+const titleStyle = css`
   flex-grow: 1;
 `;
 
@@ -53,10 +55,11 @@ const Todo: FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { updateTasks } = useUpdateTasks(tasks);
 
   const defaultTaskDetail: Task = {
     id: '',
-    task: '',
+    title: '',
     expirationDate: dayjs(),
     dueDate: dayjs(),
     memo: '',
@@ -65,6 +68,13 @@ const Todo: FC = () => {
   const [taskDetail, setTaskDetail] = useState(defaultTaskDetail);
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
+
+  const {
+    firestoreUpdateTitle,
+    firestoreUpdateExpirationDate,
+    firestoreUpdateDueDate,
+    firestoreUpdateMemo,
+  } = useFirestoreUpdateTask(uid);
 
   const history = useHistory();
 
@@ -77,12 +87,15 @@ const Todo: FC = () => {
         let getTasks: Task[] = [];
         querySnapshot.forEach((doc) => {
           const id = doc.id.toString();
-          const task = doc.get('task') as string;
+          const title = doc.get('title') as string;
           const expirationDate = dayjs(doc.get('expirationDate') as string);
           const dueDate = dayjs(doc.get('dueDate') as string);
           const memo = doc.get('memo') as string;
 
-          getTasks = [...getTasks, { id, task, expirationDate, dueDate, memo }];
+          getTasks = [
+            ...getTasks,
+            { id, title, expirationDate, dueDate, memo },
+          ];
         });
         setTasks(getTasks);
         getTasks = [];
@@ -110,115 +123,57 @@ const Todo: FC = () => {
     setMenuOpen(false);
   };
 
-  const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskDetail({
-      id: taskDetail.id,
-      task: event.target.value,
-      expirationDate: taskDetail.expirationDate,
-      dueDate: taskDetail.dueDate,
-      memo: taskDetail.memo,
-    });
-    db.collection('tasks')
-      .doc(uid)
-      .collection('todo')
-      .doc(taskDetail.id)
-      .update({ task: event.target.value })
-      .catch(() => setErrorMessage('変更に失敗しました。'));
+  const handleTaskTitleChange = (title: string) => {
+    const task = { ...taskDetail, title };
 
-    const oldTasks = tasks;
-    const newTasks = oldTasks.map((t) => {
-      const task = t;
-      if (task.id === taskDetail.id) {
-        task.task = event.target.value;
-      }
+    setTaskDetail(task);
 
-      return task;
-    });
+    firestoreUpdateTitle(task.id, title).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
+
+    const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
 
   const handleTaskDetailExpirationDateChange = (
     expirationDate: dayjs.Dayjs,
   ) => {
-    setTaskDetail({
-      id: taskDetail.id,
-      task: taskDetail.task,
-      expirationDate,
-      dueDate: taskDetail.dueDate,
-      memo: taskDetail.memo,
-    });
-    db.collection('tasks')
-      .doc(uid)
-      .collection('todo')
-      .doc(taskDetail.id)
-      .update({ expirationDate: expirationDate.format('YYYY-MM-DD') })
-      .catch(() => setErrorMessage('変更に失敗しました。'));
+    const task = { ...taskDetail, expirationDate };
 
-    const oldTasks = tasks;
-    const newTasks = oldTasks.map((t) => {
-      const task = t;
-      if (task.id === taskDetail.id) {
-        task.expirationDate = expirationDate;
-      }
+    setTaskDetail(task);
 
-      return task;
-    });
+    firestoreUpdateExpirationDate(task.id, expirationDate).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
+
+    const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
 
   const handleTaskDetailDueDateChange = (dueDate: dayjs.Dayjs) => {
-    setTaskDetail({
-      id: taskDetail.id,
-      task: taskDetail.task,
-      expirationDate: taskDetail.expirationDate,
-      dueDate,
-      memo: taskDetail.memo,
-    });
-    db.collection('tasks')
-      .doc(uid)
-      .collection('todo')
-      .doc(taskDetail.id)
-      .update({ dueDate: dueDate.format('YYYY-MM-DD') })
-      .catch(() => setErrorMessage('変更に失敗しました。'));
+    const task = { ...taskDetail, dueDate };
 
-    const oldTasks = tasks;
-    const newTasks = oldTasks.map((t) => {
-      const task = t;
-      if (task.id === taskDetail.id) {
-        task.dueDate = dueDate;
-      }
+    setTaskDetail(task);
 
-      return task;
-    });
+    firestoreUpdateDueDate(task.id, dueDate).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
+
+    const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
 
-  const handleTaskDetailMemoChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setTaskDetail({
-      id: taskDetail.id,
-      task: taskDetail.task,
-      expirationDate: taskDetail.expirationDate,
-      dueDate: taskDetail.dueDate,
-      memo: event.target.value,
-    });
-    db.collection('tasks')
-      .doc(uid)
-      .collection('todo')
-      .doc(taskDetail.id)
-      .update({ memo: event.target.value })
-      .catch(() => setErrorMessage('変更に失敗しました。'));
+  const handleTaskDetailMemoChange = (memo: string) => {
+    const task = { ...taskDetail, memo };
 
-    const oldTasks = tasks;
-    const newTasks = oldTasks.map((t) => {
-      const task = t;
-      if (task.id === taskDetail.id) {
-        task.memo = event.target.value;
-      }
+    setTaskDetail(task);
 
-      return task;
-    });
+    firestoreUpdateMemo(task.id, memo).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
+
+    const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
 
@@ -247,7 +202,7 @@ const Todo: FC = () => {
       .collection('finishTodo')
       .doc(task.id)
       .set({
-        task: task.task,
+        task,
       })
       .catch(() => {
         setErrorMessage(
@@ -298,7 +253,7 @@ const Todo: FC = () => {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h6" className={title}>
+          <Typography variant="h6" className={titleStyle}>
             ToDo Storage
           </Typography>
           <Typography variant="body1">{user.displayName}</Typography>
@@ -345,7 +300,7 @@ const Todo: FC = () => {
         oepn={taskDetailOpen}
         taskDetail={taskDetail}
         drawerClose={handleDrawerClose}
-        taskChange={handleTaskChange}
+        titleChange={handleTaskTitleChange}
         expirationDateChange={handleTaskDetailExpirationDateChange}
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}

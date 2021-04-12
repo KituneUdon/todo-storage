@@ -34,17 +34,17 @@ type Props = {
   oepn: boolean;
   drawerClose: () => void;
   taskDetail: Task;
-  taskChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  titleChange: (title: string) => void;
   expirationDateChange: (expirationDate: dayjs.Dayjs) => void;
   dueDateChange: (dueDate: dayjs.Dayjs) => void;
-  memoChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  memoChange: (memo: string) => void;
 };
 
 const TodoDetail: FC<Props> = ({
   oepn,
   drawerClose,
   taskDetail,
-  taskChange,
+  titleChange,
   expirationDateChange,
   dueDateChange,
   memoChange,
@@ -64,10 +64,10 @@ const TodoDetail: FC<Props> = ({
       <List>
         <ListItem>
           <TextField
-            value={taskDetail.task}
+            value={taskDetail.title}
             label="タスク"
             fullWidth
-            onChange={taskChange}
+            onChange={(e) => titleChange(e.target.value)}
           />
         </ListItem>
       </List>
@@ -109,7 +109,7 @@ const TodoDetail: FC<Props> = ({
             value={taskDetail.memo ?? ``}
             fullWidth
             multiline
-            onChange={memoChange}
+            onChange={(t) => memoChange(t.target.value)}
             label="メモ"
           />
         </ListItem>
