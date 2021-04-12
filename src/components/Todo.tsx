@@ -124,13 +124,7 @@ const Todo: FC = () => {
   };
 
   const handleTaskTitleChange = (title: string) => {
-    const task: Task = {
-      id: taskDetail.id,
-      title,
-      expirationDate: taskDetail.expirationDate,
-      dueDate: taskDetail.dueDate,
-      memo: taskDetail.memo,
-    };
+    const task = { ...taskDetail, title };
 
     setTaskDetail(task);
 
@@ -145,13 +139,7 @@ const Todo: FC = () => {
   const handleTaskDetailExpirationDateChange = (
     expirationDate: dayjs.Dayjs,
   ) => {
-    const task: Task = {
-      id: taskDetail.id,
-      title: taskDetail.title,
-      expirationDate,
-      dueDate: taskDetail.dueDate,
-      memo: taskDetail.memo,
-    };
+    const task = { ...taskDetail, expirationDate };
 
     setTaskDetail(task);
 
@@ -164,13 +152,7 @@ const Todo: FC = () => {
   };
 
   const handleTaskDetailDueDateChange = (dueDate: dayjs.Dayjs) => {
-    const task: Task = {
-      id: taskDetail.id,
-      title: taskDetail.title,
-      expirationDate: taskDetail.expirationDate,
-      dueDate,
-      memo: taskDetail.memo,
-    };
+    const task = { ...taskDetail, dueDate };
 
     setTaskDetail(task);
 
@@ -183,13 +165,7 @@ const Todo: FC = () => {
   };
 
   const handleTaskDetailMemoChange = (memo: string) => {
-    const task: Task = {
-      id: taskDetail.id,
-      title: taskDetail.title,
-      expirationDate: taskDetail.expirationDate,
-      dueDate: taskDetail.dueDate,
-      memo,
-    };
+    const task = { ...taskDetail, memo };
 
     setTaskDetail(task);
 
