@@ -34,7 +34,7 @@ type Props = {
   oepn: boolean;
   drawerClose: () => void;
   taskDetail: Task;
-  taskChange: (title: string) => void;
+  titleChange: (title: string) => void;
   expirationDateChange: (expirationDate: dayjs.Dayjs) => void;
   dueDateChange: (dueDate: dayjs.Dayjs) => void;
   memoChange: (memo: string) => void;
@@ -44,7 +44,7 @@ const TodoDetail: FC<Props> = ({
   oepn,
   drawerClose,
   taskDetail,
-  taskChange,
+  titleChange,
   expirationDateChange,
   dueDateChange,
   memoChange,
@@ -67,7 +67,7 @@ const TodoDetail: FC<Props> = ({
             value={taskDetail.title}
             label="タスク"
             fullWidth
-            onChange={(e) => taskChange(e.target.value)}
+            onChange={(e) => titleChange(e.target.value)}
           />
         </ListItem>
       </List>

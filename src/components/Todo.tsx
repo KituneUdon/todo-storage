@@ -123,7 +123,7 @@ const Todo: FC = () => {
     setMenuOpen(false);
   };
 
-  const handleTaskChange = (title: string) => {
+  const handleTaskTitleChange = (title: string) => {
     const task: Task = {
       id: taskDetail.id,
       title,
@@ -324,7 +324,7 @@ const Todo: FC = () => {
         oepn={taskDetailOpen}
         taskDetail={taskDetail}
         drawerClose={handleDrawerClose}
-        taskChange={handleTaskChange}
+        titleChange={handleTaskTitleChange}
         expirationDateChange={handleTaskDetailExpirationDateChange}
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}
