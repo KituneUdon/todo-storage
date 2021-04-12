@@ -51,7 +51,7 @@ const TodoElement: FC<Props> = ({
         {isButtonHover ? <CheckCircleOutlineIcon /> : <PanoramaFishEyeIcon />}
       </IconButton>
       <Typography className={taskText} onClick={() => openDrawer(task)}>
-        {task.task}
+        {task.title}
       </Typography>
       <IconButton onClick={handleTaskDelete}>
         <DeleteIcon />

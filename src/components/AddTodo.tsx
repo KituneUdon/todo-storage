@@ -24,12 +24,12 @@ const input = css`
 `;
 
 const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
-  const [task, setTask] = useState('');
+  const [taskTitle, setTaskTitle] = useState('');
 
   const uid = firebase.auth().currentUser?.uid;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTask(event.target.value);
+    setTaskTitle(event.target.value);
   };
 
   const handleAddTask = () => {
@@ -37,17 +37,17 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
       .doc(uid)
       .collection('todo')
       .add({
-        task,
+        taskTitle,
         expirationDate: dayjs().format('YYYY-MM-DD'),
         dueDate: dayjs().format('YYYY-MM-DD'),
       })
       .then((e) => {
-        setTask('');
+        setTaskTitle('');
         setTasks([
           ...tasks,
           {
             id: e.id.toString(),
-            task,
+            title: taskTitle,
             expirationDate: dayjs(),
             dueDate: dayjs(),
             memo: '',
@@ -76,7 +76,7 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
         className={input}
         label="タスクを追加する"
         onChange={handleChange}
-        value={task}
+        value={taskTitle}
         onKeyDown={handleKeyPress}
       />
     </Card>

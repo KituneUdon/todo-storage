@@ -31,7 +31,7 @@ const container = css`
   margin: 10px;
 `;
 
-const title = css`
+const titleStyle = css`
   flex-grow: 1;
 `;
 
@@ -58,7 +58,7 @@ const Todo: FC = () => {
 
   const defaultTaskDetail: Task = {
     id: '',
-    task: '',
+    title: '',
     expirationDate: dayjs(),
     dueDate: dayjs(),
     memo: '',
@@ -79,12 +79,15 @@ const Todo: FC = () => {
         let getTasks: Task[] = [];
         querySnapshot.forEach((doc) => {
           const id = doc.id.toString();
-          const task = doc.get('task') as string;
+          const title = doc.get('title') as string;
           const expirationDate = dayjs(doc.get('expirationDate') as string);
           const dueDate = dayjs(doc.get('dueDate') as string);
           const memo = doc.get('memo') as string;
 
-          getTasks = [...getTasks, { id, task, expirationDate, dueDate, memo }];
+          getTasks = [
+            ...getTasks,
+            { id, title, expirationDate, dueDate, memo },
+          ];
         });
         setTasks(getTasks);
         getTasks = [];
@@ -112,10 +115,10 @@ const Todo: FC = () => {
     setMenuOpen(false);
   };
 
-  const handleTaskChange = (taskName: string) => {
-    const task = {
+  const handleTaskChange = (title: string) => {
+    const task: Task = {
       id: taskDetail.id,
-      task: taskName,
+      title,
       expirationDate: taskDetail.expirationDate,
       dueDate: taskDetail.dueDate,
       memo: taskDetail.memo,
@@ -127,7 +130,7 @@ const Todo: FC = () => {
       .doc(uid)
       .collection('todo')
       .doc(taskDetail.id)
-      .update({ task: event.target.value })
+      .update({ title })
       .catch(() => setErrorMessage('変更に失敗しました。'));
 
     const newTasks = updateTasks(task);
@@ -137,15 +140,16 @@ const Todo: FC = () => {
   const handleTaskDetailExpirationDateChange = (
     expirationDate: dayjs.Dayjs,
   ) => {
-    const task = {
+    const task: Task = {
       id: taskDetail.id,
-      task: taskDetail.task,
+      title: taskDetail.title,
       expirationDate,
       dueDate: taskDetail.dueDate,
       memo: taskDetail.memo,
     };
 
     setTaskDetail(task);
+
     db.collection('tasks')
       .doc(uid)
       .collection('todo')
@@ -158,15 +162,16 @@ const Todo: FC = () => {
   };
 
   const handleTaskDetailDueDateChange = (dueDate: dayjs.Dayjs) => {
-    const task = {
+    const task: Task = {
       id: taskDetail.id,
-      task: taskDetail.task,
+      title: taskDetail.title,
       expirationDate: taskDetail.expirationDate,
       dueDate,
       memo: taskDetail.memo,
     };
 
     setTaskDetail(task);
+
     db.collection('tasks')
       .doc(uid)
       .collection('todo')
@@ -179,15 +184,16 @@ const Todo: FC = () => {
   };
 
   const handleTaskDetailMemoChange = (memo: string) => {
-    const task = {
+    const task: Task = {
       id: taskDetail.id,
-      task: taskDetail.task,
+      title: taskDetail.title,
       expirationDate: taskDetail.expirationDate,
       dueDate: taskDetail.dueDate,
       memo,
     };
 
     setTaskDetail(task);
+
     db.collection('tasks')
       .doc(uid)
       .collection('todo')
@@ -224,7 +230,7 @@ const Todo: FC = () => {
       .collection('finishTodo')
       .doc(task.id)
       .set({
-        task: task.task,
+        task,
       })
       .catch(() => {
         setErrorMessage(
@@ -275,7 +281,7 @@ const Todo: FC = () => {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h6" className={title}>
+          <Typography variant="h6" className={titleStyle}>
             ToDo Storage
           </Typography>
           <Typography variant="body1">{user.displayName}</Typography>
