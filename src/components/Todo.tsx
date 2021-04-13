@@ -25,6 +25,7 @@ import TodayTodo from './TodayTodo';
 import PrivateRoute from '../router/PrivateRoute';
 import useUpdateTasks from '../hooks/useUpdateTasks';
 import useFirestoreUpdateTask from '../hooks/useFirestoreUpdateTask';
+import useFinishTask from '../hooks/useFinishTask';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -76,6 +77,7 @@ const Todo: FC = () => {
     firestoreUpdateDueDate,
     firestoreUpdateMemo,
   } = useFirestoreUpdateTask(uid);
+  const { finishTask } = useFinishTask(uid);
 
   const history = useHistory();
 
@@ -198,49 +200,7 @@ const Todo: FC = () => {
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
     setTasks(newTasks);
 
-    if (task.memo) {
-      db.collection('tasks')
-        .doc(uid)
-        .collection('finishTask')
-        .doc(task.id)
-        .set({
-          title: task.title,
-          expirationDate: task.expirationDate.format('YYYY-MM-DD'),
-          dueDate: task.dueDate.format('YYYY-MM-DD'),
-          memo: task.memo,
-        })
-        .catch(() => {
-          setErrorMessage(
-            'ToDoの追加に失敗しました。時間をおいて再度実行してください。',
-          );
-        });
-    } else {
-      db.collection('tasks')
-        .doc(uid)
-        .collection('finishTask')
-        .doc(task.id)
-        .set({
-          title: task.title,
-          expirationDate: task.expirationDate.format('YYYY-MM-DD'),
-          dueDate: task.dueDate.format('YYYY-MM-DD'),
-        })
-        .catch(() => {
-          setErrorMessage(
-            'ToDoの追加に失敗しました。時間をおいて再度実行してください。',
-          );
-        });
-    }
-
-    db.collection('tasks')
-      .doc(uid)
-      .collection('task')
-      .doc(task.id)
-      .delete()
-      .catch(() => {
-        setErrorMessage(
-          'ToDoの完了に失敗しました。時間をおいて再度実行してください。',
-        );
-      });
+    finishTask(task).catch(() => setErrorMessage("通信エラーが発生しました。"));
   };
 
   const taskDelete = (task: Task) => {
