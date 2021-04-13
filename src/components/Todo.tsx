@@ -7,7 +7,8 @@ import {
   IconButton,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { css } from '@emotion/css';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { Switch, useHistory, Redirect } from 'react-router-dom';
 
 import MenuIcon from '@material-ui/icons/Menu';
@@ -28,25 +29,25 @@ import useFirestoreUpdateTask from '../hooks/useFirestoreUpdateTask';
 const taskDetailWidth = 360;
 const menuWidth = 200;
 
-const container = css`
-  margin: 10px;
-`;
+const container = css({
+  margin: '10px',
+});
 
-const titleStyle = css`
-  flex-grow: 1;
-`;
+const titleStyle = css({
+  flexGrow: 1,
+});
 
-const content = css``;
+const content = css({});
 
-const contentLeftShift = css`
-  width: calc(100% - ${taskDetailWidth}px);
-  margin-right: ${taskDetailWidth}px;
-`;
+const contentLeftShift = css({
+  width: `calc(100% - ${taskDetailWidth}px`,
+  marginRight: `${taskDetailWidth}px`,
+});
 
-const contentRightShift = css`
-  width: calc(100% - ${menuWidth}px);
-  margin-left: ${menuWidth}px;
-`;
+const contentRightShift = css({
+  width: `calc(100% - ${menuWidth}px)`,
+  marginLeft: `${menuWidth}px`,
+});
 
 const db = firebase.firestore();
 
@@ -243,9 +244,10 @@ const Todo: FC = () => {
     <>
       <AppBar
         position="static"
-        className={`${taskDetailOpen ? contentLeftShift : content} ${
-          menuOpen ? contentRightShift : content
-        }`}
+        css={[
+          taskDetailOpen ? contentLeftShift : content,
+          menuOpen ? contentRightShift : content,
+        ]}
       >
         <Toolbar>
           {!menuOpen && (
@@ -253,7 +255,7 @@ const Todo: FC = () => {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h6" className={titleStyle}>
+          <Typography variant="h6" css={titleStyle}>
             ToDo Storage
           </Typography>
           <Typography variant="body1">{user.displayName}</Typography>
@@ -263,9 +265,11 @@ const Todo: FC = () => {
         </Toolbar>
       </AppBar>
       <main
-        className={`${
-          taskDetailOpen ? contentLeftShift : content
-        } ${container} ${menuOpen ? contentRightShift : content}`}
+        css={[
+          taskDetailOpen ? contentLeftShift : content,
+          container,
+          menuOpen ? contentRightShift : content,
+        ]}
       >
         <Typography variant="h6">Tasks</Typography>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}

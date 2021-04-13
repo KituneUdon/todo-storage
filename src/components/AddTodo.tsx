@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
-import { css } from '@emotion/css';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { TextField, IconButton, Card } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import dayjs from 'dayjs';
@@ -14,14 +15,14 @@ type Props = {
   tasks: Task[];
 };
 
-const container = css`
-  display: flex;
-  align-items: center;
-`;
+const container = css({
+  display: 'flex',
+  alignItems: 'center',
+});
 
-const input = css`
-  flex-grow: 1;
-`;
+const input = css({
+  flexGrow: 1,
+});
 
 const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   const [taskTitle, setTaskTitle] = useState('');
@@ -68,12 +69,12 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   };
 
   return (
-    <Card className={container}>
+    <Card css={container}>
       <IconButton onClick={handleAddTask}>
         <AddIcon />
       </IconButton>
       <TextField
-        className={input}
+        css={input}
         label="タスクを追加する"
         onChange={handleChange}
         value={taskTitle}

@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
-import { css } from '@emotion/css';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { IconButton, Typography, Card, Container } from '@material-ui/core';
 
 import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
@@ -19,22 +20,22 @@ type Props = {
   openDrawer: (task: Task) => void;
 };
 
-const container = css`
-  display: flex;
-  align-items: center;
-`;
+const container = css({
+  display: 'flex',
+  alignItems: 'center',
+});
 
-const taskText = css`
-  flex-grow: 1;
-`;
+const taskText = css({
+  flexGrow: 1,
+});
 
-const redText = css`
-  color: red;
-`;
+const redText = css({
+  color: 'red',
+});
 
-const expirationDateText = css`
-  margin-left: 10px;
-`;
+const expirationDateText = css({
+  marginLeft: '10px',
+});
 
 const TodoElement: FC<Props> = ({
   task,
@@ -68,7 +69,7 @@ const TodoElement: FC<Props> = ({
   };
 
   return (
-    <Card className={container}>
+    <Card css={container}>
       <IconButton
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
@@ -77,19 +78,21 @@ const TodoElement: FC<Props> = ({
         {isButtonHover ? <CheckCircleOutlineIcon /> : <PanoramaFishEyeIcon />}
       </IconButton>
       {/* onClickを使いたかったため、divではなくContainerを使用 */}
-      <Container className={taskText} onClick={() => openDrawer(task)}>
+      <Container css={taskText} onClick={() => openDrawer(task)}>
         <Typography variant="subtitle1">{task.title}</Typography>
-        <div className={container}>
+        <div css={container}>
           <Typography
             variant="body2"
-            className={hasPastToday(task.expirationDate) ? redText : ''}
+            css={hasPastToday(task.expirationDate) ? redText : ''}
           >
             期限日：{task.expirationDate.format('M月D日')}
           </Typography>
           <Typography
             variant="body2"
-            className={`${expirationDateText}
-              ${hasPastToday(task.expirationDate) ? redText : ''}`}
+            css={[
+              expirationDateText,
+              hasPastToday(task.expirationDate) ? redText : '',
+            ]}
           >
             実行予定日：{task.dueDate.format('M月D日')}
           </Typography>

@@ -1,16 +1,17 @@
 import React, { FC, useState, useContext } from 'react';
 import { Button, TextField, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { css } from '@emotion/css';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { useHistory } from 'react-router-dom';
 
 import firebase from '../config/Firebase';
 import { AuthContext } from '../contexts/Auth';
 
-const container = css`
-  width: 100%;
-  text-align: center;
-`;
+const container = css({
+  width: '100%',
+  textAlign: 'center',
+});
 
 const Singup: FC = () => {
   const [email, setEmail] = useState('');
@@ -55,7 +56,7 @@ const Singup: FC = () => {
   };
 
   return (
-    <div className={container}>
+    <div css={container}>
       {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <Typography variant="h5">ToDo Storageにアカウントを作成する</Typography>
       <form>

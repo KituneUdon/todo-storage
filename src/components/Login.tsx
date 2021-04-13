@@ -1,16 +1,17 @@
 import React, { FC, useState, useContext } from 'react';
 import { Button, TextField, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { css } from '@emotion/css';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { Link, useHistory } from 'react-router-dom';
 
 import firebase from '../config/Firebase';
 import { AuthContext } from '../contexts/Auth';
 
-const container = css`
-  width=100%;
-  text-align: center;
-`;
+const container = css({
+  width: '100%',
+  textAlign: 'center',
+});
 
 const Login: FC = () => {
   const [email, setEmail] = useState('');
@@ -52,7 +53,7 @@ const Login: FC = () => {
   };
 
   return (
-    <div className={container}>
+    <div css={container}>
       <Typography variant="h5">ToDo Storageにログイン</Typography>
       {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <form>
