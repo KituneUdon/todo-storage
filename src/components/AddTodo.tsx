@@ -36,9 +36,9 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   const handleAddTask = () => {
     db.collection('tasks')
       .doc(uid)
-      .collection('todo')
+      .collection('task')
       .add({
-        taskTitle,
+        title: taskTitle,
         expirationDate: dayjs().format('YYYY-MM-DD'),
         dueDate: dayjs().format('YYYY-MM-DD'),
       })

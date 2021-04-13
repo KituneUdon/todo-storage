@@ -80,7 +80,7 @@ const Todo: FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    const tasksCollection = db.collection('tasks').doc(uid).collection('todo');
+    const tasksCollection = db.collection('tasks').doc(uid).collection('task');
 
     tasksCollection
       .get()
@@ -198,22 +198,42 @@ const Todo: FC = () => {
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
     setTasks(newTasks);
 
-    db.collection('tasks')
-      .doc(uid)
-      .collection('finishTodo')
-      .doc(task.id)
-      .set({
-        task,
-      })
-      .catch(() => {
-        setErrorMessage(
-          'ToDoの追加に失敗しました。時間をおいて再度実行してください。',
-        );
-      });
+    if (task.memo) {
+      db.collection('tasks')
+        .doc(uid)
+        .collection('finishTask')
+        .doc(task.id)
+        .set({
+          title: task.title,
+          expirationDate: task.expirationDate.format('YYYY-MM-DD'),
+          dueDate: task.dueDate.format('YYYY-MM-DD'),
+          memo: task.memo,
+        })
+        .catch(() => {
+          setErrorMessage(
+            'ToDoの追加に失敗しました。時間をおいて再度実行してください。',
+          );
+        });
+    } else {
+      db.collection('tasks')
+        .doc(uid)
+        .collection('finishTask')
+        .doc(task.id)
+        .set({
+          title: task.title,
+          expirationDate: task.expirationDate.format('YYYY-MM-DD'),
+          dueDate: task.dueDate.format('YYYY-MM-DD'),
+        })
+        .catch(() => {
+          setErrorMessage(
+            'ToDoの追加に失敗しました。時間をおいて再度実行してください。',
+          );
+        });
+    }
 
     db.collection('tasks')
       .doc(uid)
-      .collection('todo')
+      .collection('task')
       .doc(task.id)
       .delete()
       .catch(() => {
