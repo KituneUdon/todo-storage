@@ -1,11 +1,12 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useContext } from 'react';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { TextField, IconButton, Card } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import dayjs from 'dayjs';
 
-import firebase, { db } from '../config/Firebase';
+import useFirestoreAddTask from '../hooks/useAddTask';
+import { AuthContext } from '../contexts/Auth';
 
 import Task from '../types/task';
 
@@ -26,34 +27,28 @@ const input = css({
 
 const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   const [taskTitle, setTaskTitle] = useState('');
+  const { user } = useContext(AuthContext);
 
-  const uid = firebase.auth().currentUser?.uid;
+  const { uid } = user;
+  const { firestoreAddTask } = useFirestoreAddTask(uid);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskTitle(event.target.value);
   };
 
   const handleAddTask = () => {
-    db.collection('tasks')
-      .doc(uid)
-      .collection('task')
-      .add({
-        title: taskTitle,
-        expirationDate: dayjs().format('YYYY-MM-DD'),
-        dueDate: dayjs().format('YYYY-MM-DD'),
-      })
+    const task: Task = {
+      id: '',
+      title: taskTitle,
+      expirationDate: dayjs(),
+      dueDate: dayjs(),
+      memo: '',
+    };
+
+    firestoreAddTask(task)
       .then((e) => {
         setTaskTitle('');
-        setTasks([
-          ...tasks,
-          {
-            id: e.id.toString(),
-            title: taskTitle,
-            expirationDate: dayjs(),
-            dueDate: dayjs(),
-            memo: '',
-          },
-        ]);
+        setTasks([...tasks, { ...task, id: e.id.toString() }]);
       })
       .catch(() => {
         setErrorMessage(
