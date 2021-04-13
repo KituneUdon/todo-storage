@@ -20,7 +20,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     const result = db
       .collection('tasks')
       .doc(uid)
-      .collection('todo')
+      .collection('task')
       .doc(taskId)
       .update({ title });
 
@@ -34,7 +34,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     const result = db
       .collection('tasks')
       .doc(uid)
-      .collection('todo')
+      .collection('task')
       .doc(taskId)
       .update({ expirationDate: expirationDate.format('YYYY-MM-DD') });
 
@@ -45,7 +45,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     const result = db
       .collection('tasks')
       .doc(uid)
-      .collection('todo')
+      .collection('task')
       .doc(taskId)
       .update({ dueDate: dueDate.format('YYYY-MM-DD') });
 
@@ -56,7 +56,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     const result = db
       .collection('tasks')
       .doc(uid)
-      .collection('todo')
+      .collection('task')
       .doc(taskId)
       .update({ memo });
 
