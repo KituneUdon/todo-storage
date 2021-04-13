@@ -50,9 +50,19 @@ const TodoElement: FC<Props> = ({
       >
         {isButtonHover ? <CheckCircleOutlineIcon /> : <PanoramaFishEyeIcon />}
       </IconButton>
-      <Typography className={taskText} onClick={() => openDrawer(task)}>
-        {task.title}
-      </Typography>
+      <div className={taskText}>
+        <Typography onClick={() => openDrawer(task)} variant="subtitle1">
+          {task.title}
+        </Typography>
+        <div className={container}>
+          <Typography variant="body2">
+            期限日：{task.expirationDate.format('M月D日')}
+          </Typography>
+          <Typography variant="body2">
+            予定日：{task.dueDate.format('M月D日')}
+          </Typography>
+        </div>
+      </div>
       <IconButton onClick={handleTaskDelete}>
         <DeleteIcon />
       </IconButton>
