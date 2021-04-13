@@ -8,10 +8,7 @@ import {
   TextField,
 } from '@material-ui/core';
 import { css } from '@emotion/css';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import dayjs from 'dayjs';
 import ja from 'dayjs/locale/ja';
 import DayJsUtils from '@date-io/dayjs';
@@ -74,7 +71,8 @@ const TodoDetail: FC<Props> = ({
       <Divider />
       <List>
         <ListItem>
-          <KeyboardDatePicker
+          <DatePicker
+            disableToolbar
             className={datepicker}
             value={taskDetail.expirationDate}
             label="期限日"
@@ -88,7 +86,8 @@ const TodoDetail: FC<Props> = ({
           />
         </ListItem>
         <ListItem>
-          <KeyboardDatePicker
+          <DatePicker
+            disableToolbar
             className={datepicker}
             value={taskDetail.dueDate}
             label="実行予定日"
