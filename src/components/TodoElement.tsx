@@ -6,7 +6,11 @@ import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import Task from '../types/task';
+
+dayjs.extend(isSameOrBefore);
 
 type Props = {
   task: Task;
@@ -22,6 +26,14 @@ const container = css`
 
 const taskText = css`
   flex-grow: 1;
+`;
+
+const redText = css`
+  color: red;
+`;
+
+const expirationDateText = css`
+  margin-left: 10px;
 `;
 
 const TodoElement: FC<Props> = ({
@@ -41,6 +53,20 @@ const TodoElement: FC<Props> = ({
     taskDelete(task);
   };
 
+  const hasPastToday = (date: dayjs.Dayjs) => {
+    const today = dayjs();
+
+    if (
+      date.isSameOrBefore(today, 'year') &&
+      date.isSameOrBefore(today, 'month') &&
+      date.isBefore(today, 'day')
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
     <Card className={container}>
       <IconButton
@@ -55,10 +81,17 @@ const TodoElement: FC<Props> = ({
           {task.title}
         </Typography>
         <div className={container}>
-          <Typography variant="body2">
+          <Typography
+            variant="body2"
+            className={hasPastToday(task.expirationDate) ? redText : ''}
+          >
             期限日：{task.expirationDate.format('M月D日')}
           </Typography>
-          <Typography variant="body2">
+          <Typography
+            variant="body2"
+            className={`${expirationDateText}
+              ${hasPastToday(task.expirationDate) ? redText : ''}`}
+          >
             予定日：{task.dueDate.format('M月D日')}
           </Typography>
         </div>
