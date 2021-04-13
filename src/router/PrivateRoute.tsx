@@ -1,6 +1,7 @@
 import React, { FC, useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
+/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
 import { AuthContext } from '../contexts/Auth';
