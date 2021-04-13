@@ -26,6 +26,7 @@ import PrivateRoute from '../router/PrivateRoute';
 import useUpdateTasks from '../hooks/useUpdateTasks';
 import useFirestoreUpdateTask from '../hooks/useFirestoreUpdateTask';
 import useFinishTask from '../hooks/useFinishTask';
+import useDeleteTask from '../hooks/useDeleteTask';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -78,6 +79,7 @@ const Todo: FC = () => {
     firestoreUpdateMemo,
   } = useFirestoreUpdateTask(uid);
   const { finishTask } = useFinishTask(uid);
+  const { deleteTask } = useDeleteTask(uid);
 
   const history = useHistory();
 
@@ -200,7 +202,7 @@ const Todo: FC = () => {
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
     setTasks(newTasks);
 
-    finishTask(task).catch(() => setErrorMessage("通信エラーが発生しました。"));
+    finishTask(task).catch(() => setErrorMessage('通信エラーが発生しました。'));
   };
 
   const taskDelete = (task: Task) => {
@@ -208,16 +210,11 @@ const Todo: FC = () => {
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
     setTasks(newTasks);
 
-    db.collection('tasks')
-      .doc(uid)
-      .collection('todo')
-      .doc(task.id)
-      .delete()
-      .catch(() => {
-        setErrorMessage(
-          'ToDoの削除に失敗しました。時間をおいて再度実行してください。',
-        );
-      });
+    deleteTask(task).catch(() => {
+      setErrorMessage(
+        'ToDoの削除に失敗しました。時間をおいて再度実行してください。',
+      );
+    });
   };
 
   return (
