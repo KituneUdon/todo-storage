@@ -91,7 +91,7 @@ const TodoElement: FC<Props> = ({
             className={`${expirationDateText}
               ${hasPastToday(task.expirationDate) ? redText : ''}`}
           >
-            予定日：{task.dueDate.format('M月D日')}
+            実行予定日：{task.dueDate.format('M月D日')}
           </Typography>
         </div>
       </Container>
