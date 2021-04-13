@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { css } from '@emotion/css';
-import { IconButton, Typography, Card } from '@material-ui/core';
+import { IconButton, Typography, Card, Container } from '@material-ui/core';
 
 import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -76,10 +76,9 @@ const TodoElement: FC<Props> = ({
       >
         {isButtonHover ? <CheckCircleOutlineIcon /> : <PanoramaFishEyeIcon />}
       </IconButton>
-      <div className={taskText}>
-        <Typography onClick={() => openDrawer(task)} variant="subtitle1">
-          {task.title}
-        </Typography>
+      {/* onClickを使いたかったため、divではなくContainerを使用 */}
+      <Container className={taskText} onClick={() => openDrawer(task)}>
+        <Typography variant="subtitle1">{task.title}</Typography>
         <div className={container}>
           <Typography
             variant="body2"
@@ -95,7 +94,7 @@ const TodoElement: FC<Props> = ({
             予定日：{task.dueDate.format('M月D日')}
           </Typography>
         </div>
-      </div>
+      </Container>
       <IconButton onClick={handleTaskDelete}>
         <DeleteIcon />
       </IconButton>
