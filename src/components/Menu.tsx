@@ -8,7 +8,8 @@ import {
   ListItemText,
   ListItemIcon,
 } from '@material-ui/core';
-import { css } from '@emotion/css';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { useHistory } from 'react-router-dom';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -17,9 +18,9 @@ import WbSunnyIcon from '@material-ui/icons/WbSunny';
 
 const menuWidth = 200;
 
-const menu = css`
-  width: ${menuWidth};
-`;
+const menu = css({
+  width: menuWidth,
+});
 
 type Props = {
   menuOpen: boolean;
@@ -30,7 +31,7 @@ const Menu: FC<Props> = ({ menuOpen, handleMenuClose }) => {
   const history = useHistory();
 
   return (
-    <Drawer anchor="left" open={menuOpen} variant="persistent" className={menu}>
+    <Drawer anchor="left" open={menuOpen} variant="persistent" css={menu}>
       <IconButton onClick={handleMenuClose}>
         <ChevronLeftIcon />
       </IconButton>

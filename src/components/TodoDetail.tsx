@@ -7,7 +7,8 @@ import {
   ListItem,
   TextField,
 } from '@material-ui/core';
-import { css } from '@emotion/css';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import dayjs from 'dayjs';
 import ja from 'dayjs/locale/ja';
@@ -19,13 +20,13 @@ import Task from '../types/task';
 
 dayjs.locale(ja);
 
-const drawer = css`
-  width: 360px;
-`;
+const drawer = css({
+  width: '360px',
+});
 
-const datepicker = css`
-  flex-grow: 1;
-`;
+const datepicker = css({
+  flexGrow: 1,
+});
 
 type Props = {
   oepn: boolean;
@@ -48,11 +49,11 @@ const TodoDetail: FC<Props> = ({
 }) => (
   <MuiPickersUtilsProvider locale={ja} utils={DayJsUtils}>
     <Drawer
-      className={drawer}
+      css={drawer}
       variant="persistent"
       anchor="right"
       open={oepn}
-      classes={{ paper: drawer }}
+      classes={{ paper: drawer.styles }}
     >
       <IconButton onClick={drawerClose}>
         <ChevronRightIcon />
@@ -73,7 +74,7 @@ const TodoDetail: FC<Props> = ({
         <ListItem>
           <DatePicker
             disableToolbar
-            className={datepicker}
+            css={datepicker}
             value={taskDetail.expirationDate}
             label="期限日"
             onChange={(date) => {
@@ -88,7 +89,7 @@ const TodoDetail: FC<Props> = ({
         <ListItem>
           <DatePicker
             disableToolbar
-            className={datepicker}
+            css={datepicker}
             value={taskDetail.dueDate}
             label="実行予定日"
             onChange={(date) => {
