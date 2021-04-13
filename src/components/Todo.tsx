@@ -42,7 +42,7 @@ const titleStyle = css({
 const content = css({});
 
 const contentLeftShift = css({
-  width: `calc(100% - ${taskDetailWidth}px`,
+  width: `calc(100% - ${taskDetailWidth}px)`,
   marginRight: `${taskDetailWidth}px`,
 });
 

@@ -53,7 +53,7 @@ const TodoDetail: FC<Props> = ({
       variant="persistent"
       anchor="right"
       open={oepn}
-      classes={{ paper: drawer.styles }}
+      classes={{ paper: drawer.name }}
     >
       <IconButton onClick={drawerClose}>
         <ChevronRightIcon />
