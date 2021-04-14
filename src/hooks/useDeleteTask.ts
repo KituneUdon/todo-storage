@@ -10,7 +10,7 @@ const useDeleteTask = (uid: string): ReturnValueType => {
     const result = db
       .collection('tasks')
       .doc(uid)
-      .collection('todo')
+      .collection('task')
       .doc(task.id)
       .delete();
 

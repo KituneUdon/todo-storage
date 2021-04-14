@@ -7,6 +7,7 @@ import {
   ListItem,
   TextField,
 } from '@material-ui/core';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
@@ -28,6 +29,14 @@ const datepicker = css({
   flexGrow: 1,
 });
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    drawer: {
+      width: '360px',
+    },
+  }),
+);
+
 type Props = {
   oepn: boolean;
   drawerClose: () => void;
@@ -46,76 +55,80 @@ const TodoDetail: FC<Props> = ({
   expirationDateChange,
   dueDateChange,
   memoChange,
-}) => (
-  <MuiPickersUtilsProvider locale={ja} utils={DayJsUtils}>
-    <Drawer
-      css={drawer}
-      variant="persistent"
-      anchor="right"
-      open={oepn}
-      classes={{ paper: drawer.styles }}
-    >
-      <IconButton onClick={drawerClose}>
-        <ChevronRightIcon />
-      </IconButton>
-      <Divider />
-      <List>
-        <ListItem>
-          <TextField
-            value={taskDetail.title}
-            label="タスク"
-            fullWidth
-            onChange={(e) => titleChange(e.target.value)}
-          />
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem>
-          <DatePicker
-            disableToolbar
-            css={datepicker}
-            value={taskDetail.expirationDate}
-            label="期限日"
-            onChange={(date) => {
-              if (date) {
-                const strDate = date.toString();
-                expirationDateChange(dayjs(strDate));
-              }
-            }}
-            format="YYYY/MM/DD"
-          />
-        </ListItem>
-        <ListItem>
-          <DatePicker
-            disableToolbar
-            css={datepicker}
-            value={taskDetail.dueDate}
-            label="実行予定日"
-            onChange={(date) => {
-              if (date) {
-                const strDate = date.toString();
-                dueDateChange(dayjs(strDate));
-              }
-            }}
-            format="YYYY/MM/DD"
-          />
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem>
-          <TextField
-            value={taskDetail.memo ?? ``}
-            fullWidth
-            multiline
-            onChange={(t) => memoChange(t.target.value)}
-            label="メモ"
-          />
-        </ListItem>
-      </List>
-    </Drawer>
-  </MuiPickersUtilsProvider>
-);
+}) => {
+  const classes = useStyles();
+
+  return (
+    <MuiPickersUtilsProvider locale={ja} utils={DayJsUtils}>
+      <Drawer
+        css={drawer}
+        variant="persistent"
+        anchor="right"
+        open={oepn}
+        classes={{ paper: classes.drawer }}
+      >
+        <IconButton onClick={drawerClose}>
+          <ChevronRightIcon />
+        </IconButton>
+        <Divider />
+        <List>
+          <ListItem>
+            <TextField
+              value={taskDetail.title}
+              label="タスク"
+              fullWidth
+              onChange={(e) => titleChange(e.target.value)}
+            />
+          </ListItem>
+        </List>
+        <Divider />
+        <List>
+          <ListItem>
+            <DatePicker
+              disableToolbar
+              css={datepicker}
+              value={taskDetail.expirationDate}
+              label="期限日"
+              onChange={(date) => {
+                if (date) {
+                  const strDate = date.toString();
+                  expirationDateChange(dayjs(strDate));
+                }
+              }}
+              format="YYYY/MM/DD"
+            />
+          </ListItem>
+          <ListItem>
+            <DatePicker
+              disableToolbar
+              css={datepicker}
+              value={taskDetail.dueDate}
+              label="実行予定日"
+              onChange={(date) => {
+                if (date) {
+                  const strDate = date.toString();
+                  dueDateChange(dayjs(strDate));
+                }
+              }}
+              format="YYYY/MM/DD"
+            />
+          </ListItem>
+        </List>
+        <Divider />
+        <List>
+          <ListItem>
+            <TextField
+              value={taskDetail.memo ?? ``}
+              fullWidth
+              multiline
+              onChange={(t) => memoChange(t.target.value)}
+              label="メモ"
+            />
+          </ListItem>
+        </List>
+      </Drawer>
+    </MuiPickersUtilsProvider>
+  );
+};
 
 export default TodoDetail;
