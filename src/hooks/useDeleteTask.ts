@@ -8,9 +8,9 @@ type ReturnValueType = {
 const useDeleteTask = (uid: string): ReturnValueType => {
   const deleteTask = (task: Task) => {
     const result = db
-      .collection('tasks')
+      .collection('users')
       .doc(uid)
-      .collection('task')
+      .collection('tasks')
       .doc(task.id)
       .delete();
 

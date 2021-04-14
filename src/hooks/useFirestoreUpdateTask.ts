@@ -18,9 +18,9 @@ type returnType = {
 const useFirestoreUpdateTask = (uid: string): returnType => {
   const firestoreUpdateTitle = (taskId: string, title: string) => {
     const result = db
-      .collection('tasks')
+      .collection('users')
       .doc(uid)
-      .collection('task')
+      .collection('tasks')
       .doc(taskId)
       .update({ title });
 
@@ -32,9 +32,9 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     expirationDate: dayjs.Dayjs,
   ) => {
     const result = db
-      .collection('tasks')
+      .collection('users')
       .doc(uid)
-      .collection('task')
+      .collection('tasks')
       .doc(taskId)
       .update({ expirationDate: expirationDate.format('YYYY-MM-DD') });
 
@@ -43,9 +43,9 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
 
   const firestoreUpdateDueDate = (taskId: string, dueDate: dayjs.Dayjs) => {
     const result = db
-      .collection('tasks')
+      .collection('users')
       .doc(uid)
-      .collection('task')
+      .collection('tasks')
       .doc(taskId)
       .update({ dueDate: dueDate.format('YYYY-MM-DD') });
 
@@ -54,9 +54,9 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
 
   const firestoreUpdateMemo = (taskId: string, memo: string) => {
     const result = db
-      .collection('tasks')
+      .collection('users')
       .doc(uid)
-      .collection('task')
+      .collection('tasks')
       .doc(taskId)
       .update({ memo });
 

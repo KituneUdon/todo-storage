@@ -8,9 +8,9 @@ const useFinishTask = (
     try {
       if (task.memo) {
         await db
-          .collection('tasks')
+          .collection('users')
           .doc(uid)
-          .collection('finishTask')
+          .collection('finishTasks')
           .doc(task.id)
           .set({
             title: task.title,
@@ -20,9 +20,9 @@ const useFinishTask = (
           });
       } else {
         await db
-          .collection('tasks')
+          .collection('users')
           .doc(uid)
-          .collection('finishTask')
+          .collection('finishTasks')
           .doc(task.id)
           .set({
             title: task.title,
@@ -32,9 +32,9 @@ const useFinishTask = (
       }
 
       return db
-        .collection('tasks')
+        .collection('users')
         .doc(uid)
-        .collection('task')
+        .collection('tasks')
         .doc(task.id)
         .delete();
     } catch {
