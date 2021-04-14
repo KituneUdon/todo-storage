@@ -13,6 +13,10 @@ type returnType = {
     dueDate: dayjs.Dayjs,
   ) => Promise<void>;
   firestoreUpdateMemo: (taskId: string, memo: string) => Promise<void>;
+  firestoreUpdateHasRepeat: (
+    taskId: string,
+    hasRepeat: boolean,
+  ) => Promise<void>;
 };
 
 const useFirestoreUpdateTask = (uid: string): returnType => {
@@ -63,11 +67,23 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     return result;
   };
 
+  const firestoreUpdateHasRepeat = (taskId: string, hasRepeat: boolean) => {
+    const result = db
+      .collection('users')
+      .doc(uid)
+      .collection('tasks')
+      .doc(taskId)
+      .update({ hasRepeat });
+
+    return result;
+  };
+
   return {
     firestoreUpdateTitle,
     firestoreUpdateExpirationDate,
     firestoreUpdateDueDate,
     firestoreUpdateMemo,
+    firestoreUpdateHasRepeat,
   };
 };
 

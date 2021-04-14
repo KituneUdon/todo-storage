@@ -25,6 +25,8 @@ const useFirestoreAddTask = (uid: string): ReturnValue => {
         title: task.title,
         expirationDate: task.expirationDate.format('YYYY-MM-DD'),
         dueDate: task.dueDate.format('YYYY-MM-DD'),
+        memo: task.memo,
+        hasRepeat: task.hasRepeat,
       });
 
   return { firestoreAddTask };

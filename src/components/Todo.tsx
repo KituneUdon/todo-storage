@@ -66,6 +66,7 @@ const Todo: FC = () => {
     expirationDate: dayjs(),
     dueDate: dayjs(),
     memo: '',
+    hasRepeat: false,
   };
 
   const [taskDetail, setTaskDetail] = useState(defaultTaskDetail);
@@ -77,8 +78,9 @@ const Todo: FC = () => {
     firestoreUpdateExpirationDate,
     firestoreUpdateDueDate,
     firestoreUpdateMemo,
+    firestoreUpdateHasRepeat,
   } = useFirestoreUpdateTask(uid);
-  const { finishTask } = useFinishTask(uid);
+  const { finishTask, finishRepeatTask } = useFinishTask(uid);
   const { deleteTask } = useDeleteTask(uid);
 
   const history = useHistory();
@@ -96,10 +98,11 @@ const Todo: FC = () => {
           const expirationDate = dayjs(doc.get('expirationDate') as string);
           const dueDate = dayjs(doc.get('dueDate') as string);
           const memo = doc.get('memo') as string;
+          const hasRepeat = doc.get('hasRepeat') as boolean;
 
           getTasks = [
             ...getTasks,
-            { id, title, expirationDate, dueDate, memo },
+            { id, title, expirationDate, dueDate, memo, hasRepeat },
           ];
         });
         setTasks(getTasks);
@@ -182,6 +185,18 @@ const Todo: FC = () => {
     setTasks(newTasks);
   };
 
+  const handleHasRepeactChange = () => {
+    const task = { ...taskDetail, hasRepeat: !taskDetail.hasRepeat };
+    setTaskDetail(task);
+
+    firestoreUpdateHasRepeat(task.id, task.hasRepeat).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
+
+    const newTasks = updateTasks(task);
+    setTasks(newTasks);
+  };
+
   const handleLogout = () => {
     firebase
       .auth()
@@ -200,9 +215,22 @@ const Todo: FC = () => {
   const taskFinish = (task: Task) => {
     const oldTasks = [...tasks];
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
-    setTasks(newTasks);
 
-    finishTask(task).catch(() => setErrorMessage('通信エラーが発生しました。'));
+    if (task.hasRepeat) {
+      finishRepeatTask(task)
+        .then((t) => {
+          // eslint-disable-next-line
+          console.log(t.expirationDate.format('YYYY-MM-DD'));
+          setTasks([...newTasks, t]);
+        })
+        .catch(() => setErrorMessage('通信エラーが発生しました。'));
+    } else {
+      finishTask(task)
+        .then(() => {
+          setTasks(newTasks);
+        })
+        .catch(() => setErrorMessage('通信エラーが発生しました。'));
+    }
   };
 
   const taskDelete = (task: Task) => {
@@ -285,6 +313,7 @@ const Todo: FC = () => {
         expirationDateChange={handleTaskDetailExpirationDateChange}
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}
+        hasRepeatChange={handleHasRepeactChange}
       />
       <Menu menuOpen={menuOpen} handleMenuClose={handleMenuClose} />
     </>
