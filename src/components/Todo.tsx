@@ -80,7 +80,7 @@ const Todo: FC = () => {
     firestoreUpdateMemo,
     firestoreUpdateHasRepeat,
   } = useFirestoreUpdateTask(uid);
-  const { finishTask } = useFinishTask(uid);
+  const { finishTask, finishRepeatTask } = useFinishTask(uid);
   const { deleteTask } = useDeleteTask(uid);
 
   const history = useHistory();
@@ -215,9 +215,22 @@ const Todo: FC = () => {
   const taskFinish = (task: Task) => {
     const oldTasks = [...tasks];
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
-    setTasks(newTasks);
 
-    finishTask(task).catch(() => setErrorMessage('通信エラーが発生しました。'));
+    if (task.hasRepeat) {
+      finishRepeatTask(task)
+        .then((t) => {
+          // eslint-disable-next-line
+          console.log(t.expirationDate.format('YYYY-MM-DD'));
+          setTasks([...newTasks, t]);
+        })
+        .catch(() => setErrorMessage('通信エラーが発生しました。'));
+    } else {
+      finishTask(task)
+        .then(() => {
+          setTasks(newTasks);
+        })
+        .catch(() => setErrorMessage('通信エラーが発生しました。'));
+    }
   };
 
   const taskDelete = (task: Task) => {

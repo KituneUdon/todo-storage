@@ -73,7 +73,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
       .doc(uid)
       .collection('tasks')
       .doc(taskId)
-      .update({ hasRepeat: !hasRepeat });
+      .update({ hasRepeat });
 
     return result;
   };
