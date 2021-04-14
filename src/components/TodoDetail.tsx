@@ -6,6 +6,10 @@ import {
   List,
   ListItem,
   TextField,
+  FormControlLabel,
+  Switch,
+  FormControl,
+  FormGroup,
 } from '@material-ui/core';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 /** @jsxImportSource @emotion/react */
@@ -25,7 +29,7 @@ const drawer = css({
   width: '360px',
 });
 
-const datepicker = css({
+const fullWidth = css({
   flexGrow: 1,
 });
 
@@ -45,6 +49,7 @@ type Props = {
   expirationDateChange: (expirationDate: dayjs.Dayjs) => void;
   dueDateChange: (dueDate: dayjs.Dayjs) => void;
   memoChange: (memo: string) => void;
+  hasRepeatChange: () => void;
 };
 
 const TodoDetail: FC<Props> = ({
@@ -55,6 +60,7 @@ const TodoDetail: FC<Props> = ({
   expirationDateChange,
   dueDateChange,
   memoChange,
+  hasRepeatChange,
 }) => {
   const classes = useStyles();
 
@@ -86,7 +92,7 @@ const TodoDetail: FC<Props> = ({
           <ListItem>
             <DatePicker
               disableToolbar
-              css={datepicker}
+              css={fullWidth}
               value={taskDetail.expirationDate}
               label="期限日"
               onChange={(date) => {
@@ -101,7 +107,7 @@ const TodoDetail: FC<Props> = ({
           <ListItem>
             <DatePicker
               disableToolbar
-              css={datepicker}
+              css={fullWidth}
               value={taskDetail.dueDate}
               label="実行予定日"
               onChange={(date) => {
@@ -112,6 +118,24 @@ const TodoDetail: FC<Props> = ({
               }}
               format="YYYY/MM/DD"
             />
+          </ListItem>
+          <ListItem>
+            <FormControl component="fieldset">
+              <FormGroup aria-label="position" row>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={taskDetail.hasRepeat}
+                      onChange={hasRepeatChange}
+                      name="repeat"
+                    />
+                  }
+                  label="繰り返し"
+                  labelPlacement="start"
+                  css={fullWidth}
+                />
+              </FormGroup>
+            </FormControl>
           </ListItem>
         </List>
         <Divider />

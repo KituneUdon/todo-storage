@@ -78,6 +78,7 @@ const Todo: FC = () => {
     firestoreUpdateExpirationDate,
     firestoreUpdateDueDate,
     firestoreUpdateMemo,
+    firestoreUpdateHasRepeat,
   } = useFirestoreUpdateTask(uid);
   const { finishTask } = useFinishTask(uid);
   const { deleteTask } = useDeleteTask(uid);
@@ -97,7 +98,7 @@ const Todo: FC = () => {
           const expirationDate = dayjs(doc.get('expirationDate') as string);
           const dueDate = dayjs(doc.get('dueDate') as string);
           const memo = doc.get('memo') as string;
-          const hasRepeat = doc.get('memo') as boolean;
+          const hasRepeat = doc.get('hasRepeat') as boolean;
 
           getTasks = [
             ...getTasks,
@@ -177,6 +178,18 @@ const Todo: FC = () => {
     setTaskDetail(task);
 
     firestoreUpdateMemo(task.id, memo).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
+
+    const newTasks = updateTasks(task);
+    setTasks(newTasks);
+  };
+
+  const handleHasRepeactChange = () => {
+    const task = { ...taskDetail, hasRepeat: !taskDetail.hasRepeat };
+    setTaskDetail(task);
+
+    firestoreUpdateHasRepeat(task.id, task.hasRepeat).catch(() =>
       setErrorMessage('変更に失敗しました。'),
     );
 
@@ -287,6 +300,7 @@ const Todo: FC = () => {
         expirationDateChange={handleTaskDetailExpirationDateChange}
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}
+        hasRepeatChange={handleHasRepeactChange}
       />
       <Menu menuOpen={menuOpen} handleMenuClose={handleMenuClose} />
     </>
