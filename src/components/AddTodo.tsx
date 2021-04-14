@@ -43,6 +43,7 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
       expirationDate: dayjs(),
       dueDate: dayjs(),
       memo: '',
+      hasRepeat: false,
     };
 
     firestoreAddTask(task)

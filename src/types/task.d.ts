@@ -6,6 +6,7 @@ type Task = {
   expirationDate: dayjs.Dayjs;
   dueDate: dayjs.Dayjs;
   memo: string;
+  hasRepeat: boolean;
 };
 
 export default Task;

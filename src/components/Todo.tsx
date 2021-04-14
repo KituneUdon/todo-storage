@@ -66,6 +66,7 @@ const Todo: FC = () => {
     expirationDate: dayjs(),
     dueDate: dayjs(),
     memo: '',
+    hasRepeat: false,
   };
 
   const [taskDetail, setTaskDetail] = useState(defaultTaskDetail);
@@ -96,10 +97,11 @@ const Todo: FC = () => {
           const expirationDate = dayjs(doc.get('expirationDate') as string);
           const dueDate = dayjs(doc.get('dueDate') as string);
           const memo = doc.get('memo') as string;
+          const hasRepeat = doc.get('memo') as boolean;
 
           getTasks = [
             ...getTasks,
-            { id, title, expirationDate, dueDate, memo },
+            { id, title, expirationDate, dueDate, memo, hasRepeat },
           ];
         });
         setTasks(getTasks);
