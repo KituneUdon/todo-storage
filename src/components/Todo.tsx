@@ -84,7 +84,7 @@ const Todo: FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    const tasksCollection = db.collection('tasks').doc(uid).collection('task');
+    const tasksCollection = db.collection('users').doc(uid).collection('tasks');
 
     tasksCollection
       .get()

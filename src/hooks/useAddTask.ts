@@ -18,9 +18,9 @@ const useFirestoreAddTask = (uid: string): ReturnValue => {
     firebase.firestore.DocumentReference<firebase.firestore.DocumentData>
   > =>
     db
-      .collection('tasks')
+      .collection('users')
       .doc(uid)
-      .collection('task')
+      .collection('tasks')
       .add({
         title: task.title,
         expirationDate: task.expirationDate.format('YYYY-MM-DD'),
