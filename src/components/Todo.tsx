@@ -136,10 +136,6 @@ const Todo: FC = () => {
 
     setTaskDetail(task);
 
-    firestoreUpdateTitle(task.id, title).catch(() =>
-      setErrorMessage('変更に失敗しました。'),
-    );
-
     const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
@@ -195,6 +191,19 @@ const Todo: FC = () => {
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
+  };
+
+  const updateFirestoreTaskTitle = (taskid: string) => {
+    const updateTargetTask = tasks.find((t) => t.id === taskid);
+
+    if (updateTargetTask) {
+      firestoreUpdateTitle(
+        updateTargetTask.id,
+        updateTargetTask.title,
+      ).catch(() => setErrorMessage('変更に失敗しました。'));
+    } else {
+      setErrorMessage('変更に失敗しました。');
+    }
   };
 
   const handleLogout = () => {
@@ -314,6 +323,7 @@ const Todo: FC = () => {
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}
         hasRepeatChange={handleHasRepeactChange}
+        updateFirestoreTaskTitle={updateFirestoreTaskTitle}
       />
       <Menu menuOpen={menuOpen} handleMenuClose={handleMenuClose} />
     </>

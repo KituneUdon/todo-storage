@@ -50,6 +50,7 @@ type Props = {
   dueDateChange: (dueDate: dayjs.Dayjs) => void;
   memoChange: (memo: string) => void;
   hasRepeatChange: () => void;
+  updateFirestoreTaskTitle: (taskid: string) => void;
 };
 
 const TodoDetail: FC<Props> = ({
@@ -61,6 +62,7 @@ const TodoDetail: FC<Props> = ({
   dueDateChange,
   memoChange,
   hasRepeatChange,
+  updateFirestoreTaskTitle,
 }) => {
   const classes = useStyles();
 
@@ -84,6 +86,7 @@ const TodoDetail: FC<Props> = ({
               label="タスク"
               fullWidth
               onChange={(e) => titleChange(e.target.value)}
+              onBlur={() => updateFirestoreTaskTitle(taskDetail.id)}
             />
           </ListItem>
         </List>
