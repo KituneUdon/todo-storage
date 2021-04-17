@@ -248,6 +248,8 @@ const Todo: FC = () => {
     const oldTasks = [...tasks];
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
 
+    setTaskDetailOpen(false);
+
     if (task.hasRepeat) {
       finishRepeatTask(task)
         .then((t) => {
@@ -269,6 +271,8 @@ const Todo: FC = () => {
     const oldTasks = [...tasks];
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
     setTasks(newTasks);
+
+    setTaskDetailOpen(false);
 
     deleteTask(task).catch(() => {
       setErrorMessage(
