@@ -133,12 +133,7 @@ const Todo: FC = () => {
 
   const handleTaskTitleChange = (title: string) => {
     const task = { ...taskDetail, title };
-
     setTaskDetail(task);
-
-    firestoreUpdateTitle(task.id, title).catch(() =>
-      setErrorMessage('変更に失敗しました。'),
-    );
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
@@ -148,12 +143,7 @@ const Todo: FC = () => {
     expirationDate: dayjs.Dayjs,
   ) => {
     const task = { ...taskDetail, expirationDate };
-
     setTaskDetail(task);
-
-    firestoreUpdateExpirationDate(task.id, expirationDate).catch(() =>
-      setErrorMessage('変更に失敗しました。'),
-    );
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
@@ -161,12 +151,7 @@ const Todo: FC = () => {
 
   const handleTaskDetailDueDateChange = (dueDate: dayjs.Dayjs) => {
     const task = { ...taskDetail, dueDate };
-
     setTaskDetail(task);
-
-    firestoreUpdateDueDate(task.id, dueDate).catch(() =>
-      setErrorMessage('変更に失敗しました。'),
-    );
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
@@ -174,12 +159,7 @@ const Todo: FC = () => {
 
   const handleTaskDetailMemoChange = (memo: string) => {
     const task = { ...taskDetail, memo };
-
     setTaskDetail(task);
-
-    firestoreUpdateMemo(task.id, memo).catch(() =>
-      setErrorMessage('変更に失敗しました。'),
-    );
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
@@ -195,6 +175,58 @@ const Todo: FC = () => {
 
     const newTasks = updateTasks(task);
     setTasks(newTasks);
+  };
+
+  const updateFirestoreTaskTitle = (taskid: string) => {
+    const updateTargetTask = tasks.find((t) => t.id === taskid);
+
+    if (updateTargetTask) {
+      firestoreUpdateTitle(
+        updateTargetTask.id,
+        updateTargetTask.title,
+      ).catch(() => setErrorMessage('変更に失敗しました。'));
+    } else {
+      setErrorMessage('変更に失敗しました。');
+    }
+  };
+
+  const updateFirestoreTaskExpirationDate = (taskid: string) => {
+    const updateTargetTask = tasks.find((t) => t.id === taskid);
+
+    if (updateTargetTask) {
+      firestoreUpdateExpirationDate(
+        updateTargetTask.id,
+        updateTargetTask.expirationDate,
+      ).catch(() => setErrorMessage('変更に失敗しました。'));
+    } else {
+      setErrorMessage('変更に失敗しました。');
+    }
+  };
+
+  const updateFirestoreTaskDueDate = (taskid: string) => {
+    const updateTargetTask = tasks.find((t) => t.id === taskid);
+
+    if (updateTargetTask) {
+      firestoreUpdateDueDate(
+        updateTargetTask.id,
+        updateTargetTask.dueDate,
+      ).catch(() => setErrorMessage('変更に失敗しました。'));
+    } else {
+      setErrorMessage('変更に失敗しました。');
+    }
+  };
+
+  const updateFirestoreTaskMemo = (taskid: string) => {
+    const updateTargetTask = tasks.find((t) => t.id === taskid);
+
+    if (updateTargetTask) {
+      firestoreUpdateMemo(
+        updateTargetTask.id,
+        updateTargetTask.memo,
+      ).catch(() => setErrorMessage('変更に失敗しました。'));
+    } else {
+      setErrorMessage('変更に失敗しました。');
+    }
   };
 
   const handleLogout = () => {
@@ -314,6 +346,10 @@ const Todo: FC = () => {
         dueDateChange={handleTaskDetailDueDateChange}
         memoChange={handleTaskDetailMemoChange}
         hasRepeatChange={handleHasRepeactChange}
+        updateFirestoreTaskTitle={updateFirestoreTaskTitle}
+        updateFirestoreTaskExpirationDate={updateFirestoreTaskExpirationDate}
+        updateFirestoreTaskDueDate={updateFirestoreTaskDueDate}
+        updateFirestoreTaskMemo={updateFirestoreTaskMemo}
       />
       <Menu menuOpen={menuOpen} handleMenuClose={handleMenuClose} />
     </>

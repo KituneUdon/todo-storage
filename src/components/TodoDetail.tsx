@@ -50,6 +50,10 @@ type Props = {
   dueDateChange: (dueDate: dayjs.Dayjs) => void;
   memoChange: (memo: string) => void;
   hasRepeatChange: () => void;
+  updateFirestoreTaskTitle: (taskid: string) => void;
+  updateFirestoreTaskExpirationDate: (taskid: string) => void;
+  updateFirestoreTaskDueDate: (taskid: string) => void;
+  updateFirestoreTaskMemo: (taskid: string) => void;
 };
 
 const TodoDetail: FC<Props> = ({
@@ -61,6 +65,10 @@ const TodoDetail: FC<Props> = ({
   dueDateChange,
   memoChange,
   hasRepeatChange,
+  updateFirestoreTaskTitle,
+  updateFirestoreTaskExpirationDate,
+  updateFirestoreTaskDueDate,
+  updateFirestoreTaskMemo,
 }) => {
   const classes = useStyles();
 
@@ -84,6 +92,7 @@ const TodoDetail: FC<Props> = ({
               label="タスク"
               fullWidth
               onChange={(e) => titleChange(e.target.value)}
+              onBlur={() => updateFirestoreTaskTitle(taskDetail.id)}
             />
           </ListItem>
         </List>
@@ -102,6 +111,7 @@ const TodoDetail: FC<Props> = ({
                 }
               }}
               format="YYYY/MM/DD"
+              onBlur={() => updateFirestoreTaskExpirationDate(taskDetail.id)}
             />
           </ListItem>
           <ListItem>
@@ -117,6 +127,7 @@ const TodoDetail: FC<Props> = ({
                 }
               }}
               format="YYYY/MM/DD"
+              onBlur={() => updateFirestoreTaskDueDate(taskDetail.id)}
             />
           </ListItem>
           <ListItem>
@@ -147,6 +158,7 @@ const TodoDetail: FC<Props> = ({
               multiline
               onChange={(t) => memoChange(t.target.value)}
               label="メモ"
+              onBlur={() => updateFirestoreTaskMemo(taskDetail.id)}
             />
           </ListItem>
         </List>
