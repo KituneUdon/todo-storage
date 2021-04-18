@@ -33,10 +33,16 @@ const menuWidth = 200;
 
 const container = css({
   margin: '10px',
+  flexGrow: 1,
+  marginLeft: '72px',
 });
 
 const titleStyle = css({
   flexGrow: 1,
+});
+
+const appbar = css({
+  zIndex: 1201,
 });
 
 const content = css({});
@@ -284,10 +290,11 @@ const Todo: FC = () => {
   return (
     <>
       <AppBar
-        position="static"
+        position="relative"
         css={[
           taskDetailOpen ? contentLeftShift : content,
           menuOpen ? contentRightShift : content,
+          appbar,
         ]}
       >
         <Toolbar>
@@ -307,8 +314,8 @@ const Todo: FC = () => {
       </AppBar>
       <main
         css={[
-          taskDetailOpen ? contentLeftShift : content,
           container,
+          taskDetailOpen ? contentLeftShift : content,
           menuOpen ? contentRightShift : content,
         ]}
       >
