@@ -259,8 +259,6 @@ const Todo: FC = () => {
     if (task.hasRepeat) {
       finishRepeatTask(task)
         .then((t) => {
-          // eslint-disable-next-line
-          console.log(t.expirationDate.format('YYYY-MM-DD'));
           setTasks([...newTasks, t]);
         })
         .catch(() => setErrorMessage('通信エラーが発生しました。'));
