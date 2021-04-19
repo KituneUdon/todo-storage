@@ -9,7 +9,7 @@ import {
 import { Alert } from '@material-ui/lab';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Switch, useHistory, Redirect } from 'react-router-dom';
+import { Switch, Redirect, useLocation, useHistory } from 'react-router-dom';
 
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -64,6 +64,7 @@ const Todo: FC = () => {
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { updateTasks } = useUpdateTasks(tasks);
+  const [currentUrl, setCurrentUrl] = useState('/todo/all');
 
   const defaultTaskDetail: Task = {
     id: '',
@@ -117,6 +118,17 @@ const Todo: FC = () => {
         setErrorMessage('タスクの取得に失敗しました。');
       });
   }, [uid]);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setCurrentUrl(location.pathname);
+  }, [location]);
+
+  const titleMap = new Map([
+    ['/todo/all', 'すべてのタスク'],
+    ['/todo/today', '今日のタスク'],
+  ]);
 
   const handleDrawerOpen = (task: Task) => {
     setTaskDetail(task);
@@ -316,7 +328,7 @@ const Todo: FC = () => {
           menuOpen ? contentRightShift : content,
         ]}
       >
-        <Typography variant="h6">Tasks</Typography>
+        <Typography variant="h6">{titleMap.get(currentUrl)}</Typography>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <AddTodo
           setErrorMessage={setErrorMessage}
