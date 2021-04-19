@@ -27,6 +27,7 @@ const container = css({
 
 const taskText = css({
   flexGrow: 1,
+  margin: 0,
 });
 
 const redText = css({
