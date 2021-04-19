@@ -46,7 +46,7 @@ const appbar = css({
 
 const content = css({});
 
-const contentLeftShift = css({
+const appbarLeftShift = css({
   width: `calc(100% - ${taskDetailWidth}px)`,
   marginRight: `${taskDetailWidth}px`,
 });
@@ -54,6 +54,11 @@ const contentLeftShift = css({
 const contentRightShift = css({
   width: `calc(100% - ${menuWidth}px)`,
   marginLeft: `${menuWidth}px`,
+});
+
+const contentLeftShift = css({
+  width: `calc(100% - ${taskDetailWidth + 72}px)`,
+  marginRight: `${taskDetailWidth}px`,
 });
 
 const db = firebase.firestore();
@@ -301,7 +306,7 @@ const Todo: FC = () => {
       <AppBar
         position="relative"
         css={[
-          taskDetailOpen ? contentLeftShift : content,
+          taskDetailOpen ? appbarLeftShift : content,
           menuOpen ? contentRightShift : content,
           appbar,
         ]}
