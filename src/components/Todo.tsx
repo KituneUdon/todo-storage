@@ -34,6 +34,7 @@ const menuWidth = 200;
 const container = css({
   margin: '10px',
   marginLeft: '82px',
+  marginTop: '74px',
 });
 
 const titleStyle = css({
@@ -304,7 +305,7 @@ const Todo: FC = () => {
   return (
     <>
       <AppBar
-        position="relative"
+        position="fixed"
         css={[
           taskDetailOpen ? appbarLeftShift : content,
           menuOpen ? contentRightShift : content,
