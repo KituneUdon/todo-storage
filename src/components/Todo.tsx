@@ -33,8 +33,7 @@ const menuWidth = 200;
 
 const container = css({
   margin: '10px',
-  flexGrow: 1,
-  marginLeft: '72px',
+  marginLeft: '82px',
 });
 
 const titleStyle = css({

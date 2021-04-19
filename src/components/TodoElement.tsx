@@ -28,6 +28,7 @@ const container = css({
 const taskText = css({
   flexGrow: 1,
   margin: 0,
+  maxWidth: 'none',
 });
 
 const redText = css({
@@ -36,6 +37,10 @@ const redText = css({
 
 const expirationDateText = css({
   marginLeft: '10px',
+});
+
+const deleteButton = css({
+  justifyContent: 'flex-end',
 });
 
 const TodoElement: FC<Props> = ({
@@ -99,7 +104,7 @@ const TodoElement: FC<Props> = ({
           </Typography>
         </div>
       </Container>
-      <IconButton onClick={handleTaskDelete}>
+      <IconButton onClick={handleTaskDelete} css={deleteButton}>
         <DeleteIcon />
       </IconButton>
     </Card>
