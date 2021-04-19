@@ -33,8 +33,7 @@ const menuWidth = 200;
 
 const container = css({
   margin: '10px',
-  flexGrow: 1,
-  marginLeft: '72px',
+  marginLeft: '82px',
 });
 
 const titleStyle = css({
@@ -259,8 +258,6 @@ const Todo: FC = () => {
     if (task.hasRepeat) {
       finishRepeatTask(task)
         .then((t) => {
-          // eslint-disable-next-line
-          console.log(t.expirationDate.format('YYYY-MM-DD'));
           setTasks([...newTasks, t]);
         })
         .catch(() => setErrorMessage('通信エラーが発生しました。'));
