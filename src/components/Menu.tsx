@@ -11,7 +11,7 @@ import {
 import { createStyles, makeStyles } from '@material-ui/styles';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeIcon from '@material-ui/icons/Home';
@@ -56,6 +56,7 @@ type Props = {
 const Menu: FC<Props> = ({ menuOpen, handleMenuClose }) => {
   const classes = useStyles();
   const history = useHistory();
+  const location = useLocation();
 
   return (
     <div css={root}>
@@ -75,13 +76,21 @@ const Menu: FC<Props> = ({ menuOpen, handleMenuClose }) => {
         <List>
           <ListItem button onClick={() => history.push('/todo/today')}>
             <ListItemIcon>
-              <WbSunnyIcon />
+              <WbSunnyIcon
+                color={
+                  location.pathname === '/todo/today' ? 'inherit' : 'disabled'
+                }
+              />
             </ListItemIcon>
             <ListItemText primary="今日のタスク" />
           </ListItem>
           <ListItem button onClick={() => history.push('/todo/all')}>
             <ListItemIcon>
-              <HomeIcon />
+              <HomeIcon
+                color={
+                  location.pathname === '/todo/all' ? 'inherit' : 'disabled'
+                }
+              />
             </ListItemIcon>
             <ListItemText primary="すべてのタスク" />
           </ListItem>
