@@ -46,11 +46,26 @@ const useFinishTask = (uid: string): ReturnValueType => {
   };
 
   const finishRepeatTask = async (task: Task) => {
-    const newTask: Task = {
-      ...task,
-      expirationDate: task.expirationDate.add(1, 'day'),
-      dueDate: task.dueDate.add(1, 'day'),
-    };
+    let newTask = task;
+
+    switch (task.repeat) {
+      case 'daily':
+        newTask = {
+          ...newTask,
+          expirationDate: newTask.expirationDate.add(1, 'day'),
+          dueDate: newTask.dueDate.add(1, 'day'),
+        };
+        break;
+      case 'monthly':
+        newTask = {
+          ...newTask,
+          expirationDate: newTask.expirationDate.add(1, 'month'),
+          dueDate: newTask.dueDate.add(1, 'month'),
+        };
+        break;
+      default:
+    }
+
     let error: Error;
 
     try {
