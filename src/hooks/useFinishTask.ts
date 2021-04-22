@@ -68,7 +68,7 @@ const useFinishTask = (uid: string): ReturnValueType => {
           expirationDate: newTask.expirationDate.format('YYYY-MM-DD'),
           dueDate: newTask.dueDate.format('YYYY-MM-DD'),
           memo: newTask.memo,
-          hasRepeat: newTask.hasRepeat,
+          repeat: newTask.repeat,
         });
     } catch {
       error = new Error('Error');

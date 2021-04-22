@@ -6,10 +6,7 @@ import {
   List,
   ListItem,
   TextField,
-  FormControlLabel,
-  Switch,
-  FormControl,
-  FormGroup,
+  MenuItem,
 } from '@material-ui/core';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 /** @jsxImportSource @emotion/react */
@@ -21,7 +18,7 @@ import DayJsUtils from '@date-io/dayjs';
 
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-import Task from '../types/task';
+import Task, { RepeatType } from '../types/task';
 
 dayjs.locale(ja);
 
@@ -49,11 +46,12 @@ type Props = {
   expirationDateChange: (expirationDate: dayjs.Dayjs) => void;
   dueDateChange: (dueDate: dayjs.Dayjs) => void;
   memoChange: (memo: string) => void;
-  hasRepeatChange: () => void;
+  repeatChange: (repeat: RepeatType) => void;
   updateFirestoreTaskTitle: (taskid: string) => void;
   updateFirestoreTaskExpirationDate: (taskid: string) => void;
   updateFirestoreTaskDueDate: (taskid: string) => void;
   updateFirestoreTaskMemo: (taskid: string) => void;
+  updateFirestoreTaskRepeat: (taskid: string) => void;
 };
 
 const TodoDetail: FC<Props> = ({
@@ -64,13 +62,28 @@ const TodoDetail: FC<Props> = ({
   expirationDateChange,
   dueDateChange,
   memoChange,
-  hasRepeatChange,
+  repeatChange,
   updateFirestoreTaskTitle,
   updateFirestoreTaskExpirationDate,
   updateFirestoreTaskDueDate,
   updateFirestoreTaskMemo,
+  updateFirestoreTaskRepeat,
 }) => {
   const classes = useStyles();
+  const repeatValues = [
+    {
+      value: 'none',
+      label: '未設定',
+    },
+    {
+      value: 'daily',
+      label: '毎日',
+    },
+    {
+      value: 'monthly',
+      label: '毎月',
+    },
+  ];
 
   return (
     <MuiPickersUtilsProvider locale={ja} utils={DayJsUtils}>
@@ -131,22 +144,20 @@ const TodoDetail: FC<Props> = ({
             />
           </ListItem>
           <ListItem>
-            <FormControl component="fieldset">
-              <FormGroup aria-label="position" row>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={taskDetail.hasRepeat}
-                      onChange={hasRepeatChange}
-                      name="repeat"
-                    />
-                  }
-                  label="繰り返し"
-                  labelPlacement="start"
-                  css={fullWidth}
-                />
-              </FormGroup>
-            </FormControl>
+            <TextField
+              select
+              fullWidth
+              label="繰り返し設定"
+              value={taskDetail.repeat}
+              onChange={(e) => repeatChange(e.target.value as RepeatType)}
+              onBlur={() => updateFirestoreTaskRepeat(taskDetail.id)}
+            >
+              {repeatValues.map((repeatValue) => (
+                <MenuItem key={repeatValue.value} value={repeatValue.value}>
+                  {repeatValue.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </ListItem>
         </List>
         <Divider />
