@@ -16,7 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import dayjs from 'dayjs';
 import { AuthContext } from '../contexts/Auth';
 import AddTodo from './AddTodo';
-import firebase from '../config/Firebase';
+import firebase, { db } from '../config/Firebase';
 import Task, { RepeatType } from '../types/task';
 import ToDoDetail from './TodoDetail';
 import Menu from './Menu';
@@ -61,8 +61,6 @@ const contentLeftShift = css({
   width: `calc(100% - ${taskDetailWidth + 72}px)`,
   marginRight: `${taskDetailWidth}px`,
 });
-
-const db = firebase.firestore();
 
 const Todo: FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
