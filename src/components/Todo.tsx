@@ -192,9 +192,6 @@ const Todo: FC = () => {
     const task = { ...taskDetail, repeat };
     setTaskDetail(task);
 
-    // eslint-disable-next-line
-    console.log(repeat);
-
     const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
