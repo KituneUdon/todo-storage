@@ -53,9 +53,6 @@ const useFinishTask = (uid: string): ReturnValueType => {
     };
     let error: Error;
 
-    // eslint-disable-next-line
-    console.log(newTask.expirationDate.format('YYYY-MM-DD'));
-
     try {
       await finishTask(task);
 
