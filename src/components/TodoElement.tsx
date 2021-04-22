@@ -83,7 +83,6 @@ const TodoElement: FC<Props> = ({
       >
         {isButtonHover ? <CheckCircleOutlineIcon /> : <PanoramaFishEyeIcon />}
       </IconButton>
-      {/* onClickを使いたかったため、divではなくContainerを使用 */}
       <Container css={taskText} onClick={() => openDrawer(task)}>
         <Typography variant="subtitle1">{task.title}</Typography>
         <div css={container}>

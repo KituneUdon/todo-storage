@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
 import { db } from '../config/Firebase';
+import { RepeatType } from '../types/task';
 
 type returnType = {
   firestoreUpdateTitle: (taskId: string, title: string) => Promise<void>;
@@ -13,9 +14,9 @@ type returnType = {
     dueDate: dayjs.Dayjs,
   ) => Promise<void>;
   firestoreUpdateMemo: (taskId: string, memo: string) => Promise<void>;
-  firestoreUpdateHasRepeat: (
+  firestoreUpdateRepeat: (
     taskId: string,
-    hasRepeat: boolean,
+    hasRepeat: RepeatType,
   ) => Promise<void>;
 };
 
@@ -67,13 +68,13 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     return result;
   };
 
-  const firestoreUpdateHasRepeat = (taskId: string, hasRepeat: boolean) => {
+  const firestoreUpdateRepeat = (taskId: string, repeat: RepeatType) => {
     const result = db
       .collection('users')
       .doc(uid)
       .collection('tasks')
       .doc(taskId)
-      .update({ hasRepeat });
+      .update({ repeat });
 
     return result;
   };
@@ -83,7 +84,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     firestoreUpdateExpirationDate,
     firestoreUpdateDueDate,
     firestoreUpdateMemo,
-    firestoreUpdateHasRepeat,
+    firestoreUpdateRepeat,
   };
 };
 

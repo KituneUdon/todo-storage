@@ -46,15 +46,27 @@ const useFinishTask = (uid: string): ReturnValueType => {
   };
 
   const finishRepeatTask = async (task: Task) => {
-    const newTask: Task = {
-      ...task,
-      expirationDate: task.expirationDate.add(1, 'day'),
-      dueDate: task.dueDate.add(1, 'day'),
-    };
-    let error: Error;
+    let newTask = task;
 
-    // eslint-disable-next-line
-    console.log(newTask.expirationDate.format('YYYY-MM-DD'));
+    switch (task.repeat) {
+      case 'daily':
+        newTask = {
+          ...newTask,
+          expirationDate: newTask.expirationDate.add(1, 'day'),
+          dueDate: newTask.dueDate.add(1, 'day'),
+        };
+        break;
+      case 'monthly':
+        newTask = {
+          ...newTask,
+          expirationDate: newTask.expirationDate.add(1, 'month'),
+          dueDate: newTask.dueDate.add(1, 'month'),
+        };
+        break;
+      default:
+    }
+
+    let error: Error;
 
     try {
       await finishTask(task);
@@ -68,7 +80,7 @@ const useFinishTask = (uid: string): ReturnValueType => {
           expirationDate: newTask.expirationDate.format('YYYY-MM-DD'),
           dueDate: newTask.dueDate.format('YYYY-MM-DD'),
           memo: newTask.memo,
-          hasRepeat: newTask.hasRepeat,
+          repeat: newTask.repeat,
         });
     } catch {
       error = new Error('Error');
