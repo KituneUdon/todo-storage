@@ -43,7 +43,7 @@ const deleteButton = css({
   justifyContent: 'flex-end',
 });
 
-const TodoElement: FC<Props> = ({
+const TaskElement: FC<Props> = ({
   task,
   taskFinish,
   taskDelete,
@@ -110,4 +110,4 @@ const TodoElement: FC<Props> = ({
   );
 };
 
-export default TodoElement;
+export default TaskElement;

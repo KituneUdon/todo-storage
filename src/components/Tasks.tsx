@@ -15,18 +15,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import dayjs from 'dayjs';
 import { AuthContext } from '../contexts/Auth';
-import AddTodo from './AddTodo';
+import AddTask from './AddTask';
 import firebase, { db } from '../config/Firebase';
 import Task, { RepeatType } from '../types/task';
-import ToDoDetail from './TodoDetail';
+import ToDoDetail from './TaskDetail';
 import Menu from './Menu';
-import AllTodo from './AllTodo';
-import TodayTodo from './TodayTodo';
+import AllTasks from './AllTasks';
+import TodayTasks from './TodayTasks';
 import PrivateRoute from '../router/PrivateRoute';
-import useUpdateTasks from '../hooks/useUpdateTasks';
+import useFirestoreUpdateTasks from '../hooks/useUpdateTasks';
 import useFirestoreUpdateTask from '../hooks/useFirestoreUpdateTask';
-import useFinishTask from '../hooks/useFinishTask';
-import useDeleteTask from '../hooks/useDeleteTask';
+import useFirestoreFinishTask from '../hooks/useFirestoreFinishTask';
+import useFirestoreDeleteTask from '../hooks/useFirestoreDeleteTask';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -62,12 +62,12 @@ const contentLeftShift = css({
   marginRight: `${taskDetailWidth}px`,
 });
 
-const Todo: FC = () => {
+const Tasks: FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { updateTasks } = useUpdateTasks(tasks);
+  const { updateTasks } = useFirestoreUpdateTasks(tasks);
   const [currentUrl, setCurrentUrl] = useState('/todo/all');
 
   const defaultTaskDetail: Task = {
@@ -90,8 +90,8 @@ const Todo: FC = () => {
     firestoreUpdateMemo,
     firestoreUpdateRepeat,
   } = useFirestoreUpdateTask(uid);
-  const { finishTask, finishRepeatTask } = useFinishTask(uid);
-  const { deleteTask } = useDeleteTask(uid);
+  const { finishTask, finishRepeatTask } = useFirestoreFinishTask(uid);
+  const { deleteTask } = useFirestoreDeleteTask(uid);
 
   const history = useHistory();
 
@@ -343,30 +343,30 @@ const Todo: FC = () => {
       >
         <Typography variant="h6">{titleMap.get(currentUrl)}</Typography>
         {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-        <AddTodo
+        <AddTask
           setErrorMessage={setErrorMessage}
           setTasks={setTasks}
           tasks={tasks}
         />
         <Switch>
-          <PrivateRoute path="/todo/all">
-            <AllTodo
+          <PrivateRoute path="/tasks/all">
+            <AllTasks
               tasks={tasks}
               taskFinish={taskFinish}
               taskDelete={taskDelete}
               openDrawer={handleDrawerOpen}
             />
           </PrivateRoute>
-          <PrivateRoute path="/todo/today">
-            <TodayTodo
+          <PrivateRoute path="/tasks/today">
+            <TodayTasks
               tasks={tasks}
               taskFinish={taskFinish}
               taskDelete={taskDelete}
               openDrawer={handleDrawerOpen}
             />
           </PrivateRoute>
-          <PrivateRoute path="/todo">
-            <Redirect to="/todo/all" />
+          <PrivateRoute path="/tasks">
+            <Redirect to="/tasks/all" />
           </PrivateRoute>
         </Switch>
       </main>
@@ -390,4 +390,4 @@ const Todo: FC = () => {
   );
 };
 
-export default Todo;
+export default Tasks;

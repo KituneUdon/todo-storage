@@ -5,7 +5,7 @@ import { TextField, IconButton, Card } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import dayjs from 'dayjs';
 
-import useFirestoreAddTask from '../hooks/useAddTask';
+import useFirestoreAddTask from '../hooks/useFirestoreAddTask';
 import { AuthContext } from '../contexts/Auth';
 
 import Task from '../types/task';
@@ -25,7 +25,7 @@ const input = css({
   flexGrow: 1,
 });
 
-const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
+const AddTask: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const { user } = useContext(AuthContext);
 
@@ -80,4 +80,4 @@ const AddTodo: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   );
 };
 
-export default AddTodo;
+export default AddTask;

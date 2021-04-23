@@ -74,21 +74,21 @@ const Menu: FC<Props> = ({ menuOpen, handleMenuClose }) => {
         </div>
         <Divider />
         <List>
-          <ListItem button onClick={() => history.push('/todo/today')}>
+          <ListItem button onClick={() => history.push('/tasks/today')}>
             <ListItemIcon>
               <WbSunnyIcon
                 color={
-                  location.pathname === '/todo/today' ? 'inherit' : 'disabled'
+                  location.pathname === '/tasks/today' ? 'inherit' : 'disabled'
                 }
               />
             </ListItemIcon>
             <ListItemText primary="今日のタスク" />
           </ListItem>
-          <ListItem button onClick={() => history.push('/todo/all')}>
+          <ListItem button onClick={() => history.push('/tasks/all')}>
             <ListItemIcon>
               <HomeIcon
                 color={
-                  location.pathname === '/todo/all' ? 'inherit' : 'disabled'
+                  location.pathname === '/tasks/all' ? 'inherit' : 'disabled'
                 }
               />
             </ListItemIcon>

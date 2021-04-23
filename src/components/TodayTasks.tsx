@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import dayjs from 'dayjs';
 import Task from '../types/task';
 
-import TodoElement from './TodoElement';
+import TaskElement from './TaskElement';
 
 type Props = {
   tasks: Task[];
@@ -11,7 +11,7 @@ type Props = {
   openDrawer: (task: Task) => void;
 };
 
-const TodayTodo: FC<Props> = ({
+const TodayTasks: FC<Props> = ({
   tasks,
   taskFinish,
   taskDelete,
@@ -29,7 +29,7 @@ const TodayTodo: FC<Props> = ({
   return (
     <>
       {todayTasks.map((task) => (
-        <TodoElement
+        <TaskElement
           task={task}
           taskFinish={taskFinish}
           taskDelete={taskDelete}
@@ -41,4 +41,4 @@ const TodayTodo: FC<Props> = ({
   );
 };
 
-export default TodayTodo;
+export default TodayTasks;

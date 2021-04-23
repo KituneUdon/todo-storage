@@ -5,7 +5,7 @@ import { AuthProvider } from './contexts/Auth';
 
 import Top from './components/Top';
 import Login from './components/Login';
-import Todo from './components/Todo';
+import Tasks from './components/Tasks';
 import NotFound from './components/NotFound';
 import Singup from './components/Singup';
 import PrivateRoute from './router/PrivateRoute';
@@ -24,8 +24,8 @@ const App: FC = () => (
         <PublicRoute path="/singup">
           <Singup />
         </PublicRoute>
-        <PrivateRoute path="/todo">
-          <Todo />
+        <PrivateRoute path="/tasks">
+          <Tasks />
         </PrivateRoute>
         <Route>
           <NotFound />

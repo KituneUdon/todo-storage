@@ -6,7 +6,7 @@ type ReturnValueType = {
   finishRepeatTask: (task: Task) => Promise<Task>;
 };
 
-const useFinishTask = (uid: string): ReturnValueType => {
+const useFirestoreFinishTask = (uid: string): ReturnValueType => {
   const finishTask = async (task: Task) => {
     try {
       if (task.memo) {
@@ -95,4 +95,4 @@ const useFinishTask = (uid: string): ReturnValueType => {
   return { finishTask, finishRepeatTask };
 };
 
-export default useFinishTask;
+export default useFirestoreFinishTask;
