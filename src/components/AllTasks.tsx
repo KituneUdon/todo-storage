@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import Task from '../types/task';
-import TodoElement from './TodoElement';
+import TaskElement from './TaskElement';
 
 type Props = {
   tasks: Task[];
@@ -10,10 +10,10 @@ type Props = {
   openDrawer: (task: Task) => void;
 };
 
-const AllTodo: FC<Props> = ({ tasks, taskFinish, taskDelete, openDrawer }) => (
+const AllTasks: FC<Props> = ({ tasks, taskFinish, taskDelete, openDrawer }) => (
   <>
     {tasks.map((task) => (
-      <TodoElement
+      <TaskElement
         task={task}
         taskFinish={taskFinish}
         taskDelete={taskDelete}
@@ -24,4 +24,4 @@ const AllTodo: FC<Props> = ({ tasks, taskFinish, taskDelete, openDrawer }) => (
   </>
 );
 
-export default AllTodo;
+export default AllTasks;
