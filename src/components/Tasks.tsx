@@ -68,7 +68,7 @@ const Tasks: FC = () => {
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { updateTasks } = useFirestoreUpdateTasks(tasks);
-  const [currentUrl, setCurrentUrl] = useState('/todo/all');
+  const [currentUrl, setCurrentUrl] = useState('/tasks/all');
 
   const defaultTaskDetail: Task = {
     id: '',
@@ -130,8 +130,8 @@ const Tasks: FC = () => {
   }, [location]);
 
   const titleMap = new Map([
-    ['/todo/all', 'すべてのタスク'],
-    ['/todo/today', '今日のタスク'],
+    ['/tasks/all', 'すべてのタスク'],
+    ['/tasks/today', '今日のタスク'],
   ]);
 
   const handleDrawerOpen = (task: Task) => {
