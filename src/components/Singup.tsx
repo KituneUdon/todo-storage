@@ -42,7 +42,7 @@ const Singup: FC = () => {
       if (user !== null) {
         await user.updateProfile({ displayName: userName });
         setUser({ uid: user.uid, displayName: userName });
-        history.push('/todo');
+        history.push('/tasks/all');
       } else {
         setErrorMessage(
           'ユーザの登録に失敗しました。時間をおいて再度登録してください。',

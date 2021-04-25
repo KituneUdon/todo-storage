@@ -29,7 +29,7 @@ const PublicRoute: FC<Props> = ({ path, children }) => {
     );
 
   return user.uid ? (
-    <Redirect to="/todo/all" />
+    <Redirect to="/tasks/all" />
   ) : (
     <Route path={path}>{children}</Route>
   );

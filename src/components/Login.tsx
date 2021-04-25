@@ -39,7 +39,7 @@ const Login: FC = () => {
           displayName: userInfo?.displayName ?? '',
         };
         setUser(user);
-        history.push('/todo/all');
+        history.push('/tasks/all');
       })
       .catch(() => {
         setErrorMessage('メールアドレスまたはパスワードが違います');
