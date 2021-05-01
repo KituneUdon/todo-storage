@@ -18,7 +18,7 @@ import { AuthContext } from '../contexts/Auth';
 import AddTask from './AddTask';
 import firebase, { db } from '../config/Firebase';
 import Task, { RepeatType } from '../types/task';
-import ToDoDetail from './TaskDetail';
+import TaskDetail from './TaskDetail';
 import Menu from './Menu';
 import AllTasks from './AllTasks';
 import TodayTasks from './TodayTasks';
@@ -69,19 +69,9 @@ const Tasks: FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { updateTasks } = useFirestoreUpdateTasks(tasks);
   const [currentUrl, setCurrentUrl] = useState('/tasks/all');
-
-  const defaultTaskDetail: Task = {
-    id: '',
-    title: '',
-    expirationDate: dayjs(),
-    dueDate: dayjs(),
-    memo: '',
-    repeat: 'none',
-  };
-
-  const [taskDetail, setTaskDetail] = useState(defaultTaskDetail);
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
+  const [taskDetailId, setTaskDetailId] = useState('');
 
   const {
     firestoreUpdateTitle,
@@ -134,13 +124,13 @@ const Tasks: FC = () => {
     ['/tasks/today', '今日のタスク'],
   ]);
 
-  const handleDrawerOpen = (task: Task) => {
-    setTaskDetail(task);
+  const drawerOpen = (task: Task) => {
+    setTaskDetailId(task.id);
     setTaskDetailOpen(true);
   };
 
-  const handleDrawerClose = () => {
-    setTaskDetail(defaultTaskDetail);
+  const drawerClose = () => {
+    setTaskDetailId('');
     setTaskDetailOpen(false);
   };
 
@@ -152,44 +142,7 @@ const Tasks: FC = () => {
     setMenuOpen(false);
   };
 
-  const handleTaskTitleChange = (title: string) => {
-    const task = { ...taskDetail, title };
-    setTaskDetail(task);
-
-    const newTasks = updateTasks(task);
-    setTasks(newTasks);
-  };
-
-  const handleTaskDetailExpirationDateChange = (
-    expirationDate: dayjs.Dayjs,
-  ) => {
-    const task = { ...taskDetail, expirationDate };
-    setTaskDetail(task);
-
-    const newTasks = updateTasks(task);
-    setTasks(newTasks);
-  };
-
-  const handleTaskDetailDueDateChange = (dueDate: dayjs.Dayjs) => {
-    const task = { ...taskDetail, dueDate };
-    setTaskDetail(task);
-
-    const newTasks = updateTasks(task);
-    setTasks(newTasks);
-  };
-
-  const handleTaskDetailMemoChange = (memo: string) => {
-    const task = { ...taskDetail, memo };
-    setTaskDetail(task);
-
-    const newTasks = updateTasks(task);
-    setTasks(newTasks);
-  };
-
-  const handleRepeactChange = (repeat: RepeatType) => {
-    const task = { ...taskDetail, repeat };
-    setTaskDetail(task);
-
+  const changeTasks = (task: Task) => {
     const newTasks = updateTasks(task);
     setTasks(newTasks);
   };
@@ -309,6 +262,23 @@ const Tasks: FC = () => {
     });
   };
 
+  const defaultTask: Task = {
+    id: '',
+    title: '',
+    expirationDate: dayjs(),
+    dueDate: dayjs(),
+    memo: '',
+    repeat: 'none',
+  };
+
+  const taskDetail = () => {
+    const tk = tasks.find((t) => t.id === taskDetailId) ?? defaultTask;
+    // eslint-disable-next-line
+    console.log(tk);
+
+    return tk;
+  };
+
   return (
     <>
       <AppBar
@@ -354,7 +324,7 @@ const Tasks: FC = () => {
               tasks={tasks}
               taskFinish={taskFinish}
               taskDelete={taskDelete}
-              openDrawer={handleDrawerOpen}
+              openDrawer={drawerOpen}
             />
           </PrivateRoute>
           <PrivateRoute path="/tasks/today">
@@ -362,7 +332,7 @@ const Tasks: FC = () => {
               tasks={tasks}
               taskFinish={taskFinish}
               taskDelete={taskDelete}
-              openDrawer={handleDrawerOpen}
+              openDrawer={drawerOpen}
             />
           </PrivateRoute>
           <PrivateRoute path="/tasks">
@@ -370,15 +340,11 @@ const Tasks: FC = () => {
           </PrivateRoute>
         </Switch>
       </main>
-      <ToDoDetail
+      <TaskDetail
         oepn={taskDetailOpen}
-        taskDetail={taskDetail}
-        drawerClose={handleDrawerClose}
-        titleChange={handleTaskTitleChange}
-        expirationDateChange={handleTaskDetailExpirationDateChange}
-        dueDateChange={handleTaskDetailDueDateChange}
-        memoChange={handleTaskDetailMemoChange}
-        repeatChange={handleRepeactChange}
+        task={taskDetail()}
+        changeTasks={changeTasks}
+        drawerClose={drawerClose}
         updateFirestoreTaskTitle={updateFirestoreTaskTitle}
         updateFirestoreTaskExpirationDate={updateFirestoreTaskExpirationDate}
         updateFirestoreTaskDueDate={updateFirestoreTaskDueDate}

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import {
   Drawer,
   IconButton,
@@ -41,12 +41,8 @@ const useStyles = makeStyles(() =>
 type Props = {
   oepn: boolean;
   drawerClose: () => void;
-  taskDetail: Task;
-  titleChange: (title: string) => void;
-  expirationDateChange: (expirationDate: dayjs.Dayjs) => void;
-  dueDateChange: (dueDate: dayjs.Dayjs) => void;
-  memoChange: (memo: string) => void;
-  repeatChange: (repeat: RepeatType) => void;
+  task: Task;
+  changeTasks: (task: Task) => void;
   updateFirestoreTaskTitle: (taskid: string) => void;
   updateFirestoreTaskExpirationDate: (taskid: string) => void;
   updateFirestoreTaskDueDate: (taskid: string) => void;
@@ -54,15 +50,26 @@ type Props = {
   updateFirestoreTaskRepeat: (taskid: string) => void;
 };
 
+const repeatValues = [
+  {
+    value: 'none',
+    label: '未設定',
+  },
+  {
+    value: 'daily',
+    label: '毎日',
+  },
+  {
+    value: 'monthly',
+    label: '毎月',
+  },
+];
+
 const TodoDetail: FC<Props> = ({
   oepn,
   drawerClose,
-  taskDetail,
-  titleChange,
-  expirationDateChange,
-  dueDateChange,
-  memoChange,
-  repeatChange,
+  task,
+  changeTasks,
   updateFirestoreTaskTitle,
   updateFirestoreTaskExpirationDate,
   updateFirestoreTaskDueDate,
@@ -70,20 +77,9 @@ const TodoDetail: FC<Props> = ({
   updateFirestoreTaskRepeat,
 }) => {
   const classes = useStyles();
-  const repeatValues = [
-    {
-      value: 'none',
-      label: '未設定',
-    },
-    {
-      value: 'daily',
-      label: '毎日',
-    },
-    {
-      value: 'monthly',
-      label: '毎月',
-    },
-  ];
+  const [taskDetail, setTaskDetail] = useState(task);
+
+  useEffect(() => setTaskDetail(task), [task]);
 
   return (
     <MuiPickersUtilsProvider locale={ja} utils={DayJsUtils}>
@@ -104,8 +100,13 @@ const TodoDetail: FC<Props> = ({
               value={taskDetail.title}
               label="タスク"
               fullWidth
-              onChange={(e) => titleChange(e.target.value)}
-              onBlur={() => updateFirestoreTaskTitle(taskDetail.id)}
+              onChange={(e) =>
+                setTaskDetail({ ...taskDetail, title: e.target.value })
+              }
+              onBlur={() => {
+                updateFirestoreTaskTitle(taskDetail.id);
+                changeTasks(taskDetail);
+              }}
             />
           </ListItem>
         </List>
@@ -120,7 +121,10 @@ const TodoDetail: FC<Props> = ({
               onChange={(date) => {
                 if (date) {
                   const strDate = date.toString();
-                  expirationDateChange(dayjs(strDate));
+                  setTaskDetail({
+                    ...taskDetail,
+                    expirationDate: dayjs(strDate),
+                  });
                 }
               }}
               format="YYYY/MM/DD"
@@ -136,7 +140,7 @@ const TodoDetail: FC<Props> = ({
               onChange={(date) => {
                 if (date) {
                   const strDate = date.toString();
-                  dueDateChange(dayjs(strDate));
+                  setTaskDetail({ ...taskDetail, dueDate: dayjs(strDate) });
                 }
               }}
               format="YYYY/MM/DD"
@@ -149,7 +153,12 @@ const TodoDetail: FC<Props> = ({
               fullWidth
               label="繰り返し設定"
               value={taskDetail.repeat}
-              onChange={(e) => repeatChange(e.target.value as RepeatType)}
+              onChange={(e) =>
+                setTaskDetail({
+                  ...taskDetail,
+                  repeat: e.target.value as RepeatType,
+                })
+              }
               onBlur={() => updateFirestoreTaskRepeat(taskDetail.id)}
             >
               {repeatValues.map((repeatValue) => (
@@ -167,7 +176,9 @@ const TodoDetail: FC<Props> = ({
               value={taskDetail.memo ?? ``}
               fullWidth
               multiline
-              onChange={(t) => memoChange(t.target.value)}
+              onChange={(e) =>
+                setTaskDetail({ ...taskDetail, memo: e.target.value })
+              }
               label="メモ"
               onBlur={() => updateFirestoreTaskMemo(taskDetail.id)}
             />
