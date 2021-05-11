@@ -98,7 +98,7 @@ const Tasks: FC = () => {
     finishFirestoreTask,
     finishFirestoreRepeatTask,
   } = useFinishFirestoreTask(uid);
-  const { deleteTask } = useDeleteFirestoreTask(uid);
+  const { deleteFirestoreTask } = useDeleteFirestoreTask(uid);
 
   const history = useHistory();
 
@@ -239,7 +239,7 @@ const Tasks: FC = () => {
       });
   };
 
-  const taskFinish = (task: Task) => {
+  const finishTask = (task: Task) => {
     const oldTasks = [...tasks];
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
 
@@ -260,14 +260,14 @@ const Tasks: FC = () => {
     }
   };
 
-  const taskDelete = (task: Task) => {
+  const deleteTask = (task: Task) => {
     const oldTasks = [...tasks];
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
     setTasks(newTasks);
 
     setTaskDetailOpen(false);
 
-    deleteTask(task).catch(() => {
+    deleteFirestoreTask(task).catch(() => {
       setErrorMessage(
         'ToDoの削除に失敗しました。時間をおいて再度実行してください。',
       );
@@ -323,16 +323,16 @@ const Tasks: FC = () => {
           <PrivateRoute path="/tasks/all">
             <AllTasks
               tasks={tasks}
-              taskFinish={taskFinish}
-              taskDelete={taskDelete}
+              taskFinish={finishTask}
+              taskDelete={deleteTask}
               openDrawer={openTaskDetailDrawer}
             />
           </PrivateRoute>
           <PrivateRoute path="/tasks/today">
             <TodayTasks
               tasks={tasks}
-              taskFinish={taskFinish}
-              taskDelete={taskDelete}
+              taskFinish={finishTask}
+              taskDelete={deleteTask}
               openDrawer={openTaskDetailDrawer}
             />
           </PrivateRoute>

@@ -2,11 +2,11 @@ import { db } from '../config/Firebase';
 import Task from '../types/task';
 
 type ReturnValueType = {
-  deleteTask: (task: Task) => Promise<void>;
+  deleteFirestoreTask: (task: Task) => Promise<void>;
 };
 
 const useDeleteFirestoreTask = (uid: string): ReturnValueType => {
-  const deleteTask = (task: Task) => {
+  const deleteFirestoreTask = (task: Task) => {
     const result = db
       .collection('users')
       .doc(uid)
@@ -17,7 +17,7 @@ const useDeleteFirestoreTask = (uid: string): ReturnValueType => {
     return result;
   };
 
-  return { deleteTask };
+  return { deleteFirestoreTask };
 };
 
 export default useDeleteFirestoreTask;
