@@ -233,16 +233,16 @@ const Tasks: FC = () => {
 
     setTaskDetailOpen(false);
 
-    if (task.repeat) {
-      finishRepeatTask(task)
-        .then((t) => {
-          setTasks([...newTasks, t]);
-        })
-        .catch(() => setErrorMessage('通信エラーが発生しました。'));
-    } else {
+    if (task.repeat === 'none') {
       finishTask(task)
         .then(() => {
           setTasks(newTasks);
+        })
+        .catch(() => setErrorMessage('通信エラーが発生しました。'));
+    } else {
+      finishRepeatTask(task)
+        .then((t) => {
+          setTasks([...newTasks, t]);
         })
         .catch(() => setErrorMessage('通信エラーが発生しました。'));
     }
