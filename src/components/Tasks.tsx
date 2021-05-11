@@ -273,8 +273,6 @@ const Tasks: FC = () => {
 
   const taskDetail = () => {
     const tk = tasks.find((t) => t.id === taskDetailId) ?? defaultTask;
-    // eslint-disable-next-line
-    console.log(tk);
 
     return tk;
   };
