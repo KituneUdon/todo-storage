@@ -62,6 +62,15 @@ const contentLeftShift = css({
   marginRight: `${taskDetailWidth}px`,
 });
 
+const defaultTask: Task = {
+  id: '',
+  title: '',
+  expirationDate: dayjs(),
+  dueDate: dayjs(),
+  memo: '',
+  repeat: 'none',
+};
+
 const Tasks: FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -260,15 +269,6 @@ const Tasks: FC = () => {
         'ToDoの削除に失敗しました。時間をおいて再度実行してください。',
       );
     });
-  };
-
-  const defaultTask: Task = {
-    id: '',
-    title: '',
-    expirationDate: dayjs(),
-    dueDate: dayjs(),
-    memo: '',
-    repeat: 'none',
   };
 
   const taskDetail = () => {
