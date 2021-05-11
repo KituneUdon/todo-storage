@@ -23,7 +23,7 @@ import Menu from './Menu';
 import AllTasks from './AllTasks';
 import TodayTasks from './TodayTasks';
 import PrivateRoute from '../router/PrivateRoute';
-import useFirestoreUpdateTasks from '../hooks/useUpdateTasks';
+import useGenerateNewTasks from '../hooks/useGenerateNewTasks';
 import useUpdateFirestoreTask from '../hooks/useUpdateFirestoreTask';
 import useFirestoreFinishTask from '../hooks/useFirestoreFinishTask';
 import useFirestoreDeleteTask from '../hooks/useFirestoreDeleteTask';
@@ -67,7 +67,7 @@ const Tasks: FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { updateTasks } = useFirestoreUpdateTasks(tasks);
+  const { generateNewTasks } = useGenerateNewTasks(tasks);
   const [currentUrl, setCurrentUrl] = useState('/tasks/all');
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
@@ -143,7 +143,7 @@ const Tasks: FC = () => {
   };
 
   const changeTasks = (task: Task) => {
-    const newTasks = updateTasks(task);
+    const newTasks = generateNewTasks(task);
     setTasks(newTasks);
   };
 
