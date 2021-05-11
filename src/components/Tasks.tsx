@@ -24,7 +24,7 @@ import AllTasks from './AllTasks';
 import TodayTasks from './TodayTasks';
 import PrivateRoute from '../router/PrivateRoute';
 import useFirestoreUpdateTasks from '../hooks/useUpdateTasks';
-import useFirestoreUpdateTask from '../hooks/useFirestoreUpdateTask';
+import useUpdateFirestoreTask from '../hooks/useUpdateFirestoreTask';
 import useFirestoreFinishTask from '../hooks/useFirestoreFinishTask';
 import useFirestoreDeleteTask from '../hooks/useFirestoreDeleteTask';
 
@@ -79,7 +79,7 @@ const Tasks: FC = () => {
     firestoreUpdateDueDate,
     firestoreUpdateMemo,
     firestoreUpdateRepeat,
-  } = useFirestoreUpdateTask(uid);
+  } = useUpdateFirestoreTask(uid);
   const { finishTask, finishRepeatTask } = useFirestoreFinishTask(uid);
   const { deleteTask } = useFirestoreDeleteTask(uid);
 
