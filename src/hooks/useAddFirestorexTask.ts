@@ -4,15 +4,15 @@ import { db } from '../config/Firebase';
 import Task from '../types/task';
 
 type ReturnValue = {
-  firestoreAddTask: (
+  addFirestoreTask: (
     task: Task,
   ) => Promise<
     firebase.firestore.DocumentReference<firebase.firestore.DocumentData>
   >;
 };
 
-const useFirestoreAddTask = (uid: string): ReturnValue => {
-  const firestoreAddTask = (
+const useAddFirestoreTask = (uid: string): ReturnValue => {
+  const addFirestoreTask = (
     task: Task,
   ): Promise<
     firebase.firestore.DocumentReference<firebase.firestore.DocumentData>
@@ -29,7 +29,7 @@ const useFirestoreAddTask = (uid: string): ReturnValue => {
         repeat: task.repeat,
       });
 
-  return { firestoreAddTask };
+  return { addFirestoreTask };
 };
 
-export default useFirestoreAddTask;
+export default useAddFirestoreTask;

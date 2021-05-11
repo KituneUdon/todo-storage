@@ -5,7 +5,7 @@ import { TextField, IconButton, Card } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import dayjs from 'dayjs';
 
-import useFirestoreAddTask from '../hooks/useFirestoreAddTask';
+import useAddFirestoreTask from '../hooks/useAddFirestorexTask';
 import { AuthContext } from '../contexts/Auth';
 
 import Task from '../types/task';
@@ -30,7 +30,7 @@ const AddTask: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   const { user } = useContext(AuthContext);
 
   const { uid } = user;
-  const { firestoreAddTask } = useFirestoreAddTask(uid);
+  const { addFirestoreTask } = useAddFirestoreTask(uid);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskTitle(event.target.value);
@@ -46,7 +46,7 @@ const AddTask: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
       repeat: 'none',
     };
 
-    firestoreAddTask(task)
+    addFirestoreTask(task)
       .then((e) => {
         setTaskTitle('');
         setTasks([...tasks, { ...task, id: e.id.toString() }]);
