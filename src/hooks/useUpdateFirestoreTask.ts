@@ -4,17 +4,17 @@ import { db } from '../config/Firebase';
 import { RepeatType } from '../types/task';
 
 type returnType = {
-  firestoreUpdateTitle: (taskId: string, title: string) => Promise<void>;
-  firestoreUpdateExpirationDate: (
+  updateFirestoreTitle: (taskId: string, title: string) => Promise<void>;
+  updateFirestoreExpirationDate: (
     taskId: string,
     dueDate: dayjs.Dayjs,
   ) => Promise<void>;
-  firestoreUpdateDueDate: (
+  updateFirestoreDueDate: (
     taskId: string,
     dueDate: dayjs.Dayjs,
   ) => Promise<void>;
-  firestoreUpdateMemo: (taskId: string, memo: string) => Promise<void>;
-  firestoreUpdateRepeat: (
+  updateFirestoreMemo: (taskId: string, memo: string) => Promise<void>;
+  updateFirestoreRepeat: (
     taskId: string,
     hasRepeat: RepeatType,
   ) => Promise<void>;
@@ -80,11 +80,11 @@ const useUpdateFirestoreTask = (uid: string): returnType => {
   };
 
   return {
-    firestoreUpdateTitle: updateFirestoreTitle,
-    firestoreUpdateExpirationDate: updateFirestoreExpirationDate,
-    firestoreUpdateDueDate: updateFirestoreDueDate,
-    firestoreUpdateMemo: updateFirestoreMemo,
-    firestoreUpdateRepeat: updateFirestoreRepeat,
+    updateFirestoreTitle,
+    updateFirestoreExpirationDate,
+    updateFirestoreDueDate,
+    updateFirestoreMemo,
+    updateFirestoreRepeat,
   };
 };
 

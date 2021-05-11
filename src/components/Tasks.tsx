@@ -271,10 +271,10 @@ const Tasks: FC = () => {
     });
   };
 
-  const taskDetail = () => {
-    const tk = tasks.find((t) => t.id === taskDetailId) ?? defaultTask;
+  const getTaskDetail = () => {
+    const taskDetail = tasks.find((t) => t.id === taskDetailId) ?? defaultTask;
 
-    return tk;
+    return taskDetail;
   };
 
   return (
@@ -340,7 +340,7 @@ const Tasks: FC = () => {
       </main>
       <TaskDetail
         oepn={taskDetailOpen}
-        task={taskDetail()}
+        task={getTaskDetail()}
         changeTasks={changeTasks}
         drawerClose={drawerClose}
         updateFirestoreTaskTitle={updateFirestoreTaskTitle}
