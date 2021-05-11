@@ -71,6 +71,11 @@ const defaultTask: Task = {
   repeat: 'none',
 };
 
+const titleMap = new Map([
+  ['/tasks/all', 'すべてのタスク'],
+  ['/tasks/today', '今日のタスク'],
+]);
+
 const Tasks: FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -127,11 +132,6 @@ const Tasks: FC = () => {
   useEffect(() => {
     setCurrentUrl(location.pathname);
   }, [location]);
-
-  const titleMap = new Map([
-    ['/tasks/all', 'すべてのタスク'],
-    ['/tasks/today', '今日のタスク'],
-  ]);
 
   const drawerOpen = (task: Task) => {
     setTaskDetailId(task.id);
