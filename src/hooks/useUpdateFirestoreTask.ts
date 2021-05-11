@@ -4,24 +4,24 @@ import { db } from '../config/Firebase';
 import { RepeatType } from '../types/task';
 
 type returnType = {
-  firestoreUpdateTitle: (taskId: string, title: string) => Promise<void>;
-  firestoreUpdateExpirationDate: (
+  updateFirestoreTitle: (taskId: string, title: string) => Promise<void>;
+  updateFirestoreExpirationDate: (
     taskId: string,
     dueDate: dayjs.Dayjs,
   ) => Promise<void>;
-  firestoreUpdateDueDate: (
+  updateFirestoreDueDate: (
     taskId: string,
     dueDate: dayjs.Dayjs,
   ) => Promise<void>;
-  firestoreUpdateMemo: (taskId: string, memo: string) => Promise<void>;
-  firestoreUpdateRepeat: (
+  updateFirestoreMemo: (taskId: string, memo: string) => Promise<void>;
+  updateFirestoreRepeat: (
     taskId: string,
     hasRepeat: RepeatType,
   ) => Promise<void>;
 };
 
-const useFirestoreUpdateTask = (uid: string): returnType => {
-  const firestoreUpdateTitle = (taskId: string, title: string) => {
+const useUpdateFirestoreTask = (uid: string): returnType => {
+  const updateFirestoreTitle = (taskId: string, title: string) => {
     const result = db
       .collection('users')
       .doc(uid)
@@ -32,7 +32,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     return result;
   };
 
-  const firestoreUpdateExpirationDate = (
+  const updateFirestoreExpirationDate = (
     taskId: string,
     expirationDate: dayjs.Dayjs,
   ) => {
@@ -46,7 +46,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     return result;
   };
 
-  const firestoreUpdateDueDate = (taskId: string, dueDate: dayjs.Dayjs) => {
+  const updateFirestoreDueDate = (taskId: string, dueDate: dayjs.Dayjs) => {
     const result = db
       .collection('users')
       .doc(uid)
@@ -57,7 +57,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     return result;
   };
 
-  const firestoreUpdateMemo = (taskId: string, memo: string) => {
+  const updateFirestoreMemo = (taskId: string, memo: string) => {
     const result = db
       .collection('users')
       .doc(uid)
@@ -68,7 +68,7 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
     return result;
   };
 
-  const firestoreUpdateRepeat = (taskId: string, repeat: RepeatType) => {
+  const updateFirestoreRepeat = (taskId: string, repeat: RepeatType) => {
     const result = db
       .collection('users')
       .doc(uid)
@@ -80,12 +80,12 @@ const useFirestoreUpdateTask = (uid: string): returnType => {
   };
 
   return {
-    firestoreUpdateTitle,
-    firestoreUpdateExpirationDate,
-    firestoreUpdateDueDate,
-    firestoreUpdateMemo,
-    firestoreUpdateRepeat,
+    updateFirestoreTitle,
+    updateFirestoreExpirationDate,
+    updateFirestoreDueDate,
+    updateFirestoreMemo,
+    updateFirestoreRepeat,
   };
 };
 
-export default useFirestoreUpdateTask;
+export default useUpdateFirestoreTask;

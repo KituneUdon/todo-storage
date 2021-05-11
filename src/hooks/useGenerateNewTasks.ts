@@ -1,11 +1,11 @@
 import Task from '../types/task';
 
 type ReturnValue = {
-  updateTasks: (newTask: Task) => Task[];
+  generateNewTasks: (newTask: Task) => Task[];
 };
 
-const useUpdateTasks = (tasks: Task[]): ReturnValue => {
-  const updateTasks = (newTask: Task): Task[] => {
+const useGenerateNewTasks = (tasks: Task[]): ReturnValue => {
+  const generateNewTasks = (newTask: Task): Task[] => {
     const oldTasks = tasks;
     const newTasks = oldTasks.map((t) => {
       let task = t;
@@ -19,7 +19,7 @@ const useUpdateTasks = (tasks: Task[]): ReturnValue => {
     return newTasks;
   };
 
-  return { updateTasks };
+  return { generateNewTasks };
 };
 
-export default useUpdateTasks;
+export default useGenerateNewTasks;

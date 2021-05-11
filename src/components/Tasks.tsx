@@ -23,10 +23,10 @@ import Menu from './Menu';
 import AllTasks from './AllTasks';
 import TodayTasks from './TodayTasks';
 import PrivateRoute from '../router/PrivateRoute';
-import useFirestoreUpdateTasks from '../hooks/useUpdateTasks';
-import useFirestoreUpdateTask from '../hooks/useFirestoreUpdateTask';
-import useFirestoreFinishTask from '../hooks/useFirestoreFinishTask';
-import useFirestoreDeleteTask from '../hooks/useFirestoreDeleteTask';
+import useGenerateNewTasks from '../hooks/useGenerateNewTasks';
+import useUpdateFirestoreTask from '../hooks/useUpdateFirestoreTask';
+import useFinishFirestoreTask from '../hooks/useFinishFirestoreTask';
+import useDeleteFirestoreTask from '../hooks/useDeleteFirestoreTask';
 
 const taskDetailWidth = 360;
 const menuWidth = 200;
@@ -62,26 +62,43 @@ const contentLeftShift = css({
   marginRight: `${taskDetailWidth}px`,
 });
 
+const defaultTask: Task = {
+  id: '',
+  title: '',
+  expirationDate: dayjs(),
+  dueDate: dayjs(),
+  memo: '',
+  repeat: 'none',
+};
+
+const titleMap = new Map([
+  ['/tasks/all', 'すべてのタスク'],
+  ['/tasks/today', '今日のタスク'],
+]);
+
 const Tasks: FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { updateTasks } = useFirestoreUpdateTasks(tasks);
+  const { generateNewTasks } = useGenerateNewTasks(tasks);
   const [currentUrl, setCurrentUrl] = useState('/tasks/all');
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
   const [taskDetailId, setTaskDetailId] = useState('');
 
   const {
-    firestoreUpdateTitle,
-    firestoreUpdateExpirationDate,
-    firestoreUpdateDueDate,
-    firestoreUpdateMemo,
-    firestoreUpdateRepeat,
-  } = useFirestoreUpdateTask(uid);
-  const { finishTask, finishRepeatTask } = useFirestoreFinishTask(uid);
-  const { deleteTask } = useFirestoreDeleteTask(uid);
+    updateFirestoreTitle: firestoreUpdateTitle,
+    updateFirestoreExpirationDate: firestoreUpdateExpirationDate,
+    updateFirestoreDueDate: firestoreUpdateDueDate,
+    updateFirestoreMemo: firestoreUpdateMemo,
+    updateFirestoreRepeat: firestoreUpdateRepeat,
+  } = useUpdateFirestoreTask(uid);
+  const {
+    finishFirestoreTask,
+    finishFirestoreRepeatTask,
+  } = useFinishFirestoreTask(uid);
+  const { deleteFirestoreTask } = useDeleteFirestoreTask(uid);
 
   const history = useHistory();
 
@@ -119,31 +136,26 @@ const Tasks: FC = () => {
     setCurrentUrl(location.pathname);
   }, [location]);
 
-  const titleMap = new Map([
-    ['/tasks/all', 'すべてのタスク'],
-    ['/tasks/today', '今日のタスク'],
-  ]);
-
-  const drawerOpen = (task: Task) => {
+  const openTaskDetailDrawer = (task: Task) => {
     setTaskDetailId(task.id);
     setTaskDetailOpen(true);
   };
 
-  const drawerClose = () => {
+  const closeTaskDetailDrawer = () => {
     setTaskDetailId('');
     setTaskDetailOpen(false);
   };
 
-  const handleMenuOpen = () => {
+  const openMenu = () => {
     setMenuOpen(true);
   };
 
-  const handleMenuClose = () => {
+  const closeMenu = () => {
     setMenuOpen(false);
   };
 
   const changeTasks = (task: Task) => {
-    const newTasks = updateTasks(task);
+    const newTasks = generateNewTasks(task);
     setTasks(newTasks);
   };
 
@@ -227,56 +239,45 @@ const Tasks: FC = () => {
       });
   };
 
-  const taskFinish = (task: Task) => {
+  const finishTask = (task: Task) => {
     const oldTasks = [...tasks];
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
 
     setTaskDetailOpen(false);
 
-    if (task.repeat) {
-      finishRepeatTask(task)
-        .then((t) => {
-          setTasks([...newTasks, t]);
+    if (task.repeat === 'none') {
+      finishFirestoreTask(task)
+        .then(() => {
+          setTasks(newTasks);
         })
         .catch(() => setErrorMessage('通信エラーが発生しました。'));
     } else {
-      finishTask(task)
-        .then(() => {
-          setTasks(newTasks);
+      finishFirestoreRepeatTask(task)
+        .then((t) => {
+          setTasks([...newTasks, t]);
         })
         .catch(() => setErrorMessage('通信エラーが発生しました。'));
     }
   };
 
-  const taskDelete = (task: Task) => {
+  const deleteTask = (task: Task) => {
     const oldTasks = [...tasks];
     const newTasks = oldTasks.filter((t) => t.id !== task.id);
     setTasks(newTasks);
 
     setTaskDetailOpen(false);
 
-    deleteTask(task).catch(() => {
+    deleteFirestoreTask(task).catch(() => {
       setErrorMessage(
         'ToDoの削除に失敗しました。時間をおいて再度実行してください。',
       );
     });
   };
 
-  const defaultTask: Task = {
-    id: '',
-    title: '',
-    expirationDate: dayjs(),
-    dueDate: dayjs(),
-    memo: '',
-    repeat: 'none',
-  };
+  const getTaskDetail = () => {
+    const taskDetail = tasks.find((t) => t.id === taskDetailId) ?? defaultTask;
 
-  const taskDetail = () => {
-    const tk = tasks.find((t) => t.id === taskDetailId) ?? defaultTask;
-    // eslint-disable-next-line
-    console.log(tk);
-
-    return tk;
+    return taskDetail;
   };
 
   return (
@@ -291,7 +292,7 @@ const Tasks: FC = () => {
       >
         <Toolbar>
           {!menuOpen && (
-            <IconButton onClick={handleMenuOpen} color="inherit">
+            <IconButton onClick={openMenu} color="inherit">
               <MenuIcon />
             </IconButton>
           )}
@@ -322,17 +323,17 @@ const Tasks: FC = () => {
           <PrivateRoute path="/tasks/all">
             <AllTasks
               tasks={tasks}
-              taskFinish={taskFinish}
-              taskDelete={taskDelete}
-              openDrawer={drawerOpen}
+              taskFinish={finishTask}
+              taskDelete={deleteTask}
+              openDrawer={openTaskDetailDrawer}
             />
           </PrivateRoute>
           <PrivateRoute path="/tasks/today">
             <TodayTasks
               tasks={tasks}
-              taskFinish={taskFinish}
-              taskDelete={taskDelete}
-              openDrawer={drawerOpen}
+              taskFinish={finishTask}
+              taskDelete={deleteTask}
+              openDrawer={openTaskDetailDrawer}
             />
           </PrivateRoute>
           <PrivateRoute path="/tasks">
@@ -342,16 +343,16 @@ const Tasks: FC = () => {
       </main>
       <TaskDetail
         oepn={taskDetailOpen}
-        task={taskDetail()}
+        task={getTaskDetail()}
         changeTasks={changeTasks}
-        drawerClose={drawerClose}
+        drawerClose={closeTaskDetailDrawer}
         updateFirestoreTaskTitle={updateFirestoreTaskTitle}
         updateFirestoreTaskExpirationDate={updateFirestoreTaskExpirationDate}
         updateFirestoreTaskDueDate={updateFirestoreTaskDueDate}
         updateFirestoreTaskMemo={updateFirestoreTaskMemo}
         updateFirestoreTaskRepeat={updateFirestoreTaskRepeat}
       />
-      <Menu menuOpen={menuOpen} handleMenuClose={handleMenuClose} />
+      <Menu menuOpen={menuOpen} handleMenuClose={closeMenu} />
     </>
   );
 };
