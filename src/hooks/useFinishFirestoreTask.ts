@@ -2,12 +2,12 @@ import { db } from '../config/Firebase';
 import Task from '../types/task';
 
 type ReturnValueType = {
-  finishTask: (task: Task) => Promise<void | 'error'>;
-  finishRepeatTask: (task: Task) => Promise<Task>;
+  finishFirestoreTask: (task: Task) => Promise<void | 'error'>;
+  finishFirestoreRepeatTask: (task: Task) => Promise<Task>;
 };
 
 const useFinishFirestoreTask = (uid: string): ReturnValueType => {
-  const finishTask = async (task: Task) => {
+  const finishFirestoreTask = async (task: Task) => {
     try {
       if (task.memo) {
         await db
@@ -45,7 +45,7 @@ const useFinishFirestoreTask = (uid: string): ReturnValueType => {
     }
   };
 
-  const finishRepeatTask = async (task: Task) => {
+  const finishFirestoreRepeatTask = async (task: Task) => {
     let newTask = task;
 
     switch (task.repeat) {
@@ -69,7 +69,7 @@ const useFinishFirestoreTask = (uid: string): ReturnValueType => {
     let error: Error;
 
     try {
-      await finishTask(task);
+      await finishFirestoreTask(task);
 
       await db
         .collection('users')
@@ -92,7 +92,7 @@ const useFinishFirestoreTask = (uid: string): ReturnValueType => {
     });
   };
 
-  return { finishTask, finishRepeatTask };
+  return { finishFirestoreTask, finishFirestoreRepeatTask };
 };
 
 export default useFinishFirestoreTask;

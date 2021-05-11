@@ -88,13 +88,16 @@ const Tasks: FC = () => {
   const [taskDetailId, setTaskDetailId] = useState('');
 
   const {
-    firestoreUpdateTitle,
-    firestoreUpdateExpirationDate,
-    firestoreUpdateDueDate,
-    firestoreUpdateMemo,
-    firestoreUpdateRepeat,
+    updateFirestoreTitle: firestoreUpdateTitle,
+    updateFirestoreExpirationDate: firestoreUpdateExpirationDate,
+    updateFirestoreDueDate: firestoreUpdateDueDate,
+    updateFirestoreMemo: firestoreUpdateMemo,
+    updateFirestoreRepeat: firestoreUpdateRepeat,
   } = useUpdateFirestoreTask(uid);
-  const { finishTask, finishRepeatTask } = useFinishFirestoreTask(uid);
+  const {
+    finishFirestoreTask,
+    finishFirestoreRepeatTask,
+  } = useFinishFirestoreTask(uid);
   const { deleteTask } = useDeleteFirestoreTask(uid);
 
   const history = useHistory();
@@ -133,21 +136,21 @@ const Tasks: FC = () => {
     setCurrentUrl(location.pathname);
   }, [location]);
 
-  const drawerOpen = (task: Task) => {
+  const openTaskDetailDrawer = (task: Task) => {
     setTaskDetailId(task.id);
     setTaskDetailOpen(true);
   };
 
-  const drawerClose = () => {
+  const closeTaskDetailDrawer = () => {
     setTaskDetailId('');
     setTaskDetailOpen(false);
   };
 
-  const handleMenuOpen = () => {
+  const openMenu = () => {
     setMenuOpen(true);
   };
 
-  const handleMenuClose = () => {
+  const closeMenu = () => {
     setMenuOpen(false);
   };
 
@@ -243,13 +246,13 @@ const Tasks: FC = () => {
     setTaskDetailOpen(false);
 
     if (task.repeat === 'none') {
-      finishTask(task)
+      finishFirestoreTask(task)
         .then(() => {
           setTasks(newTasks);
         })
         .catch(() => setErrorMessage('通信エラーが発生しました。'));
     } else {
-      finishRepeatTask(task)
+      finishFirestoreRepeatTask(task)
         .then((t) => {
           setTasks([...newTasks, t]);
         })
@@ -289,7 +292,7 @@ const Tasks: FC = () => {
       >
         <Toolbar>
           {!menuOpen && (
-            <IconButton onClick={handleMenuOpen} color="inherit">
+            <IconButton onClick={openMenu} color="inherit">
               <MenuIcon />
             </IconButton>
           )}
@@ -322,7 +325,7 @@ const Tasks: FC = () => {
               tasks={tasks}
               taskFinish={taskFinish}
               taskDelete={taskDelete}
-              openDrawer={drawerOpen}
+              openDrawer={openTaskDetailDrawer}
             />
           </PrivateRoute>
           <PrivateRoute path="/tasks/today">
@@ -330,7 +333,7 @@ const Tasks: FC = () => {
               tasks={tasks}
               taskFinish={taskFinish}
               taskDelete={taskDelete}
-              openDrawer={drawerOpen}
+              openDrawer={openTaskDetailDrawer}
             />
           </PrivateRoute>
           <PrivateRoute path="/tasks">
@@ -342,14 +345,14 @@ const Tasks: FC = () => {
         oepn={taskDetailOpen}
         task={getTaskDetail()}
         changeTasks={changeTasks}
-        drawerClose={drawerClose}
+        drawerClose={closeTaskDetailDrawer}
         updateFirestoreTaskTitle={updateFirestoreTaskTitle}
         updateFirestoreTaskExpirationDate={updateFirestoreTaskExpirationDate}
         updateFirestoreTaskDueDate={updateFirestoreTaskDueDate}
         updateFirestoreTaskMemo={updateFirestoreTaskMemo}
         updateFirestoreTaskRepeat={updateFirestoreTaskRepeat}
       />
-      <Menu menuOpen={menuOpen} handleMenuClose={handleMenuClose} />
+      <Menu menuOpen={menuOpen} handleMenuClose={closeMenu} />
     </>
   );
 };
