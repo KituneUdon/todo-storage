@@ -5,7 +5,7 @@ type ReturnValueType = {
   deleteTask: (task: Task) => Promise<void>;
 };
 
-const useFirestoreDeleteTask = (uid: string): ReturnValueType => {
+const useDeleteFirestoreTask = (uid: string): ReturnValueType => {
   const deleteTask = (task: Task) => {
     const result = db
       .collection('users')
@@ -20,4 +20,4 @@ const useFirestoreDeleteTask = (uid: string): ReturnValueType => {
   return { deleteTask };
 };
 
-export default useFirestoreDeleteTask;
+export default useDeleteFirestoreTask;
