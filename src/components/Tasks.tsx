@@ -25,7 +25,7 @@ import TodayTasks from './TodayTasks';
 import PrivateRoute from '../router/PrivateRoute';
 import useGenerateNewTasks from '../hooks/useGenerateNewTasks';
 import useUpdateFirestoreTask from '../hooks/useUpdateFirestoreTask';
-import useFirestoreFinishTask from '../hooks/useFirestoreFinishTask';
+import useFinishFirestoreTask from '../hooks/useFinishFirestoreTask';
 import useFirestoreDeleteTask from '../hooks/useFirestoreDeleteTask';
 
 const taskDetailWidth = 360;
@@ -80,7 +80,7 @@ const Tasks: FC = () => {
     firestoreUpdateMemo,
     firestoreUpdateRepeat,
   } = useUpdateFirestoreTask(uid);
-  const { finishTask, finishRepeatTask } = useFirestoreFinishTask(uid);
+  const { finishTask, finishRepeatTask } = useFinishFirestoreTask(uid);
   const { deleteTask } = useFirestoreDeleteTask(uid);
 
   const history = useHistory();
