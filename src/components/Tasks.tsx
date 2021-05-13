@@ -162,8 +162,8 @@ const Tasks: FC = () => {
     setTasks(newTasks);
   };
 
-  const updateFirestoreTaskTitle = (taskid: string) => {
-    const updateTargetTask = tasks.find((t) => t.id === taskid);
+  const updateTaskTitle = (updateTargetTask: Task) => {
+    changeTasks(updateTargetTask);
 
     if (updateTargetTask) {
       firestoreUpdateTitle(
@@ -216,9 +216,6 @@ const Tasks: FC = () => {
 
   const updateFirestoreTaskRepeat = (taskid: string) => {
     const updateTargetTask = tasks.find((t) => t.id === taskid);
-
-    // eslint-disable-next-line
-    console.log(updateTargetTask?.repeat);
 
     if (updateTargetTask) {
       firestoreUpdateRepeat(
@@ -350,9 +347,8 @@ const Tasks: FC = () => {
       <TaskDetail
         oepn={taskDetailOpen}
         task={getTaskDetail()}
-        changeTasks={changeTasks}
         drawerClose={closeTaskDetailDrawer}
-        updateFirestoreTaskTitle={updateFirestoreTaskTitle}
+        updateTaskTitle={updateTaskTitle}
         updateFirestoreTaskExpirationDate={updateFirestoreTaskExpirationDate}
         updateFirestoreTaskDueDate={updateFirestoreTaskDueDate}
         updateFirestoreTaskMemo={updateFirestoreTaskMemo}

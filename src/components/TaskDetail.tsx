@@ -42,8 +42,7 @@ type Props = {
   oepn: boolean;
   drawerClose: () => void;
   task: Task;
-  changeTasks: (task: Task) => void;
-  updateFirestoreTaskTitle: (taskid: string) => void;
+  updateTaskTitle: (task: Task) => void;
   updateFirestoreTaskExpirationDate: (taskid: string) => void;
   updateFirestoreTaskDueDate: (taskid: string) => void;
   updateFirestoreTaskMemo: (taskid: string) => void;
@@ -69,8 +68,7 @@ const TodoDetail: FC<Props> = ({
   oepn,
   drawerClose,
   task,
-  changeTasks,
-  updateFirestoreTaskTitle,
+  updateTaskTitle,
   updateFirestoreTaskExpirationDate,
   updateFirestoreTaskDueDate,
   updateFirestoreTaskMemo,
@@ -103,10 +101,7 @@ const TodoDetail: FC<Props> = ({
               onChange={(e) =>
                 setTaskDetail({ ...taskDetail, title: e.target.value })
               }
-              onBlur={() => {
-                updateFirestoreTaskTitle(taskDetail.id);
-                changeTasks(taskDetail);
-              }}
+              onBlur={() => updateTaskTitle(taskDetail)}
             />
           </ListItem>
         </List>
