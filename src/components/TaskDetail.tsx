@@ -43,10 +43,10 @@ type Props = {
   drawerClose: () => void;
   task: Task;
   updateTaskTitle: (task: Task) => void;
-  updateFirestoreTaskExpirationDate: (taskid: string) => void;
-  updateFirestoreTaskDueDate: (taskid: string) => void;
-  updateFirestoreTaskMemo: (taskid: string) => void;
-  updateFirestoreTaskRepeat: (taskid: string) => void;
+  updateTaskExpirationDate: (task: Task) => void;
+  updateTaskDueDate: (task: Task) => void;
+  updateTaskMemo: (task: Task) => void;
+  updateTaskRepeat: (task: Task) => void;
 };
 
 const repeatValues = [
@@ -69,10 +69,10 @@ const TodoDetail: FC<Props> = ({
   drawerClose,
   task,
   updateTaskTitle,
-  updateFirestoreTaskExpirationDate,
-  updateFirestoreTaskDueDate,
-  updateFirestoreTaskMemo,
-  updateFirestoreTaskRepeat,
+  updateTaskExpirationDate,
+  updateTaskDueDate,
+  updateTaskMemo,
+  updateTaskRepeat,
 }) => {
   const classes = useStyles();
   const [taskDetail, setTaskDetail] = useState(task);
@@ -123,7 +123,7 @@ const TodoDetail: FC<Props> = ({
                 }
               }}
               format="YYYY/MM/DD"
-              onBlur={() => updateFirestoreTaskExpirationDate(taskDetail.id)}
+              onBlur={() => updateTaskExpirationDate(taskDetail)}
             />
           </ListItem>
           <ListItem>
@@ -139,7 +139,7 @@ const TodoDetail: FC<Props> = ({
                 }
               }}
               format="YYYY/MM/DD"
-              onBlur={() => updateFirestoreTaskDueDate(taskDetail.id)}
+              onBlur={() => updateTaskDueDate(taskDetail)}
             />
           </ListItem>
           <ListItem>
@@ -154,7 +154,7 @@ const TodoDetail: FC<Props> = ({
                   repeat: e.target.value as RepeatType,
                 })
               }
-              onBlur={() => updateFirestoreTaskRepeat(taskDetail.id)}
+              onBlur={() => updateTaskRepeat(taskDetail)}
             >
               {repeatValues.map((repeatValue) => (
                 <MenuItem key={repeatValue.value} value={repeatValue.value}>
@@ -175,7 +175,7 @@ const TodoDetail: FC<Props> = ({
                 setTaskDetail({ ...taskDetail, memo: e.target.value })
               }
               label="メモ"
-              onBlur={() => updateFirestoreTaskMemo(taskDetail.id)}
+              onBlur={() => updateTaskMemo(taskDetail)}
             />
           </ListItem>
         </List>
