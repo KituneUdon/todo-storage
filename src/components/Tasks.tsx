@@ -85,6 +85,9 @@ const Tasks: FC = () => {
   const [currentUrl, setCurrentUrl] = useState('/tasks/all');
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
+  // タスク詳細を開いているタスクのIDのみをstateで保持
+  // タスクの情報すべてを渡すとタスク詳細を編集するたびに
+  // Tasksコンポーネント全体が再描画され処理が重くなるため、IDだけを渡している
   const [taskDetailId, setTaskDetailId] = useState('');
 
   const {
@@ -159,69 +162,44 @@ const Tasks: FC = () => {
     setTasks(newTasks);
   };
 
-  const updateFirestoreTaskTitle = (taskid: string) => {
-    const updateTargetTask = tasks.find((t) => t.id === taskid);
+  const updateTaskTitle = (task: Task) => {
+    changeTasks(task);
 
-    if (updateTargetTask) {
-      firestoreUpdateTitle(
-        updateTargetTask.id,
-        updateTargetTask.title,
-      ).catch(() => setErrorMessage('変更に失敗しました。'));
-    } else {
-      setErrorMessage('変更に失敗しました。');
-    }
+    firestoreUpdateTitle(task.id, task.title).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
   };
 
-  const updateFirestoreTaskExpirationDate = (taskid: string) => {
-    const updateTargetTask = tasks.find((t) => t.id === taskid);
+  const updateTaskExpirationDate = (task: Task) => {
+    changeTasks(task);
 
-    if (updateTargetTask) {
-      firestoreUpdateExpirationDate(
-        updateTargetTask.id,
-        updateTargetTask.expirationDate,
-      ).catch(() => setErrorMessage('変更に失敗しました。'));
-    } else {
-      setErrorMessage('変更に失敗しました。');
-    }
+    firestoreUpdateExpirationDate(task.id, task.expirationDate).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
   };
 
-  const updateFirestoreTaskDueDate = (taskid: string) => {
-    const updateTargetTask = tasks.find((t) => t.id === taskid);
+  const updateTaskDueDate = (task: Task) => {
+    changeTasks(task);
 
-    if (updateTargetTask) {
-      firestoreUpdateDueDate(
-        updateTargetTask.id,
-        updateTargetTask.dueDate,
-      ).catch(() => setErrorMessage('変更に失敗しました。'));
-    } else {
-      setErrorMessage('変更に失敗しました。');
-    }
+    firestoreUpdateDueDate(task.id, task.dueDate).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
   };
 
-  const updateFirestoreTaskMemo = (taskid: string) => {
-    const updateTargetTask = tasks.find((t) => t.id === taskid);
+  const updateTaskMemo = (task: Task) => {
+    changeTasks(task);
 
-    if (updateTargetTask) {
-      firestoreUpdateMemo(
-        updateTargetTask.id,
-        updateTargetTask.memo,
-      ).catch(() => setErrorMessage('変更に失敗しました。'));
-    } else {
-      setErrorMessage('変更に失敗しました。');
-    }
+    firestoreUpdateMemo(task.id, task.memo).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
   };
 
-  const updateFirestoreTaskRepeat = (taskid: string) => {
-    const updateTargetTask = tasks.find((t) => t.id === taskid);
+  const updateTaskRepeat = (task: Task) => {
+    changeTasks(task);
 
-    if (updateTargetTask) {
-      firestoreUpdateRepeat(
-        updateTargetTask.id,
-        updateTargetTask.repeat,
-      ).catch(() => setErrorMessage('変更に失敗しました。'));
-    } else {
-      setErrorMessage('変更に失敗しました。');
-    }
+    firestoreUpdateRepeat(task.id, task.repeat).catch(() =>
+      setErrorMessage('変更に失敗しました。'),
+    );
   };
 
   const logout = () => {
@@ -344,13 +322,12 @@ const Tasks: FC = () => {
       <TaskDetail
         oepn={taskDetailOpen}
         task={getTaskDetail()}
-        changeTasks={changeTasks}
         drawerClose={closeTaskDetailDrawer}
-        updateFirestoreTaskTitle={updateFirestoreTaskTitle}
-        updateFirestoreTaskExpirationDate={updateFirestoreTaskExpirationDate}
-        updateFirestoreTaskDueDate={updateFirestoreTaskDueDate}
-        updateFirestoreTaskMemo={updateFirestoreTaskMemo}
-        updateFirestoreTaskRepeat={updateFirestoreTaskRepeat}
+        updateTaskTitle={updateTaskTitle}
+        updateTaskExpirationDate={updateTaskExpirationDate}
+        updateTaskDueDate={updateTaskDueDate}
+        updateTaskMemo={updateTaskMemo}
+        updateTaskRepeat={updateTaskRepeat}
       />
       <Menu hasOpenedMenu={hasOpenedMenu} closeMenu={closeMenu} />
     </>
