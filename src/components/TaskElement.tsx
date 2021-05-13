@@ -15,9 +15,9 @@ dayjs.extend(isSameOrBefore);
 
 type Props = {
   task: Task;
-  taskFinish: (task: Task) => void;
-  taskDelete: (task: Task) => void;
-  openDrawer: (task: Task) => void;
+  finishTask: (task: Task) => void;
+  deleteTask: (task: Task) => void;
+  openTaskDetailDrawer: (task: Task) => void;
 };
 
 const container = css({
@@ -45,19 +45,19 @@ const deleteButton = css({
 
 const TaskElement: FC<Props> = ({
   task,
-  taskFinish,
-  taskDelete,
-  openDrawer,
+  finishTask,
+  deleteTask,
+  openTaskDetailDrawer: openDrawer,
 }) => {
   const [isButtonHover, setIsButtonHover] = useState(false);
 
   const handleMouseOver = () => setIsButtonHover(true);
   const handleMouseOut = () => setIsButtonHover(false);
   const handleTaskFinish = () => {
-    taskFinish(task);
+    finishTask(task);
   };
   const handleTaskDelete = () => {
-    taskDelete(task);
+    deleteTask(task);
   };
 
   const hasPastToday = (date: dayjs.Dayjs) => {
