@@ -6,15 +6,15 @@ import TaskElement from './TaskElement';
 
 type Props = {
   tasks: Task[];
-  taskFinish: (task: Task) => void;
-  taskDelete: (task: Task) => void;
+  finishTask: (task: Task) => void;
+  deleteTask: (task: Task) => void;
   openDrawer: (task: Task) => void;
 };
 
 const TodayTasks: FC<Props> = ({
   tasks,
-  taskFinish,
-  taskDelete,
+  finishTask,
+  deleteTask,
   openDrawer,
 }) => {
   const today = dayjs();
@@ -31,10 +31,10 @@ const TodayTasks: FC<Props> = ({
       {todayTasks.map((task) => (
         <TaskElement
           task={task}
-          taskFinish={taskFinish}
-          taskDelete={taskDelete}
+          finishTask={finishTask}
+          deleteTask={deleteTask}
           key={task.id}
-          openDrawer={openDrawer}
+          openTaskDetailDrawer={openDrawer}
         />
       ))}
     </>

@@ -323,16 +323,16 @@ const Tasks: FC = () => {
           <PrivateRoute path="/tasks/all">
             <AllTasks
               tasks={tasks}
-              taskFinish={finishTask}
-              taskDelete={deleteTask}
-              openDrawer={openTaskDetailDrawer}
+              finishTask={finishTask}
+              deleteTask={deleteTask}
+              openTaskDetailDrawer={openTaskDetailDrawer}
             />
           </PrivateRoute>
           <PrivateRoute path="/tasks/today">
             <TodayTasks
               tasks={tasks}
-              taskFinish={finishTask}
-              taskDelete={deleteTask}
+              finishTask={finishTask}
+              deleteTask={deleteTask}
               openDrawer={openTaskDetailDrawer}
             />
           </PrivateRoute>
