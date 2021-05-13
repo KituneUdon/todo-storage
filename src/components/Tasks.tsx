@@ -90,13 +90,7 @@ const Tasks: FC = () => {
   // Tasksコンポーネント全体が再描画され処理が重くなるため、IDだけを渡している
   const [taskDetailId, setTaskDetailId] = useState('');
 
-  const {
-    updateFirestoreTitle: firestoreUpdateTitle,
-    updateFirestoreExpirationDate: firestoreUpdateExpirationDate,
-    updateFirestoreDueDate: firestoreUpdateDueDate,
-    updateFirestoreMemo: firestoreUpdateMemo,
-    updateFirestoreRepeat: firestoreUpdateRepeat,
-  } = useUpdateFirestoreTask(uid);
+  const { updataFirestoreTask } = useUpdateFirestoreTask(uid);
   const {
     finishFirestoreTask,
     finishFirestoreRepeatTask,
@@ -162,42 +156,10 @@ const Tasks: FC = () => {
     setTasks(newTasks);
   };
 
-  const updateTaskTitle = (task: Task) => {
+  const updateTask = (task: Task) => {
     changeTasks(task);
 
-    firestoreUpdateTitle(task.id, task.title).catch(() =>
-      setErrorMessage('変更に失敗しました。'),
-    );
-  };
-
-  const updateTaskExpirationDate = (task: Task) => {
-    changeTasks(task);
-
-    firestoreUpdateExpirationDate(task.id, task.expirationDate).catch(() =>
-      setErrorMessage('変更に失敗しました。'),
-    );
-  };
-
-  const updateTaskDueDate = (task: Task) => {
-    changeTasks(task);
-
-    firestoreUpdateDueDate(task.id, task.dueDate).catch(() =>
-      setErrorMessage('変更に失敗しました。'),
-    );
-  };
-
-  const updateTaskMemo = (task: Task) => {
-    changeTasks(task);
-
-    firestoreUpdateMemo(task.id, task.memo).catch(() =>
-      setErrorMessage('変更に失敗しました。'),
-    );
-  };
-
-  const updateTaskRepeat = (task: Task) => {
-    changeTasks(task);
-
-    firestoreUpdateRepeat(task.id, task.repeat).catch(() =>
+    updataFirestoreTask(task).catch(() =>
       setErrorMessage('変更に失敗しました。'),
     );
   };
@@ -323,11 +285,7 @@ const Tasks: FC = () => {
         oepn={taskDetailOpen}
         task={getTaskDetail()}
         drawerClose={closeTaskDetailDrawer}
-        updateTaskTitle={updateTaskTitle}
-        updateTaskExpirationDate={updateTaskExpirationDate}
-        updateTaskDueDate={updateTaskDueDate}
-        updateTaskMemo={updateTaskMemo}
-        updateTaskRepeat={updateTaskRepeat}
+        updateTask={updateTask}
       />
       <Menu hasOpenedMenu={hasOpenedMenu} closeMenu={closeMenu} />
     </>

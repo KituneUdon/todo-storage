@@ -1,9 +1,10 @@
 import dayjs from 'dayjs';
 
 import { db } from '../config/Firebase';
-import { RepeatType } from '../types/task';
+import Task, { RepeatType } from '../types/task';
 
 type returnType = {
+  updataFirestoreTask: (task: Task) => Promise<void>;
   updateFirestoreTitle: (taskId: string, title: string) => Promise<void>;
   updateFirestoreExpirationDate: (
     taskId: string,
@@ -21,6 +22,23 @@ type returnType = {
 };
 
 const useUpdateFirestoreTask = (uid: string): returnType => {
+  const updataFirestoreTask = (task: Task) => {
+    const result = db
+      .collection('users')
+      .doc(uid)
+      .collection('tasks')
+      .doc(task.id)
+      .update({
+        title: task.title,
+        expirationDate: task.expirationDate.format('YYYY-MM-DD'),
+        dueDate: task.dueDate.format('YYYY-MM-DD'),
+        memo: task.memo,
+        repeat: task.repeat,
+      });
+
+    return result;
+  };
+
   const updateFirestoreTitle = (taskId: string, title: string) => {
     const result = db
       .collection('users')
@@ -80,6 +98,7 @@ const useUpdateFirestoreTask = (uid: string): returnType => {
   };
 
   return {
+    updataFirestoreTask,
     updateFirestoreTitle,
     updateFirestoreExpirationDate,
     updateFirestoreDueDate,
