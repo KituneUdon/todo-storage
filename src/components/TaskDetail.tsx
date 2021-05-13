@@ -42,11 +42,7 @@ type Props = {
   oepn: boolean;
   drawerClose: () => void;
   task: Task;
-  updateTaskTitle: (task: Task) => void;
-  updateTaskExpirationDate: (task: Task) => void;
-  updateTaskDueDate: (task: Task) => void;
-  updateTaskMemo: (task: Task) => void;
-  updateTaskRepeat: (task: Task) => void;
+  updateTask: (task: Task) => void;
 };
 
 const repeatValues = [
@@ -64,16 +60,7 @@ const repeatValues = [
   },
 ];
 
-const TodoDetail: FC<Props> = ({
-  oepn,
-  drawerClose,
-  task,
-  updateTaskTitle,
-  updateTaskExpirationDate,
-  updateTaskDueDate,
-  updateTaskMemo,
-  updateTaskRepeat,
-}) => {
+const TodoDetail: FC<Props> = ({ oepn, drawerClose, task, updateTask }) => {
   const classes = useStyles();
   const [taskDetail, setTaskDetail] = useState(task);
 
@@ -101,7 +88,7 @@ const TodoDetail: FC<Props> = ({
               onChange={(e) =>
                 setTaskDetail({ ...taskDetail, title: e.target.value })
               }
-              onBlur={() => updateTaskTitle(taskDetail)}
+              onBlur={() => updateTask(taskDetail)}
             />
           </ListItem>
         </List>
@@ -123,7 +110,7 @@ const TodoDetail: FC<Props> = ({
                 }
               }}
               format="YYYY/MM/DD"
-              onBlur={() => updateTaskExpirationDate(taskDetail)}
+              onBlur={() => updateTask(taskDetail)}
             />
           </ListItem>
           <ListItem>
@@ -139,7 +126,7 @@ const TodoDetail: FC<Props> = ({
                 }
               }}
               format="YYYY/MM/DD"
-              onBlur={() => updateTaskDueDate(taskDetail)}
+              onBlur={() => updateTask(taskDetail)}
             />
           </ListItem>
           <ListItem>
@@ -154,7 +141,7 @@ const TodoDetail: FC<Props> = ({
                   repeat: e.target.value as RepeatType,
                 })
               }
-              onBlur={() => updateTaskRepeat(taskDetail)}
+              onBlur={() => updateTask(taskDetail)}
             >
               {repeatValues.map((repeatValue) => (
                 <MenuItem key={repeatValue.value} value={repeatValue.value}>
@@ -175,7 +162,7 @@ const TodoDetail: FC<Props> = ({
                 setTaskDetail({ ...taskDetail, memo: e.target.value })
               }
               label="メモ"
-              onBlur={() => updateTaskMemo(taskDetail)}
+              onBlur={() => updateTask(taskDetail)}
             />
           </ListItem>
         </List>
