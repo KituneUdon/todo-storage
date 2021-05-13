@@ -80,7 +80,7 @@ const Tasks: FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [taskDetailOpen, setTaskDetailOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [hasOpenedMenu, setHasOpenedMenu] = useState(false);
   const { generateNewTasks } = useGenerateNewTasks(tasks);
   const [currentUrl, setCurrentUrl] = useState('/tasks/all');
   const { user, setUser } = useContext(AuthContext);
@@ -147,11 +147,11 @@ const Tasks: FC = () => {
   };
 
   const openMenu = () => {
-    setMenuOpen(true);
+    setHasOpenedMenu(true);
   };
 
   const closeMenu = () => {
-    setMenuOpen(false);
+    setHasOpenedMenu(false);
   };
 
   const changeTasks = (task: Task) => {
@@ -224,7 +224,7 @@ const Tasks: FC = () => {
     }
   };
 
-  const handleLogout = () => {
+  const logout = () => {
     firebase
       .auth()
       .signOut()
@@ -286,12 +286,12 @@ const Tasks: FC = () => {
         position="fixed"
         css={[
           taskDetailOpen ? appbarLeftShift : content,
-          menuOpen ? contentRightShift : content,
+          hasOpenedMenu ? contentRightShift : content,
           appbar,
         ]}
       >
         <Toolbar>
-          {!menuOpen && (
+          {!hasOpenedMenu && (
             <IconButton onClick={openMenu} color="inherit">
               <MenuIcon />
             </IconButton>
@@ -300,7 +300,7 @@ const Tasks: FC = () => {
             ToDo Storage
           </Typography>
           <Typography variant="body1">{user.displayName}</Typography>
-          <Button color="inherit" onClick={handleLogout}>
+          <Button color="inherit" onClick={logout}>
             ログアウト
           </Button>
         </Toolbar>
@@ -309,7 +309,7 @@ const Tasks: FC = () => {
         css={[
           container,
           taskDetailOpen ? contentLeftShift : content,
-          menuOpen ? contentRightShift : content,
+          hasOpenedMenu ? contentRightShift : content,
         ]}
       >
         <Typography variant="h6">{titleMap.get(currentUrl)}</Typography>
@@ -352,7 +352,7 @@ const Tasks: FC = () => {
         updateFirestoreTaskMemo={updateFirestoreTaskMemo}
         updateFirestoreTaskRepeat={updateFirestoreTaskRepeat}
       />
-      <Menu menuOpen={menuOpen} handleMenuClose={closeMenu} />
+      <Menu hasOpenedMenu={hasOpenedMenu} closeMenu={closeMenu} />
     </>
   );
 };

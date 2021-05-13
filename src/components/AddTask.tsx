@@ -32,11 +32,11 @@ const AddTask: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
   const { uid } = user;
   const { addFirestoreTask } = useAddFirestoreTask(uid);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeTaskTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskTitle(event.target.value);
   };
 
-  const handleAddTask = () => {
+  const addTask = () => {
     const task: Task = {
       id: '',
       title: taskTitle,
@@ -60,19 +60,19 @@ const AddTask: FC<Props> = ({ setErrorMessage, setTasks, tasks }) => {
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      handleAddTask();
+      addTask();
     }
   };
 
   return (
     <Card css={container}>
-      <IconButton onClick={handleAddTask}>
+      <IconButton onClick={addTask}>
         <AddIcon />
       </IconButton>
       <TextField
         css={input}
         label="タスクを追加する"
-        onChange={handleChange}
+        onChange={changeTaskTitle}
         value={taskTitle}
         onKeyDown={handleKeyPress}
       />

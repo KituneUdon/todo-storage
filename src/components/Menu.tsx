@@ -49,11 +49,11 @@ const useStyles = makeStyles(() =>
 );
 
 type Props = {
-  menuOpen: boolean;
-  handleMenuClose: () => void;
+  hasOpenedMenu: boolean;
+  closeMenu: () => void;
 };
 
-const Menu: FC<Props> = ({ menuOpen, handleMenuClose }) => {
+const Menu: FC<Props> = ({ hasOpenedMenu, closeMenu }) => {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
@@ -62,13 +62,15 @@ const Menu: FC<Props> = ({ menuOpen, handleMenuClose }) => {
     <div css={root}>
       <Drawer
         anchor="left"
-        open={menuOpen}
+        open={hasOpenedMenu}
         variant="permanent"
         css={menu}
-        classes={{ paper: menuOpen ? classes.drawerOpen : classes.drawerClose }}
+        classes={{
+          paper: hasOpenedMenu ? classes.drawerOpen : classes.drawerClose,
+        }}
       >
         <div css={toolbar}>
-          <IconButton onClick={handleMenuClose}>
+          <IconButton onClick={closeMenu}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
