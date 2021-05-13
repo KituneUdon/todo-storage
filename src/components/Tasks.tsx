@@ -85,6 +85,9 @@ const Tasks: FC = () => {
   const [currentUrl, setCurrentUrl] = useState('/tasks/all');
   const { user, setUser } = useContext(AuthContext);
   const { uid } = user;
+  // タスク詳細を開いているタスクのIDのみをstateで保持
+  // タスクの情報すべてを渡すとタスク詳細を編集するたびに
+  // Tasksコンポーネント全体が再描画され処理が重くなるため、IDだけを渡している
   const [taskDetailId, setTaskDetailId] = useState('');
 
   const {
@@ -213,6 +216,9 @@ const Tasks: FC = () => {
 
   const updateFirestoreTaskRepeat = (taskid: string) => {
     const updateTargetTask = tasks.find((t) => t.id === taskid);
+
+    // eslint-disable-next-line
+    console.log(updateTargetTask?.repeat);
 
     if (updateTargetTask) {
       firestoreUpdateRepeat(
