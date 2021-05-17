@@ -15,9 +15,9 @@ Reactを用いたアプリ開発は初めてのため、難易度が低いアプ
 - Prettier
 
 ## 使用ライブラリ
-- dayjs
-- material ui
-- react-router-dom
+- Day.js
+- Material Ui
+- React Router DOM
 
 # 機能一覧
 - ユーザー登録、ログイン機能
